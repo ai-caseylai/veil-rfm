@@ -1,4 +1,8 @@
-import { computeRFM, computeTransition, whatIfAnalyze, whatIfTarget, RFM_SEGMENT } from "@veil-rfm/core"
+import {
+  computeRFM, computeTransition, whatIfAnalyze, whatIfTarget, RFM_SEGMENT,
+  computeCLV, buildCBS, buildSpendData,
+  recommendForCustomer, mineAssociationRules, recommendAll,
+} from "@veil-rfm/core"
 import type { RFMData, Transaction } from "@veil-rfm/core"
 
 // ── Qwen API (OpenAI-compatible via DashScope International) ──
@@ -175,6 +179,100 @@ const FUNCTIONS = [
       },
     },
   },
+  // ── CLV / BTYD functions ──
+  {
+    type: "function" as const,
+    function: {
+      name: "getCustomerCLV",
+      description: "Get Customer Lifetime Value (CLV) for a specific customer using Pareto/NBD + Gamma-Gamma BTYD models. Shows P(Alive), expected future transactions, expected spend per transaction, and total CLV.",
+      parameters: {
+        type: "object" as const,
+        properties: { customerID: { type: "string", description: "Customer ID" } },
+        required: ["customerID"],
+      },
+    },
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "getCLVReport",
+      description: "Get full CLV report for all customers with Pareto/NBD and Gamma-Gamma model parameters. Shows model parameters, each customer's P(Alive), expected transactions, expected spend, and lifetime value.",
+      parameters: { type: "object" as const, properties: {} },
+    },
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "getTopCLVCustomers",
+      description: "Rank customers by Customer Lifetime Value (CLV). Shows the highest future-value customers.",
+      parameters: {
+        type: "object" as const,
+        properties: { limit: { type: "number", description: "Max results, default 10" } },
+      },
+    },
+  },
+  // ── Recommender functions ──
+  {
+    type: "function" as const,
+    function: {
+      name: "recommendProducts",
+      description: "Get personalized product recommendations for a specific customer using item-based collaborative filtering. Shows what products they're most likely to buy next based on their purchase history and what similar customers bought.",
+      parameters: {
+        type: "object" as const,
+        properties: {
+          customerID: { type: "string", description: "Customer ID to get recommendations for" },
+          topN: { type: "number", description: "Number of recommendations to return, default 5" },
+        },
+        required: ["customerID"],
+      },
+    },
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "getAssociationRules",
+      description: "Get Market Basket Analysis association rules. Shows 'if bought X, likely to buy Y' patterns with support, confidence, and lift metrics. Lift > 1 indicates positive correlation.",
+      parameters: {
+        type: "object" as const,
+        properties: {
+          minLift: { type: "number", description: "Minimum lift threshold, default 1.5" },
+          limit: { type: "number", description: "Max rules to return, default 20" },
+        },
+      },
+    },
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "getCrossSellOpportunities",
+      description: "Find cross-sell opportunities: for each product category, show what other categories are frequently bought together. Useful for bundle promotions and store layout.",
+      parameters: { type: "object" as const, properties: {} },
+    },
+  },
+  // ── Markov Chain deep functions ──
+  {
+    type: "function" as const,
+    function: {
+      name: "getTransitionMatrix",
+      description: "Get the full 11×11 Markov Chain transition probability matrix between all RFM segments. Shows probability of moving from any segment to any other segment. Useful for understanding customer flow dynamics.",
+      parameters: { type: "object" as const, properties: {} },
+    },
+  },
+  {
+    type: "function" as const,
+    function: {
+      name: "predictCustomerSegment",
+      description: "Predict which segment a specific customer is most likely to move to in the next period, based on Markov Chain transition probabilities and their current segment.",
+      parameters: {
+        type: "object" as const,
+        properties: {
+          customerID: { type: "string", description: "Customer ID to predict for" },
+          periods: { type: "number", description: "Number of future periods to predict, default 1" },
+        },
+        required: ["customerID"],
+      },
+    },
+  },
 ]
 
 const SYSTEM_PROMPT = `You are an RFM (Recency, Frequency, Monetary) analytics AI assistant for a retail business intelligence platform.
@@ -194,13 +292,18 @@ Customers are scored 1-5 on Recency (days since last purchase), Frequency (order
 11. Lost Cheap (111) — inactive, minimal value
 
 ## Rules
-- ALWAYS use function calls when the answer needs data (customer info, segment stats, lists, distributions, what-if, etc.)
+- ALWAYS use function calls when the answer needs data
 - Be concise, data-driven, and business-actionable
 - Answer in the user's language (English, 繁體中文, or 简体中文)
 - Format numbers with commas: $1,234, 1,500 customers
 - Always suggest a concrete next step or business action
-- When comparing, highlight the delta clearly
-- For at-risk customers, specify urgency level`
+
+## Available Capabilities
+- **RFM Analysis**: Customer segmentation, scoring, rankings, filtering, comparisons
+- **Markov Chain**: Transition probabilities, segment migration, customer flow prediction
+- **CLV (BTYD)**: Pareto/NBD + Gamma-Gamma lifetime value, P(Alive), expected transactions
+- **Recommender**: Item-based collaborative filtering, association rules, cross-sell opportunities
+- **What-If**: Simulate behavior changes, suggest segment upgrade paths`
 
 interface ChatMessage {
   role: "system" | "user" | "assistant" | "tool"
@@ -479,6 +582,177 @@ function execGetSegmentMigration(args: Record<string, unknown>, txn: Transaction
   return { segment: RFM_SEGMENT[idx], retentionRate: `${(transProb[idx][idx] * 100).toFixed(1)}%`, topOutgoing: outgoing.slice(0, 5), topIncoming: incoming.slice(0, 5) }
 }
 
+// ── CLV / BTYD exec functions ──
+
+function execGetCustomerCLV(args: Record<string, unknown>, txn: Transaction[]) {
+  const cbs = buildCBS(txn)
+  const spendData = buildSpendData(txn)
+  const clvReport = computeCLV({ cbs, spendData, discountRate: 0.1, margin: 1.0, forecastPeriods: 52 })
+  const customer = clvReport.customers.find((c) => c.customerID === args.customerID)
+  if (!customer) return { error: `Customer ${args.customerID} not found in CLV data` }
+  return {
+    customerID: customer.customerID,
+    pAlive: `${(customer.pAlive * 100).toFixed(1)}%`,
+    expectedTransactionsNextYear: customer.expectedTransactions.toFixed(1),
+    expectedSpendPerTransaction: `$${customer.expectedSpendPerTxn.toFixed(0)}`,
+    lifetimeValue: `$${customer.lifetimeValue.toFixed(0)}`,
+    modelParams: {
+      pnbd: clvReport.params.pnbd.map((v) => Number(v.toFixed(3))),
+      ggg: clvReport.params.ggg.map((v) => Number(v.toFixed(3))),
+    },
+  }
+}
+
+function execGetCLVReport(txn: Transaction[]) {
+  const cbs = buildCBS(txn)
+  const spendData = buildSpendData(txn)
+  const clvReport = computeCLV({ cbs, spendData, discountRate: 0.1, margin: 1.0, forecastPeriods: 52 })
+  return {
+    model: "Pareto/NBD + Gamma-Gamma (BTYD)",
+    pnbdParams: { r: clvReport.params.pnbd[0]?.toFixed(3), alpha: clvReport.params.pnbd[1]?.toFixed(3), s: clvReport.params.pnbd[2]?.toFixed(3), beta: clvReport.params.pnbd[3]?.toFixed(3) },
+    gggParams: { p: clvReport.params.ggg[0]?.toFixed(3), q: clvReport.params.ggg[1]?.toFixed(3), gamma: clvReport.params.ggg[2]?.toFixed(3) },
+    summary: {
+      totalCLV: `$${clvReport.summary.totalCLV.toLocaleString(undefined, { maximumFractionDigits: 0 })}`,
+      avgCLV: `$${clvReport.summary.avgCLV.toLocaleString(undefined, { maximumFractionDigits: 0 })}`,
+      activeCustomers: clvReport.summary.activeCustomerCount,
+    },
+    top3ByCLV: clvReport.customers.sort((a, b) => b.lifetimeValue - a.lifetimeValue).slice(0, 3).map((c) => ({
+      customerID: c.customerID, clv: `$${c.lifetimeValue.toFixed(0)}`, pAlive: `${(c.pAlive * 100).toFixed(0)}%`,
+    })),
+  }
+}
+
+function execGetTopCLVCustomers(args: Record<string, unknown>, txn: Transaction[]) {
+  const cbs = buildCBS(txn)
+  const spendData = buildSpendData(txn)
+  const clvReport = computeCLV({ cbs, spendData, discountRate: 0.1, margin: 1.0, forecastPeriods: 52 })
+  const limit = Math.min((args.limit as number) ?? 10, 50)
+  return {
+    customers: clvReport.customers.sort((a, b) => b.lifetimeValue - a.lifetimeValue).slice(0, limit).map((c) => ({
+      customerID: c.customerID, lifetimeValue: `$${c.lifetimeValue.toFixed(0)}`, pAlive: `${(c.pAlive * 100).toFixed(0)}%`, expectedTxns: c.expectedTransactions.toFixed(1),
+    })),
+  }
+}
+
+// ── Recommender exec functions ──
+
+function execRecommendProducts(args: Record<string, unknown>, txn: Transaction[]) {
+  const result = recommendForCustomer(args.customerID as string, txn, (args.topN as number) ?? 5)
+  if (!result) return { error: `Cannot generate recommendations for ${args.customerID}` }
+  return {
+    customerID: result.customerID,
+    purchasedItems: result.purchasedItems,
+    recommendations: result.recommendations.map((r) => ({
+      product: r.productName,
+      score: r.score.toFixed(3),
+      lift: r.lift.toFixed(1),
+      confidence: `${(r.confidence * 100).toFixed(0)}%`,
+    })),
+  }
+}
+
+function execGetAssociationRules(args: Record<string, unknown>, txn: Transaction[]) {
+  const minLift = (args.minLift as number) ?? 1.5
+  const limit = Math.min((args.limit as number) ?? 20, 50)
+  const rules = mineAssociationRules(txn, 0.05, 0.1, 100)
+  const filtered = rules.filter((r) => r.lift >= minLift).slice(0, limit)
+  return {
+    totalRules: rules.length,
+    filteredRules: filtered.length,
+    topRules: filtered.map((r) => ({
+      antecedent: r.antecedent.join(", "),
+      consequent: r.consequent.join(", "),
+      lift: r.lift.toFixed(1),
+      confidence: `${(r.confidence * 100).toFixed(0)}%`,
+      support: `${(r.support * 100).toFixed(1)}%`,
+    })),
+  }
+}
+
+function execGetCrossSellOpportunities(txn: Transaction[]) {
+  const rules = mineAssociationRules(txn, 0.05, 0.1, 50) ?? []
+  if (!Array.isArray(rules) || rules.length === 0) return { opportunities: [] }
+  const byCategory = new Map<string, Array<{ item: string; lift: number }>>()
+  for (const r of rules) {
+    if (r.lift < 2) continue
+    const cat = r.antecedent[0]
+    const arr = byCategory.get(cat) ?? []
+    arr.push({ item: r.consequent[0], lift: r.lift })
+    byCategory.set(cat, arr)
+  }
+  const opportunities = [...byCategory.entries()].map(([product, cross]) => ({
+    product,
+    crossSell: cross.sort((a, b) => b.lift - a.lift).slice(0, 3).map((c) => `${c.item} (lift: ${c.lift.toFixed(1)})`),
+  }))
+  return { opportunities: opportunities.slice(0, 20) }
+}
+
+// ── Markov Chain exec functions ──
+
+function execGetTransitionMatrix(txn: Transaction[]) {
+  try {
+    const result = computeTransition({ transactions: txn, rfmPeriod: [1, "year"], transitionPeriod: [1, "month"] })
+    const transProb = result.transProb as number[][]
+    if (!transProb?.length) return { error: "Not enough data for transition matrix" }
+    // Return as labeled matrix
+    const matrix: Record<string, Record<string, string>> = {}
+    for (let i = 0; i < RFM_SEGMENT.length; i++) {
+      const row: Record<string, string> = {}
+      for (let j = 0; j < RFM_SEGMENT.length; j++) {
+        if (transProb[i][j] > 0.01) {
+          row[RFM_SEGMENT[j]] = `${(transProb[i][j] * 100).toFixed(1)}%`
+        }
+      }
+      matrix[RFM_SEGMENT[i]] = row
+    }
+    // Summary stats
+    const retention = RFM_SEGMENT.map((seg, i) => ({
+      segment: seg,
+      retentionRate: `${(transProb[i][i] * 100).toFixed(1)}%`,
+    })).sort((a, b) => parseFloat(b.retentionRate) - parseFloat(a.retentionRate))
+    return { matrix, retentionRates: retention }
+  } catch {
+    return { error: "Transition matrix computation failed — need more time-series data" }
+  }
+}
+
+function execPredictCustomerSegment(args: Record<string, unknown>, txn: Transaction[]) {
+  const { results } = getData(txn)
+  const customer = results.find((r) => r.CustomerID === args.customerID)
+  if (!customer) return { error: `Customer ${args.customerID} not found` }
+  const periods = (args.periods as number) ?? 1
+  try {
+    const result = computeTransition({ transactions: txn, rfmPeriod: [1, "year"], transitionPeriod: [1, "month"] })
+    const transProb = result.transProb as number[][]
+    const segIdx = RFM_SEGMENT.indexOf(customer.Segment as typeof RFM_SEGMENT[number])
+    if (segIdx < 0) return { error: `Unknown segment: ${customer.Segment}` }
+    // Predict: multiply the one-hot vector by transition matrix^n
+    const current = Array.from({ length: RFM_SEGMENT.length }, (_, i) => i === segIdx ? 1 : 0)
+    let dist = [...current]
+    for (let p = 0; p < periods; p++) {
+      const next = new Array(RFM_SEGMENT.length).fill(0)
+      for (let i = 0; i < RFM_SEGMENT.length; i++) {
+        for (let j = 0; j < RFM_SEGMENT.length; j++) {
+          next[j] += dist[i] * transProb[i][j]
+        }
+      }
+      dist = next
+    }
+    const predictions = RFM_SEGMENT.map((seg, i) => ({
+      segment: seg,
+      probability: `${(dist[i] * 100).toFixed(1)}%`,
+    })).filter((p) => parseFloat(p.probability) > 1).sort((a, b) => parseFloat(b.probability) - parseFloat(a.probability)).slice(0, 5)
+    return {
+      customerID: args.customerID,
+      currentSegment: customer.Segment,
+      periods,
+      predictedDistribution: predictions.slice(0, 5),
+    }
+  } catch {
+    return { error: "Prediction failed — need more time-series data" }
+  }
+}
+
 // ── Main chat handler ──
 
 let txnsCache: Transaction[] = []
@@ -534,6 +808,14 @@ export async function handleChat(
           case "getNewVsReturning": result = execGetNewVsReturning(txnsCache); break
           case "getSummaryStats": result = execGetSummaryStats(txnsCache); break
           case "getSegmentMigration": result = execGetSegmentMigration(args, txnsCache); break
+          case "getCustomerCLV": result = execGetCustomerCLV(args, txnsCache); break
+          case "getCLVReport": result = execGetCLVReport(txnsCache); break
+          case "getTopCLVCustomers": result = execGetTopCLVCustomers(args, txnsCache); break
+          case "recommendProducts": result = execRecommendProducts(args, txnsCache); break
+          case "getAssociationRules": result = execGetAssociationRules(args, txnsCache); break
+          case "getCrossSellOpportunities": result = execGetCrossSellOpportunities(txnsCache); break
+          case "getTransitionMatrix": result = execGetTransitionMatrix(txnsCache); break
+          case "predictCustomerSegment": result = execPredictCustomerSegment(args, txnsCache); break
           default: result = { error: `Unknown function: ${tc.function.name}` }
         }
         messages.push({ role: "tool", tool_call_id: tc.id, content: JSON.stringify(result) })

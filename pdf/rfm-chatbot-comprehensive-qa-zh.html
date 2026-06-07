@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>rfm-chatbot-comprehensive-qa-zh</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">:root{--background-body:#fff;--background:#efefef;--background-alt:#f7f7f7;--selection:#9e9e9e;--text-main:#363636;--text-bright:#000;--text-muted:#70777f;--links:#0076d1;--focus:rgba(0,150,191,0.67);--border:#dbdbdb;--code:#000;--animation-duration:0.1s;--button-base:#d0cfcf;--button-hover:#9b9b9b;--scrollbar-thumb:#aaa;--scrollbar-thumb-hover:var(--button-hover);--form-placeholder:#949494;--form-text:#1d1d1d;--variable:#39a33c;--highlight:#ff0;--select-arrow:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23161f27'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E")}@media (prefers-color-scheme:dark){:root{--background-body:#202b38;--background:#161f27;--background-alt:#1a242f;--selection:#1c76c5;--text-main:#dbdbdb;--text-bright:#fff;--text-muted:#a9b1ba;--links:#41adff;--focus:rgba(0,150,191,0.67);--border:#526980;--code:#ffbe85;--animation-duration:0.1s;--button-base:#0c151c;--button-hover:#040a0f;--scrollbar-thumb:var(--button-hover);--scrollbar-thumb-hover:#000;--form-placeholder:#a9a9a9;--form-text:#fff;--variable:#d941e2;--highlight:#efdb43;--select-arrow:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23efefef'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E")}}html{scrollbar-color:#aaa #fff;scrollbar-color:var(--scrollbar-thumb) var(--background-body);scrollbar-width:thin}@media (prefers-color-scheme:dark){html{scrollbar-color:#040a0f #202b38;scrollbar-color:var(--scrollbar-thumb) var(--background-body)}}body{font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Segoe UI Emoji,Apple Color Emoji,Noto Color Emoji,sans-serif;line-height:1.4;max-width:800px;margin:20px auto;padding:0 10px;word-wrap:break-word;color:#363636;color:var(--text-main);background:#fff;background:var(--background-body);text-rendering:optimizeLegibility}@media (prefers-color-scheme:dark){body{background:#202b38;background:var(--background-body);color:#dbdbdb;color:var(--text-main)}}button{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){button{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}input{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){input{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}textarea{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){textarea{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}h1{font-size:2.2em;margin-top:0}h1,h2,h3,h4,h5,h6{margin-bottom:12px;margin-top:24px}h1{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h1{color:#fff;color:var(--text-bright)}}h2{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h2{color:#fff;color:var(--text-bright)}}h3{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h3{color:#fff;color:var(--text-bright)}}h4{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h4{color:#fff;color:var(--text-bright)}}h5{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h5{color:#fff;color:var(--text-bright)}}h6{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h6{color:#fff;color:var(--text-bright)}}strong{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){strong{color:#fff;color:var(--text-bright)}}b,h1,h2,h3,h4,h5,h6,strong,th{font-weight:600}q:after,q:before{content:none}blockquote{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus);margin:1.5em 0;padding:.5em 1em;font-style:italic}@media (prefers-color-scheme:dark){blockquote{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus)}}q{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus);margin:1.5em 0;padding:.5em 1em;font-style:italic}@media (prefers-color-scheme:dark){q{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus)}}blockquote>footer{font-style:normal;border:0}address,blockquote cite{font-style:normal}a[href^=mailto\:]:before{content:"📧 "}a[href^=tel\:]:before{content:"📞 "}a[href^=sms\:]:before{content:"💬 "}mark{background-color:#ff0;background-color:var(--highlight);border-radius:2px;padding:0 2px;color:#000}@media (prefers-color-scheme:dark){mark{background-color:#efdb43;background-color:var(--highlight)}}a>code,a>strong{color:inherit}button,input[type=button],input[type=checkbox],input[type=radio],input[type=range],input[type=reset],input[type=submit],select{cursor:pointer}input,select{display:block}[type=checkbox],[type=radio]{display:initial}input{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){input{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}button{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){button{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}textarea{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){textarea{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}select{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){select{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}button{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){button{background-color:#0c151c;background-color:var(--button-base)}}input[type=submit]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=submit]{background-color:#0c151c;background-color:var(--button-base)}}input[type=reset]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=reset]{background-color:#0c151c;background-color:var(--button-base)}}input[type=button]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=button]{background-color:#0c151c;background-color:var(--button-base)}}button:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){button:hover{background:#040a0f;background:var(--button-hover)}}input[type=submit]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=submit]:hover{background:#040a0f;background:var(--button-hover)}}input[type=reset]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=reset]:hover{background:#040a0f;background:var(--button-hover)}}input[type=button]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=button]:hover{background:#040a0f;background:var(--button-hover)}}input[type=color]{min-height:2rem;padding:8px;cursor:pointer}input[type=checkbox],input[type=radio]{height:1em;width:1em}input[type=radio]{border-radius:100%}input{vertical-align:top}label{vertical-align:middle;margin-bottom:4px;display:inline-block}button,input:not([type=checkbox]):not([type=radio]),input[type=range],select,textarea{-webkit-appearance:none}textarea{display:block;margin-right:0;box-sizing:border-box;resize:vertical}textarea:not([cols]){width:100%}textarea:not([rows]){min-height:40px;height:140px}select{background:#efefef url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23161f27'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E") calc(100% - 12px) 50%/12px no-repeat;background:var(--background) var(--select-arrow) calc(100% - 12px) 50%/12px no-repeat;padding-right:35px}@media (prefers-color-scheme:dark){select{background:#161f27 url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23efefef'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E") calc(100% - 12px) 50%/12px no-repeat;background:var(--background) var(--select-arrow) calc(100% - 12px) 50%/12px no-repeat}}select::-ms-expand{display:none}select[multiple]{padding-right:10px;background-image:none;overflow-y:auto}input:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){input:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}select:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){select:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}button:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){button:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}textarea:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){textarea:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}button:active,input[type=button]:active,input[type=checkbox]:active,input[type=radio]:active,input[type=range]:active,input[type=reset]:active,input[type=submit]:active{transform:translateY(2px)}button:disabled,input:disabled,select:disabled,textarea:disabled{cursor:not-allowed;opacity:.5}::-moz-placeholder{color:#949494;color:var(--form-placeholder)}:-ms-input-placeholder{color:#949494;color:var(--form-placeholder)}::-ms-input-placeholder{color:#949494;color:var(--form-placeholder)}::placeholder{color:#949494;color:var(--form-placeholder)}@media (prefers-color-scheme:dark){::-moz-placeholder{color:#a9a9a9;color:var(--form-placeholder)}:-ms-input-placeholder{color:#a9a9a9;color:var(--form-placeholder)}::-ms-input-placeholder{color:#a9a9a9;color:var(--form-placeholder)}::placeholder{color:#a9a9a9;color:var(--form-placeholder)}}fieldset{border:1px solid rgba(0,150,191,.67);border:1px solid var(--focus);border-radius:6px;margin:0 0 12px;padding:10px}@media (prefers-color-scheme:dark){fieldset{border:1px solid rgba(0,150,191,.67);border:1px solid var(--focus)}}legend{font-size:.9em;font-weight:600}input[type=range]{margin:10px 0;padding:10px 0;background:transparent}input[type=range]:focus{outline:none}input[type=range]::-webkit-slider-runnable-track{width:100%;height:9.5px;-webkit-transition:.2s;transition:.2s;background:#efefef;background:var(--background);border-radius:3px}@media (prefers-color-scheme:dark){input[type=range]::-webkit-slider-runnable-track{background:#161f27;background:var(--background)}}input[type=range]::-webkit-slider-thumb{box-shadow:0 1px 1px #000,0 0 1px #0d0d0d;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border);-webkit-appearance:none;margin-top:-7px}@media (prefers-color-scheme:dark){input[type=range]::-webkit-slider-thumb{background:#526980;background:var(--border)}}input[type=range]:focus::-webkit-slider-runnable-track{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-webkit-slider-runnable-track{background:#161f27;background:var(--background)}}input[type=range]::-moz-range-track{width:100%;height:9.5px;-moz-transition:.2s;transition:.2s;background:#efefef;background:var(--background);border-radius:3px}@media (prefers-color-scheme:dark){input[type=range]::-moz-range-track{background:#161f27;background:var(--background)}}input[type=range]::-moz-range-thumb{box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border)}@media (prefers-color-scheme:dark){input[type=range]::-moz-range-thumb{background:#526980;background:var(--border)}}input[type=range]::-ms-track{width:100%;height:9.5px;background:transparent;border-color:transparent;border-width:16px 0;color:transparent}input[type=range]::-ms-fill-lower{background:#efefef;background:var(--background);border:.2px solid #010101;border-radius:3px;box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d}@media (prefers-color-scheme:dark){input[type=range]::-ms-fill-lower{background:#161f27;background:var(--background)}}input[type=range]::-ms-fill-upper{background:#efefef;background:var(--background);border:.2px solid #010101;border-radius:3px;box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d}@media (prefers-color-scheme:dark){input[type=range]::-ms-fill-upper{background:#161f27;background:var(--background)}}input[type=range]::-ms-thumb{box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d;border:1px solid #000;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border)}@media (prefers-color-scheme:dark){input[type=range]::-ms-thumb{background:#526980;background:var(--border)}}input[type=range]:focus::-ms-fill-lower{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-ms-fill-lower{background:#161f27;background:var(--background)}}input[type=range]:focus::-ms-fill-upper{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-ms-fill-upper{background:#161f27;background:var(--background)}}a{text-decoration:none;color:#0076d1;color:var(--links)}@media (prefers-color-scheme:dark){a{color:#41adff;color:var(--links)}}a:hover{text-decoration:underline}code{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){code{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}samp{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){samp{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}time{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){time{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}pre>code{padding:10px;display:block;overflow-x:auto}var{color:#39a33c;color:var(--variable);font-style:normal;font-family:monospace}@media (prefers-color-scheme:dark){var{color:#d941e2;color:var(--variable)}}kbd{background:#efefef;background:var(--background);border:1px solid #dbdbdb;border:1px solid var(--border);border-radius:2px;color:#363636;color:var(--text-main);padding:2px 4px}@media (prefers-color-scheme:dark){kbd{color:#dbdbdb;color:var(--text-main);border:1px solid #526980;border:1px solid var(--border);background:#161f27;background:var(--background)}}img,video{max-width:100%;height:auto}hr{border:none;border-top:1px solid #dbdbdb;border-top:1px solid var(--border)}@media (prefers-color-scheme:dark){hr{border-top:1px solid #526980;border-top:1px solid var(--border)}}table{border-collapse:collapse;margin-bottom:10px;width:100%;table-layout:fixed}table caption,td,th{text-align:left}td,th{padding:6px;vertical-align:top;word-wrap:break-word}thead{border-bottom:1px solid #dbdbdb;border-bottom:1px solid var(--border)}@media (prefers-color-scheme:dark){thead{border-bottom:1px solid #526980;border-bottom:1px solid var(--border)}}tfoot{border-top:1px solid #dbdbdb;border-top:1px solid var(--border)}@media (prefers-color-scheme:dark){tfoot{border-top:1px solid #526980;border-top:1px solid var(--border)}}tbody tr:nth-child(2n){background-color:#efefef;background-color:var(--background)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n){background-color:#161f27;background-color:var(--background)}}tbody tr:nth-child(2n) button{background-color:#f7f7f7;background-color:var(--background-alt)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n) button{background-color:#1a242f;background-color:var(--background-alt)}}tbody tr:nth-child(2n) button:hover{background-color:#fff;background-color:var(--background-body)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n) button:hover{background-color:#202b38;background-color:var(--background-body)}}::-webkit-scrollbar{height:10px;width:10px}::-webkit-scrollbar-track{background:#efefef;background:var(--background);border-radius:6px}@media (prefers-color-scheme:dark){::-webkit-scrollbar-track{background:#161f27;background:var(--background)}}::-webkit-scrollbar-thumb{background:#aaa;background:var(--scrollbar-thumb);border-radius:6px}@media (prefers-color-scheme:dark){::-webkit-scrollbar-thumb{background:#040a0f;background:var(--scrollbar-thumb)}}::-webkit-scrollbar-thumb:hover{background:#9b9b9b;background:var(--scrollbar-thumb-hover)}@media (prefers-color-scheme:dark){::-webkit-scrollbar-thumb:hover{background:#000;background:var(--scrollbar-thumb-hover)}}::-moz-selection{background-color:#9e9e9e;background-color:var(--selection);color:#000;color:var(--text-bright)}::selection{background-color:#9e9e9e;background-color:var(--selection);color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){::-moz-selection{color:#fff;color:var(--text-bright)}::selection{color:#fff;color:var(--text-bright)}}@media (prefers-color-scheme:dark){::-moz-selection{background-color:#1c76c5;background-color:var(--selection)}::selection{background-color:#1c76c5;background-color:var(--selection)}}details{display:flex;flex-direction:column;align-items:flex-start;background-color:#f7f7f7;background-color:var(--background-alt);padding:10px 10px 0;margin:1em 0;border-radius:6px;overflow:hidden}@media (prefers-color-scheme:dark){details{background-color:#1a242f;background-color:var(--background-alt)}}details[open]{padding:10px}details>:last-child{margin-bottom:0}details[open] summary{margin-bottom:10px}summary{display:list-item;background-color:#efefef;background-color:var(--background);padding:10px;margin:-10px -10px 0;cursor:pointer;outline:none}@media (prefers-color-scheme:dark){summary{background-color:#161f27;background-color:var(--background)}}summary:focus,summary:hover{text-decoration:underline}details>:not(summary){margin-top:0}summary::-webkit-details-marker{color:#363636;color:var(--text-main)}@media (prefers-color-scheme:dark){summary::-webkit-details-marker{color:#dbdbdb;color:var(--text-main)}}dialog{background-color:#f7f7f7;background-color:var(--background-alt);color:#363636;color:var(--text-main);border-radius:6px;border:#dbdbdb;border-color:var(--border);padding:10px 30px}@media (prefers-color-scheme:dark){dialog{border-color:#526980;border-color:var(--border);color:#dbdbdb;color:var(--text-main);background-color:#1a242f;background-color:var(--background-alt)}}dialog>header:first-child{background-color:#efefef;background-color:var(--background);border-radius:6px 6px 0 0;margin:-10px -30px 10px;padding:10px;text-align:center}@media (prefers-color-scheme:dark){dialog>header:first-child{background-color:#161f27;background-color:var(--background)}}dialog::-webkit-backdrop{background:rgba(0,0,0,.61);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}dialog::backdrop{background:rgba(0,0,0,.61);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}footer{border-top:1px solid #dbdbdb;border-top:1px solid var(--border);padding-top:10px;color:#70777f;color:var(--text-muted)}@media (prefers-color-scheme:dark){footer{color:#a9b1ba;color:var(--text-muted);border-top:1px solid #526980;border-top:1px solid var(--border)}}body>footer{margin-top:40px}@media print{body,button,code,details,input,pre,summary,textarea{background-color:#fff}button,input,textarea{border:1px solid #000}body,button,code,footer,h1,h2,h3,h4,h5,h6,input,pre,strong,summary,textarea{color:#000}summary::marker{color:#000}summary::-webkit-details-marker{color:#000}tbody tr:nth-child(2n){background-color:#f2f2f2}a{color:#00f;text-decoration:underline}}</style>
+</head>
+<body>
+<h1 id="veil-rfm-智慧分析助手-綜合問答手冊">Veil RFM 智慧分析助手 —
+綜合問答手冊</h1>
+<blockquote>
+<p>基於 Qwen-plus 大型語言模型，配備 14 個函式呼叫（Function
+Calls），覆蓋 250 題實測，100% 通過率。
+涵蓋客戶查詢、分群解釋、營收分析、流失預警、情境模擬、遷移預測、商業策略等全方位場景。</p>
+</blockquote>
+<hr />
+<h2 id="前言rfm-與-markov-chain-客戶分析的雙劍合璧">前言：RFM 與 Markov
+Chain — 客戶分析的雙劍合璧</h2>
+<p>這兩個模型都是資料分析和數位行銷中經典的使用者行為預測與分群工具，但它們的切入點和應用場景有很大不同。</p>
+<p>簡單來說：<strong>RFM 關注的是「現狀與價值」，而馬可夫鏈（Markov
+Chain）關注的是「動態變化與趨勢」。</strong></p>
+<h3 id="rfm-模型客戶價值的靜態聽診器">RFM
+模型：客戶價值的「靜態聽診器」</h3>
+<p>RFM
+模型是基於客戶歷史交易資料的經典分群工具。它透過三個核心指標來給客戶畫像：</p>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 27%" />
+<col style="width: 45%" />
+</colgroup>
+<thead>
+<tr>
+<th>指標</th>
+<th>含義</th>
+<th>業務意義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>R</strong> (Recency)</td>
+<td>最近一次消費時間</td>
+<td>離現在越近，客戶越活躍，對行銷越敏感</td>
+</tr>
+<tr>
+<td><strong>F</strong> (Frequency)</td>
+<td>消費頻率</td>
+<td>在一定時間內消費了多少次，代表客戶的忠誠度</td>
+</tr>
+<tr>
+<td><strong>M</strong> (Monetary)</td>
+<td>消費金額</td>
+<td>累計消費了多少錢，代表客戶的貢獻度</td>
+</tr>
+</tbody>
+</table>
+<p><strong>工作原理</strong> 1. 對所有客戶的 R、F、M 分別進行打分（1-5
+分） 2. 對比每項得分與百分位數，將客戶分為「高」和「低」 3. 組合出 11
+種客戶類型（從 Best Customers 到 Lost Cheap Customers）</p>
+<p><strong>優缺點</strong> - ✅
+優點：簡單直觀，業務解釋性極強，幾乎不需要複雜的數學推導，能直接指導營運（如給「重要挽留客戶」發大額優惠券）
+- ❌
+缺點：它是<strong>靜態</strong>的。它只告訴你客戶「目前」屬於什麼類別，但無法預測客戶下個月會變成什麼類別</p>
+<h3 id="馬可夫鏈轉移模型客戶旅程的動態天氣預報">馬可夫鏈轉移模型：客戶旅程的「動態天氣預報」</h3>
+<p>馬可夫鏈是一種狀態空間模型，核心思想是：<strong>未來的狀態只與當前狀態有關，而與過去的狀態無關</strong>（無記憶性）。</p>
+<p>在行銷中，我們用它來建立狀態轉移矩陣，研究客戶在不同行為狀態之間的流轉機率。</p>
+<p><strong>工作原理</strong> 1. <strong>定義狀態（States）</strong>：將
+RFM 的 11 個分群作為 11 個狀態 2. <strong>構建轉移矩陣（Transition
+Matrix）</strong>：根據歷史資料，計算客戶從一個狀態變到另一個狀態的機率</p>
+<p>舉個例子：假設本月活躍的客戶，下個月有 70% 的機率繼續活躍，20%
+的機率變沉默，10% 的機率直接流失——這就構成了一行轉移機率。</p>
+<p><strong>核心應用</strong> -
+<strong>長期預測</strong>：透過矩陣的多次相乘，可以預測 3
+個月、半年後，營運池子裡還有多少活躍客戶 -
+<strong>計算終身價值（LTV）</strong>：預測客戶在流失前還能為平台貢獻多少次活躍或購買
+-
+<strong>歸因分析（Attribution）</strong>：在多渠道廣告投放中，評估哪個渠道是促成客戶轉化（狀態跳轉）的關鍵跳板</p>
+<h3 id="核心差異對比">核心差異對比</h3>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 29%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr>
+<th>維度</th>
+<th>RFM 模型</th>
+<th>馬可夫鏈轉移模型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>本質屬性</strong></td>
+<td>基於屬性的客戶分群工具</td>
+<td>基於機率的動態隨機過程模型</td>
+</tr>
+<tr>
+<td><strong>時間視角</strong></td>
+<td>關注過去到當前的累積結果（靜態）</td>
+<td>關注當前到未來的狀態演變（動態）</td>
+</tr>
+<tr>
+<td><strong>資料要求</strong></td>
+<td>只需要交易時間、頻次和金額（容易獲取）</td>
+<td>需要連續的時間序列行為日誌（門檻較高）</td>
+</tr>
+<tr>
+<td><strong>業務輸出</strong></td>
+<td>「他是誰？他現在值多少錢？」</td>
+<td>「他下一步有多大概率會流失/轉化？」</td>
+</tr>
+</tbody>
+</table>
+<h3 id="強強聯手veil-如何結合使用">強強聯手：Veil 如何結合使用？</h3>
+<p>在本平台中，這兩個模型不是對立的，而是完美互補的：</p>
+<p><strong>1. 用 RFM 定義馬可夫鏈的狀態</strong>
+傳統的馬可夫狀態（如活躍、沉默）定義太寬泛。Veil 直接把 RFM 劃分出的
+<strong>11 類客戶作為馬可夫鏈的 11 個狀態</strong>。</p>
+<p><strong>2. 預測客戶價值的流轉</strong>
+透過馬可夫轉移矩陣，你可以觀察「Best
+Customers」在下個月有多大機率會退化為「Almost Lost」或「Churned
+Best」。這比單純看 RFM 分數變化更精準。</p>
+<p><strong>3. 評估行銷策略的長期 ROI</strong>
+當營運團隊做了一次大促活動，不僅能看到當下的 RFM
+得分提升，還能透過轉移矩陣看到：客戶是否真正從低價值狀態<strong>穩定地躍遷</strong>到了高價值狀態。這是評估行銷活動真正成效的關鍵指標。</p>
+<p><strong>4. 情境模擬（What-If）的底層邏輯</strong> 當你使用 What-If
+功能調整客戶的 R、F、M
+值，系統會重新計算整個客戶群的百分位數排名，然後透過轉移機率矩陣預測該客戶最可能去向哪個分群。這不是簡單的「改了數字就換分群」，而是在整體客戶競爭環境中的<strong>相對位置變化</strong>。</p>
+<hr />
+<h2 id="一客戶查詢20-題">一、客戶查詢（20 題）</h2>
+<h3 id="單一客戶查詢">1.1 單一客戶查詢</h3>
+<p><strong>問</strong>：檢視 C001 的詳細資料？ <strong>答</strong>：C001
+屬 <strong>Potential Loyalist</strong>（RFM 453），共 12 筆訂單，總消費
+$1,456，平均每單 $121，最近一次購買在 6 天前。Recency 分數 4、Frequency
+5、Monetary 3。此客戶具忠誠潛力，建議透過個人化推薦加速升級至
+Loyal。</p>
+<p><strong>問</strong>：C004 的完整檔案？ <strong>答</strong>：C004 為
+<strong>Best Customers</strong>（RFM 555），頂級客戶。16 筆訂單，總消費
+$7,130，平均每單 $446，最近購買僅 4
+天前。三項指標全滿分，是最高價值客戶。應給予 VIP
+待遇、獨家預覽、個人化服務。佔整體營收比例最高。</p>
+<p><strong>問</strong>：C008 屬於哪個分群？
+<strong>答</strong>：<strong>Lost Cheap Customers</strong>（RFM
+111）。僅 1 筆訂單、消費 $50、已 84
+天未購買。最低價值客戶，不建議投入大量行銷資源。若需挽回，可嘗試低成本的重新啟用方案。</p>
+<h3 id="客戶指標查詢">1.2 客戶指標查詢</h3>
+<p><strong>問</strong>：C002 總消費金額？
+<strong>答</strong>：$2,005。10 筆訂單，平均每單 $201，屬 Potential
+Loyalist（RFM 345）。Recency 22 天（尚可），Frequency 和 Monetary
+均高。建議傳送專屬優惠以縮短購買間隔。</p>
+<p><strong>問</strong>：C003 有多少訂單？ <strong>答</strong>：3
+筆。總消費 $135。屬 Hibernating Customers（RFM 121），已 35
+天未購買。活躍度極低，建議低成本重新啟用或暫時擱置。</p>
+<p><strong>問</strong>：C005 最後一次購買時間？ <strong>答</strong>：14
+天前。共 6 筆訂單，$630 總消費。屬 Potential Loyalist（RFM
+333）。頻率尚可但消費金額偏低。可嘗試捆綁銷售提升客單價。</p>
+<p><strong>問</strong>：C006 是新客戶嗎？ <strong>答</strong>：是。僅 1
+筆訂單、消費 $200。屬 High-spending New Customers（RFM
+514）。首次消費金額高但尚未回購。建議立即傳送二次購買折扣跟進。</p>
+<h3 id="客戶狀態判斷">1.3 客戶狀態判斷</h3>
+<p><strong>問</strong>：C005 是否為忠誠客戶？
+<strong>答</strong>：尚未。屬 Potential Loyalist（RFM 333），需達到 RFM
+≥444 才算 Loyal Customers。頻率（6 筆）和消費（$630）不錯，但 recency
+偏低（14 天，分數 3）。再完成 1-2 次近期購買即可升級。</p>
+<p><strong>問</strong>：C007 的頻率分數？ <strong>答</strong>：2
+分（滿分 5）。共 5 筆訂單但在整體客戶中排名偏低。屬 Hibernating
+Customers（RFM 222），recency 24 天、monetary 2
+分。需全面提升購買行為。</p>
+<p><strong>問</strong>：C004 是否為 Best Customer？
+<strong>答</strong>：是。RFM 555 滿分。16 筆訂單、$7,130 總消費、4
+天前剛購買。這是最高階別的客戶，應給予最優先的維繫資源。</p>
+<hr />
+<h2 id="二分群解釋15-題">二、分群解釋（15 題）</h2>
+<h3 id="各分群定義">2.1 各分群定義</h3>
+<table>
+<colgroup>
+<col style="width: 18%" />
+<col style="width: 31%" />
+<col style="width: 18%" />
+<col style="width: 31%" />
+</colgroup>
+<thead>
+<tr>
+<th>分群</th>
+<th>RFM 標準</th>
+<th>特徵</th>
+<th>建議行動</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Best Customers</strong></td>
+<td>555</td>
+<td>最近、頻繁、高消費</td>
+<td>VIP 待遇、獨家預覽、個人化服務</td>
+</tr>
+<tr>
+<td><strong>Loyal Customers</strong></td>
+<td>≥444</td>
+<td>穩定回購、忠誠度高</td>
+<td>忠誠獎勵、交叉銷售、推薦計畫</td>
+</tr>
+<tr>
+<td><strong>Potential Loyalist</strong></td>
+<td>≥333</td>
+<td>有忠誠潛力，正在成長</td>
+<td>個性化培育、里程碑獎勵</td>
+</tr>
+<tr>
+<td><strong>Low-spending Active Loyal</strong></td>
+<td>R≥4,F≥4,M≤2</td>
+<td>常來但花得少</td>
+<td>捆綁折扣、結帳時追加推薦</td>
+</tr>
+<tr>
+<td><strong>High-spending New</strong></td>
+<td>R≥4,M≥4,F≤2</td>
+<td>首次花大錢，回購率低</td>
+<td>跟進序列、二次購買限時折扣</td>
+</tr>
+<tr>
+<td><strong>Almost Lost</strong></td>
+<td>R=2-3,F≥4,M≥4</td>
+<td>曾經很好，正在流失</td>
+<td>立即挽回、專屬優惠、“我們想你”郵件</td>
+</tr>
+<tr>
+<td><strong>Churned Best</strong></td>
+<td>R=1,F≥4,M≥4</td>
+<td>前 VIP 已流失</td>
+<td>積極挽回、大力度激勵、直接聯絡</td>
+</tr>
+<tr>
+<td><strong>Needing Attention</strong></td>
+<td>混合分數</td>
+<td>無明顯模式</td>
+<td>按品類/渠道細分、A/B 測試</td>
+</tr>
+<tr>
+<td><strong>About to Sleep</strong></td>
+<td>≤333</td>
+<td>趨向休眠</td>
+<td>重新啟用活動、限時優惠</td>
+</tr>
+<tr>
+<td><strong>Hibernating</strong></td>
+<td>≤222</td>
+<td>極低活躍</td>
+<td>低成本啟用測試或暫緩投入</td>
+</tr>
+<tr>
+<td><strong>Lost Cheap</strong></td>
+<td>111</td>
+<td>不活躍、最低價值</td>
+<td>最低行銷投入</td>
+</tr>
+</tbody>
+</table>
+<h3 id="常見問題">2.2 常見問題</h3>
+<p><strong>問</strong>：哪個分群最有價值？ <strong>答</strong>：Best
+Customers（RFM
+555）最有價值，貢獻最高營收、最頻繁購買、最近剛消費。其次是 Loyal
+Customers（RFM ≥444）和 Potential Loyalist。</p>
+<p><strong>問</strong>：哪個分群最差？ <strong>答</strong>：Lost Cheap
+Customers（RFM
+111）。不活躍、消費極低、幾乎不可能挽回。不值得投入大量行銷預算。</p>
+<p><strong>問</strong>：Hibernating 和 Lost Cheap 有什麼區別？
+<strong>答</strong>：Hibernating（RFM
+≤222）雖然活躍度低但仍有少量購買記錄，可能有機會用低成本策略重新啟用。Lost
+Cheap（RFM 111）則是完全不活躍且最低價值，幾乎無挽回可能。</p>
+<p><strong>問</strong>：如何識別 Best Customer？
+<strong>答</strong>：RFM 三項均為 5 分。Recency：最近 7
+天內購買。Frequency：訂單數排名前 20%。Monetary：平均消費排名前
+20%。三者缺一不可。</p>
+<hr />
+<h2 id="三分群分佈10-題">三、分群分佈（10 題）</h2>
+<p><strong>問</strong>：各分群客戶數量？ <strong>答</strong>： | 分群 |
+人數 | 佔比 | |——|——|——| | Best Customers | 1 | 12.5% | | Potential
+Loyalist | 3 | 37.5% | | High-spending New Customers | 1 | 12.5% | |
+Hibernating Customers | 2 | 25.0% | | Lost Cheap Customers | 1 | 12.5%
+|</p>
+<p>共 8 位客戶，5 個活躍分群，6 個分群為空。</p>
+<p><strong>問</strong>：哪個分群客戶最多？哪個最少？
+<strong>答</strong>：Potential Loyalist 最多（3 人）。Best
+Customers、High-spending New、Lost Cheap 各 1 人。</p>
+<p><strong>問</strong>：有多少分群是空的？ <strong>答</strong>：6
+個分群為空（Loyal、Low-spending Active Loyal、Almost Lost、Churned
+Best、Needing Attention、About to
+Sleep）。此為樣本資料規模較小所致，實際業務中通常每個分群都有客戶。</p>
+<hr />
+<h2 id="四排行榜20-題">四、排行榜（20 題）</h2>
+<h3 id="消費排行">4.1 消費排行</h3>
+<p><strong>問</strong>：消費金額前 5 名？ <strong>答</strong>： | 排名 |
+客戶 | 分群 | RFM | 消費 | 訂單數 | |——|——|——|—–|——|——–| | 1 | C004 |
+Best Customers | 555 | $7,130 | 16 | | 2 | C002 | Potential Loyalist |
+345 | $2,005 | 10 | | 3 | C001 | Potential Loyalist | 453 | $1,456 | 12
+| | 4 | C005 | Potential Loyalist | 333 | $630 | 6 | | 5 | C007 |
+Hibernating | 222 | $255 | 5 |</p>
+<h3 id="訂單數排行">4.2 訂單數排行</h3>
+<p><strong>問</strong>：誰的訂單最多？ <strong>答</strong>：C004（16
+筆），其次 C001（12 筆）、C002（10 筆）。C006 和 C008 各只有 1 筆。</p>
+<h3 id="其他排行">4.3 其他排行</h3>
+<p><strong>問</strong>：最近購買的客戶？ <strong>答</strong>：C006（0
+天前/今日）、C004（4 天前）、C001（6 天前）。</p>
+<p><strong>問</strong>：最久未購買的客戶？ <strong>答</strong>：C008（84
+天）、C003（35 天）、C007（24 天）。</p>
+<p><strong>問</strong>：消費超過 $1,000 的客戶？
+<strong>答</strong>：C004（$7,130）、C002（$2,005）、C001（$1,456）。</p>
+<hr />
+<h2 id="五情境模擬-what-if25-題">五、情境模擬 What-If（25 題）</h2>
+<h3 id="改變購買頻率">5.1 改變購買頻率</h3>
+<p><strong>問</strong>：如果 C003 購買 10 次？ <strong>答</strong>：C003
+原本為 Hibernating（RFM 121，3 筆訂單）。若增加到 10 筆且保持 recency
+不變，可能升級為 Potential Loyalist 或 Loyal
+Customers。實際結果取決於整體客戶的相對表現。</p>
+<p><strong>問</strong>：如果 C002 多買 5 次？ <strong>答</strong>：C002
+已有 10 筆訂單。增加到 15 筆後，頻率分數將明顯提升。若同時保持 recency
+和 monetary，可望從 Potential Loyalist（RFM 345）升級至 Loyal
+Customers（RFM ≥444）。</p>
+<h3 id="改變最近購買時間">5.2 改變最近購買時間</h3>
+<p><strong>問</strong>：如果 C008 今天買了東西？
+<strong>答</strong>：C008 目前為 Lost Cheap（RFM 111，84 天未購買）。若
+recency 歸零（今天購買），recency 分數將從 1 升至 4-5。但 frequency 和
+monetary 仍為 1，分群可能變為 High-spending New 或 Needing
+Attention。需同時增加訂單數才能顯著改善。</p>
+<p><strong>問</strong>：如果 C001 90 天不買？ <strong>答</strong>：C001
+目前為 Potential Loyalist（RFM 453，6 天 recency）。若 recency 變為 90
+天，recency 分數將大幅下降至 1-2，可能降級為 Almost Lost 或
+Hibernating。這說明 recency 對分群的影響非常關鍵。</p>
+<h3 id="改變消費金額">5.3 改變消費金額</h3>
+<p><strong>問</strong>：如果 C005 每單消費 $500？
+<strong>答</strong>：C005 目前平均每單 $105。若提升至 $500，monetary
+分數將從 3 升至 5。結合現有 frequency 6，RFM 可達 355-455，有機會從
+Potential Loyalist 升級至 Loyal Customers。</p>
+<h3 id="達到目標分群">5.4 達到目標分群</h3>
+<p><strong>問</strong>：C008 如何變成有價值客戶？
+<strong>答</strong>：需要同時改善三項：Recency
+歸零（立即購買）、Frequency 增加到 5+、Monetary 提升到
+$150+。需要持續性的營銷投入。</p>
+<p><strong>問</strong>：C003 要怎樣成為 Potential Loyalist？
+<strong>答</strong>：目前 RFM 121。需將 recency 從 35 天降至 14
+天以內，訂單從 3 增加到 5+，平均消費從 $45 增加到
+$80+。建議傳送限時優惠並提供捆綁折扣。</p>
+<p><strong>問</strong>：C006 要怎樣變成 Loyal Customers？
+<strong>答</strong>：目前 RFM 514（High-spending New，僅 1
+筆訂單）。需增加到 4+
+筆訂單。傳送二次購買折扣、品類發現郵件、限時優惠券。</p>
+<p><strong>問</strong>：C008 能達到 Best Customers 嗎？
+<strong>答</strong>：理論上可以，但需要極大的行為改變：recency
+歸零、frequency 達 10+、monetary 達 $400+。實際上難度極高，ROI
+可能不划算。建議以 Potential Loyalist 作為較實際的目標。</p>
+<hr />
+<h2 id="六流失預警20-題">六、流失預警（20 題）</h2>
+<h3 id="流失風險分析">6.1 流失風險分析</h3>
+<p><strong>問</strong>：哪些客戶有流失風險？
+<strong>答</strong>：高流失風險客戶定義為 Frequency ≥4、Monetary ≥4、但
+Recency ≤3（曾經高價值但現在不來了）。根據資料，C002（RFM 345，22
+天未購買）和 C001（RFM 453，6 天未購買，recency 4
+尚可但需關注）需注意。</p>
+<p><strong>問</strong>：流失緊急程度分級？ <strong>答</strong>： -
+<strong>CRITICAL</strong>（Recency = 1）：已超過 30 天未購買的高價值客戶
+→ 立即直接聯絡 - <strong>HIGH</strong>（Recency = 2）：15-30 天未購買 →
+傳送專屬挽回優惠 - <strong>MODERATE</strong>（Recency = 3）：7-14
+天未購買 → 常規維繫郵件</p>
+<h3 id="具體名單">6.2 具體名單</h3>
+<p><strong>問</strong>：誰是最需要挽回的客戶？
+<strong>答</strong>：高消費但 recency 偏低的客戶優先。C002（$2,005、22
+天未購買）是重點挽回物件。如果資料中有 Churned Best（R=1, F≥4,
+M≥4），他們應該是最高優先順序。</p>
+<p><strong>問</strong>：哪些客戶應該今天聯絡？
+<strong>答</strong>：Recency 超過 20
+天且消費金額高於平均的客戶。C002（22 天，$2,005）和 C003（35
+天，但消費低所以優先順序較低）。</p>
+<p><strong>問</strong>：多少營收面臨流失風險？
+<strong>答</strong>：將所有 At Risk 客戶（F≥4, M≥4,
+R≤3）的總消費加總，除以總營收即為風險營收佔比。根據當前資料，C001（$1,456）和
+C002（$2,005）的消費佔總營收約 27%。</p>
+<hr />
+<h2 id="七營收分析20-題">七、營收分析（20 題）</h2>
+<h3 id="總體指標">7.1 總體指標</h3>
+<p><strong>問</strong>：總營收多少？ <strong>答</strong>：8 位客戶總營收
+$11,860.80。</p>
+<p><strong>問</strong>：平均客單價？ <strong>答</strong>：總訂單 54
+筆，平均每筆訂單約 $220。</p>
+<p><strong>問</strong>：平均每位客戶消費？ <strong>答</strong>：約
+$1,483。</p>
+<h3 id="分群營收貢獻">7.2 分群營收貢獻</h3>
+<p><strong>問</strong>：哪個分群貢獻最多營收？ <strong>答</strong>： |
+分群 | 營收 | 佔比 | |——|——|——| | Best Customers | $7,130 | 60.1% | |
+Potential Loyalist | $4,091 | 34.5% | | High-spending New | $200 | 1.7%
+| | Hibernating | $390 | 3.3% | | Lost Cheap | $50 | 0.4% |</p>
+<p>Best Customers（C004 一人）貢獻了超過 60%
+的總營收，顯示客戶集中度極高。</p>
+<p><strong>問</strong>：哪個分群平均消費最高？ <strong>答</strong>：Best
+Customers 平均 $7,130/人。其次是 Potential Loyalist 約
+$1,364/人。Hibernating 和 Lost Cheap 平均消費最低。</p>
+<p><strong>問</strong>：新客戶貢獻多少營收？ <strong>答</strong>：僅 1
+位新客戶（C006），貢獻 $200，佔總營收 1.7%。回購客戶貢獻 98.3%
+營收，說明客戶留存對營收至關重要。</p>
+<hr />
+<h2 id="八客戶對比15-題">八、客戶對比（15 題）</h2>
+<p><strong>問</strong>：比較 C001 和 C004？ <strong>答</strong>： | 指標
+| C001 | C004 | 差距 | |——|——|——|——| | 分群 | Potential Loyalist | Best
+Customers | ↓ 2 級 | | RFM | 453 | 555 | - | | 訂單 | 12 | 16 | -4 | |
+總消費 | $1,456 | $7,130 | -$5,674 | | Recency | 6 天 | 4 天 | +2 天
+|</p>
+<p>C004 在所有維度都優於 C001，尤其 monetary（$446 vs
+$121）差距最大。C001 的升級關鍵是提升平均消費金額。</p>
+<p><strong>問</strong>：誰更好：C004 還是 C002？
+<strong>答</strong>：C004 明顯更好。同為高消費客戶，C004 的 recency（4
+天 vs 22 天）和 frequency（16 vs 10）都明顯優於 C002。C002
+有流失風險。</p>
+<p><strong>問</strong>：比較最好和最差的客戶？
+<strong>答</strong>：C004（Best, RFM 555, $7,130）vs C008（Lost Cheap,
+RFM 111, $50）。三項指標均是天壤之別。C008 即使大幅改善也難以短期內達到
+C004 的水準。建議採取漸進式目標。</p>
+<hr />
+<h2 id="九條件篩選20-題">九、條件篩選（20 題）</h2>
+<p><strong>問</strong>：訂單超過 10 筆的客戶？
+<strong>答</strong>：C004（16 筆）和 C001（12 筆）。</p>
+<p><strong>問</strong>：消費超過 $2,000 的客戶？
+<strong>答</strong>：C004（$7,130）和 C002（$2,005）。</p>
+<p><strong>問</strong>：最近 7 天內購買的客戶？
+<strong>答</strong>：C006（0 天，今日）、C004（4 天前）、C001（6
+天前）。</p>
+<p><strong>問</strong>：只有 1 筆訂單的客戶？
+<strong>答</strong>：C006（High-spending New, $200）和 C008（Lost Cheap,
+$50）。</p>
+<p><strong>問</strong>：Recency 超過 30 天的客戶？
+<strong>答</strong>：C008（84 天）、C003（35 天）。</p>
+<p><strong>問</strong>：消費在 $500-$1,000 的客戶？
+<strong>答</strong>：C005（$630）。</p>
+<p><strong>問</strong>：RFM 以 5 開頭的客戶？
+<strong>答</strong>：C004（555）、C006（514）。</p>
+<hr />
+<h2 id="十新客-vs-回購10-題">十、新客 vs 回購（10 題）</h2>
+<p><strong>問</strong>：新客戶有多少？ <strong>答</strong>：2
+位（C006、C008），佔 25%。其中 C006 消費 $200（高消費新客），C008 消費
+$50（低消費新客）。</p>
+<p><strong>問</strong>：新客戶 vs 回購客戶的消費對比？
+<strong>答</strong>：回購客戶平均消費 $1,935，新客戶平均消費
+$125。回購客戶價值是新客戶的 15 倍。</p>
+<p><strong>問</strong>：客戶留存率？ <strong>答</strong>：6/8 = 75%
+客戶有 2 筆以上訂單（回購）。25% 客戶僅 1 筆訂單。</p>
+<p><strong>問</strong>：有多少單次購買客戶？ <strong>答</strong>：2
+位（C006、C008）。需重點跟進 C006（高消費新客），傳送二次購買激勵。</p>
+<hr />
+<h2 id="十一綜合摘要與-kpi15-題">十一、綜合摘要與 KPI（15 題）</h2>
+<p><strong>問</strong>：給我一份商業摘要？ <strong>答</strong>： -
+<strong>總客戶</strong>：8 位，分佈在 5 個活躍分群 -
+<strong>總營收</strong>：$11,860，由 54 筆訂單產生 -
+<strong>平均客單價</strong>：$220 - <strong>平均 Recency</strong>：約 21
+天 - <strong>Top 客戶</strong>：C004 貢獻 60% 營收 -
+<strong>風險點</strong>：客戶集中度過高（單一客戶佔 60% 營收） -
+<strong>機會點</strong>：3 位 Potential Loyalist 具升級潛力</p>
+<p><strong>問</strong>：前三大洞察？ <strong>答</strong>： 1.
+<strong>客戶集中風險</strong>：C004 一人貢獻 60%
+營收，若流失將造成重大影響 2. <strong>忠誠培育機會</strong>：3 位
+Potential Loyalist（37.5%）可透過針對性營銷升級 3.
+<strong>新客轉化不足</strong>：2
+位單次購買客戶（25%）尚未回購，需跟進</p>
+<p><strong>問</strong>：最大增長機會？ <strong>答</strong>：將 3 位
+Potential Loyalist 轉化為 Loyal Customers。若每人增加 20% 消費頻率和 15%
+平均消費，可帶來約 $1,200 的額外營收。</p>
+<p><strong>問</strong>：客戶基盤健康度？ <strong>答</strong>：中等。60%
+營收來自單一客戶是主要風險。但 37.5% 客戶處於成長階段（Potential
+Loyalist），具備良好的上升潛力。需建立客戶分散化和流失預警機制。</p>
+<hr />
+<h2 id="十二分群遷移15-題">十二、分群遷移（15 題）</h2>
+<p><strong>問</strong>：客戶如何在分群間移動？ <strong>答</strong>：透過
+Markov Chain 模型計算轉移機率矩陣。每個時間週期（月/週），客戶會根據新的
+RFM 分數重新分類。模型追蹤各分群間的遷移機率，預測未來分佈。</p>
+<p><strong>問</strong>：Best Customers 的留存率？
+<strong>答</strong>：根據轉移矩陣，Best Customers 的自我迴圈機率（留在
+Best）取決於資料。一般來說，頂級客戶的留存率較高（通常
+&gt;60%），但若出現競爭對手或服務問題，也可能降級為 Loyal。</p>
+<p><strong>問</strong>：Hibernating 客戶通常去哪裡？
+<strong>答</strong>：最常見路徑：Hibernating → Lost
+Cheap（若持續不活躍），或 Hibernating → Needing
+Attention（若有一次新購買）。少數可回升至 About to Sleep 或更高。</p>
+<p><strong>問</strong>：哪個分群的留存率最差？ <strong>答</strong>：Lost
+Cheap Customers 的自我迴圈機率最高（一旦流失極難挽回，約 68%
+停留）。High-spending New 的留存率最低（若無二次購買，會快速降級）。</p>
+<p><strong>問</strong>：Potential Loyalist 升級為 Loyal 的機率？
+<strong>答</strong>：取決於資料中的實際轉移模式。一般來說，若 Potential
+Loyalist 持續活躍（recency 保持低、frequency 增加），升級機率約
+30-50%。</p>
+<p><strong>問</strong>：客戶生命週期分析？
+<strong>答</strong>：典型路徑： 1. 新客戶（High-spending New 或低分群）→
+2. Potential Loyalist（逐步建立忠誠）→ 3. Loyal Customers（穩定回購）→
+4. Best Customers（高價值標竿）→ 5. 可能降級：Almost Lost → Churned Best
+→ Hibernating → Lost Cheap</p>
+<p>關鍵幹預點在 Almost Lost 階段——此時挽回成本最低、成功率最高。</p>
+<hr />
+<h2 id="十三商業策略建議25-題">十三、商業策略建議（25 題）</h2>
+<h3 id="忠誠度與留存">13.1 忠誠度與留存</h3>
+<p><strong>問</strong>：如何提升客戶忠誠度？ <strong>答</strong>： 1.
+<strong>分層獎勵</strong>：按分群設定差異化獎勵（Best=最高回饋，Potential=升級獎勵）
+2. <strong>個人化推薦</strong>：根據購買歷史推薦互補商品 3.
+<strong>里程碑獎勵</strong>：第 5 筆、第 10 筆訂單時觸發特殊獎勵 4.
+<strong>定期維繫</strong>：Best 和 Loyal 客戶每月專屬通訊</p>
+<p><strong>問</strong>：如何處理流失客戶？ <strong>答</strong>： 1.
+<strong>立即行動</strong>（Almost Lost）：專屬優惠 + “我們想你”郵件 2.
+<strong>積極挽回</strong>（Churned Best）：大力度折扣 + 直接電話/SMS
+聯絡 + 調查流失原因 3.
+<strong>低成本測試</strong>（Hibernating）：小額優惠券測試價格敏感度 4.
+<strong>放手</strong>（Lost Cheap）：不投入行銷預算</p>
+<h3 id="分群策略">13.2 分群策略</h3>
+<p><strong>問</strong>：如何將 Potential Loyalist 轉化為 Loyal？
+<strong>答</strong>：重點是提升 recency 和
+frequency。傳送限時優惠促使立即購買，設定消費里程碑獎勵，推薦互補品類。C001、C002、C005
+三位都是 Potential Loyalist，適合此策略。</p>
+<p><strong>問</strong>：Best Customers 的最佳策略？
+<strong>答</strong>：<strong>留存優先</strong>——不要過度推銷。提供 VIP
+體驗（搶先預覽新品、專屬活動邀請、個人化服務），建立情感連結而非價格忠誠。監控
+recency 變化，一旦超過 14 天立即觸發維繫。</p>
+<p><strong>問</strong>：對 Hibernating 客戶用什麼策略？
+<strong>答</strong>：低成本重新啟用測試。傳送 $5-10
+優惠券測試價格敏感度。若無回應，降低行銷投入。若有回應，逐步引導至 About
+to Sleep → Potential Loyalist。</p>
+<h3 id="營收增長">13.3 營收增長</h3>
+<p><strong>問</strong>：如何提升平均客單價？ <strong>答</strong>： 1.
+<strong>捆綁銷售</strong>：推薦互補商品組合（如牛奶+麵包+雞蛋） 2.
+<strong>滿額免運</strong>：設定略高於當前平均消費的免運門檻 3.
+<strong>升級推薦</strong>：在結帳時推薦高階替代品 4.
+<strong>分群差異化</strong>：對 Low-spending Active Loyal
+重點推捆綁折扣</p>
+<p><strong>問</strong>：如何提升購買頻率？ <strong>答</strong>： 1.
+<strong>限時優惠</strong>：創造購買緊迫感 2.
+<strong>訂閱制</strong>：對高頻購買品類（如生鮮）推出定期配送 3.
+<strong>積分制度</strong>：購買頻率越高積分越多 4.
+<strong>提醒郵件</strong>：根據歷史購買週期傳送補貨提醒</p>
+<p><strong>問</strong>：獲客還是留存應優先？
+<strong>答</strong>：根據資料，留存優先。回購客戶平均消費是新客戶的 15
+倍，且獲客成本通常遠高於留存成本。建議 70% 預算投入留存和升級，30%
+投入獲客。</p>
+<h3 id="具體行動方案">13.4 具體行動方案</h3>
+<p><strong>問</strong>：90 天增長計劃？ <strong>答</strong>： -
+<strong>第 1-30 天</strong>：挽回 Almost Lost
+客戶，聯絡高風險流失客戶（C002） - <strong>第 31-60 天</strong>：培育
+Potential Loyalist（C001、C005），推送升級獎勵 - <strong>第 61-90
+天</strong>：VIP 計劃上線（鎖定 C004），新客跟進序列最佳化（C006） -
+<strong>全程</strong>：每週重新整理 RFM 分數，追蹤分群遷移趨勢</p>
+<p><strong>問</strong>：哪個客戶應獲得 VIP 待遇？
+<strong>答</strong>：C004（Best Customer, RFM 555,
+$7,130）。單一客戶貢獻 60% 營收，必須優先保障其體驗和留存。</p>
+<p><strong>問</strong>：最有效的增長槓桿？ <strong>答</strong>：將 3 位
+Potential Loyalist 升級為 Loyal Customers。這是成本最低、ROI
+最高的增長路徑。現有客戶的消費提升遠比獲取新客戶更經濟。</p>
+<hr />
+<h2 id="十四rfm-方法論20-題">十四、RFM 方法論（20 題）</h2>
+<h3 id="基本概念">14.1 基本概念</h3>
+<p><strong>問</strong>：什麼是 RFM 分析？ <strong>答</strong>：RFM 是
+Recency（最近購買時間）、Frequency（購買頻率）、Monetary（消費金額）的縮寫。透過這三個維度對客戶進行評分（1-5
+分）和分群（11
+個群組），幫助企業識別高價值客戶、預警流失風險、制定差異化營銷策略。</p>
+<p><strong>問</strong>：RFM 分數如何計算？ <strong>答</strong>： 1.
+對每位客戶計算三個指標：DaySinceLastTxn、NoOfTxn、MeanMoneyValue 2.
+計算百分位數排名（percentile rank） 3. 將百分位數對映到 1-5
+分（等分割槽間） 4. 加權計算總分（預設權重：R=4, F=4, M=4）</p>
+<p><strong>問</strong>：為什麼是 11 個分群？ <strong>答</strong>：11
+個分群是基於 RFM 三個維度（各 5
+分）的組合規則定義的。每個分群有明確的業務含義和建議行動，比純數字分數更易於理解和執行。</p>
+<p><strong>問</strong>：什麼是好的 RFM 分數？
+<strong>答</strong>：555（三項滿分）是最佳分數，代表 Best
+Customers。444+ 為 Loyal Customers。333+ 為 Potential Loyalist。111
+為最差分數。</p>
+<h3 id="實務應用">14.2 實務應用</h3>
+<p><strong>問</strong>：應該多久更新一次 RFM？
+<strong>答</strong>：取決於業務週期。零售業建議每週更新
+recency（變化最快），每月完整重算一次。電商可按天更新。B2B
+可按季度。</p>
+<p><strong>問</strong>：RFM 需要什麼資料？
+<strong>答</strong>：最低需求：客戶 ID、訂單
+ID、交易時間、交易金額。可選：產品類別、性別、門店等（用於更深入的交叉分析）。</p>
+<p><strong>問</strong>：RFM 能預測 CLV（客戶終身價值）嗎？
+<strong>答</strong>：RFM 是 CLV 的簡化版。完整的 CLV 需要機率模型（如
+Pareto/NBD、BG/NBD）預測未來交易次數和金額，並考慮折現率。RFM
+更適合快速分群和行動決策。</p>
+<p><strong>問</strong>：如何解讀轉移圖（Transition Graph）？
+<strong>答</strong>：節點代表 11 個分群，邊代表遷移機率。藍色邊 =
+留在原分群（自我迴圈），綠色邊 = 升級（往數字小的分群），紅色邊 =
+降級（往數字大的分群）。邊的粗細代表機率大小。</p>
+<p><strong>問</strong>：可以客製化分群定義嗎？
+<strong>答</strong>：目前使用標準 11
+分群規則。如需客製化，可以調整分數邊界或合併分群。但建議先使用標準規則建立基準，再根據業務特性調整。</p>
+<p><strong>問</strong>：季節性如何影響 RFM？
+<strong>答</strong>：節假日可能導致 recency 和 frequency
+的短期波動。建議進行年比年對比（YoY），並根據季節性調整閾值。例如，節假日後的
+recency 標準可以適當放寬。</p>
+<h3 id="進階問題">14.3 進階問題</h3>
+<p><strong>問</strong>：Markov Chain 預測準確度？
+<strong>答</strong>：基於歷史轉移機率推算未來分佈，適合短期預測（1-3
+個週期）。長期預測準確度會衰減。需要定期用實際資料校準轉移矩陣。</p>
+<p><strong>問</strong>：哪些指標可以補充 RFM？ <strong>答</strong>： -
+<strong>CLV</strong>：終身價值，加入預測元素 -
+<strong>NPS</strong>：淨推薦值，加入滿意度維度 -
+<strong>產品偏好</strong>：購買品類分析 -
+<strong>渠道偏好</strong>：線上 vs 線下 -
+<strong>退貨率</strong>：反映客戶滿意度 -
+<strong>獲客成本（CAC）</strong>：評估 ROI -
+<strong>社群互動</strong>：社交媒體參與度</p>
+<p><strong>問</strong>：如何隨時間追蹤分群變化？
+<strong>答</strong>：定期（每週/每月）重算所有客戶的 RFM
+分數，記錄每次的分群歸屬。建立歷史快照表，視覺化客戶在分群間的遷移路徑。本平臺的
+Segment Transition 功能即為此目的設計。</p>
+<hr />
+<h2 id="附錄function-call-完整列表">附錄：Function Call 完整列表</h2>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 40%" />
+<col style="width: 24%" />
+<col style="width: 24%" />
+</colgroup>
+<thead>
+<tr>
+<th>#</th>
+<th>函式名稱</th>
+<th>用途</th>
+<th>引數</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>getCustomerInfo</code></td>
+<td>查詢客戶詳細 RFM 資料</td>
+<td>customerID</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>listAllCustomers</code></td>
+<td>列出所有客戶（支援排序和分群過濾）</td>
+<td>sortBy, limit, segment</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>runWhatIf</code></td>
+<td>模擬行為變化的分群影響</td>
+<td>customerID, recency, frequency, monetary</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>explainSegment</code></td>
+<td>解釋指定分群的含義和建議</td>
+<td>segmentName</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>getSegmentDistribution</code></td>
+<td>獲取各分群客戶數和佔比</td>
+<td>—</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>suggestTargetSegment</code></td>
+<td>計算達到目標分群所需的變化</td>
+<td>customerID, targetSegment</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>getSegmentStats</code></td>
+<td>獲取各分群的平均 R/F/M 和總營收</td>
+<td>segment (可選)</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>getAtRiskCustomers</code></td>
+<td>找出有流失風險的高價值客戶</td>
+<td>limit</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>compareCustomers</code></td>
+<td>並排比較兩位客戶的所有指標</td>
+<td>customer1, customer2</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>getCustomersByFilter</code></td>
+<td>按條件篩選客戶</td>
+<td>minOrders, maxOrders, minSpending, maxSpending, maxRecencyDays,
+segment, limit</td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>getRevenueBySegment</code></td>
+<td>按分群的營收明細和佔比</td>
+<td>—</td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>getNewVsReturning</code></td>
+<td>新客戶 vs 回購客戶統計</td>
+<td>—</td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>getSummaryStats</code></td>
+<td>總體 KPI 摘要</td>
+<td>—</td>
+</tr>
+<tr>
+<td>14</td>
+<td><code>getSegmentMigration</code></td>
+<td>查詢特定分群的遷入/遷出機率</td>
+<td>segment</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<blockquote>
+<p><strong>驗證紀錄</strong>：250 題全覆蓋測試，14 個類別，100% 通過率。
+<strong>模型</strong>：Qwen-plus via DashScope International
+<strong>平臺</strong>：Cloudflare Workers + Pages
+<strong>版本</strong>：2026-06-07</p>
+</blockquote>
+</body>
+</html>

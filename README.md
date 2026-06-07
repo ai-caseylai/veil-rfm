@@ -1,194 +1,206 @@
 # Veil RFM Analytics
 
-Retail customer analytics platform — RFM segmentation, Markov Chain transition modeling, and AI-powered chatbot. 100% TypeScript, runs on Cloudflare Workers + Pages + Qwen LLM.
+零售客戶分析平台 — RFM 分群、Markov Chain 遷移模型、AI 智慧問答。100% TypeScript，運行於 Cloudflare Workers + Pages + 千問（Qwen）LLM。
 
-Forked and modernized from the original [veil-dotnet](https://github.com/ai-caseylai/veil-dotnet) R/Python project.
+從原始 [veil-dotnet](https://github.com/ai-caseylai/veil-dotnet) R/Python 專案分叉並現代化重寫。
 
-## Architecture
+## 架構
 
 ```
 veil-rfm/
 ├── packages/
-│   ├── core/          # Pure TS: RFM engine + Markov Chain + What-If logic
-│   ├── worker/        # Cloudflare Worker (REST API + Qwen chatbot proxy)
-│   └── frontend/      # Cloudflare Pages (React dashboard)
-├── scripts/           # Test scripts (250 Q&A validation)
-├── logs/              # Chatbot Q&A test logs
-└── sample-data/       # Sample CSV for testing
+│   ├── core/          # 純 TS：RFM 引擎 + Markov Chain + What-If 邏輯
+│   ├── worker/        # Cloudflare Worker（REST API + Qwen 聊天機器人代理）
+│   └── frontend/      # Cloudflare Pages（React 儀表板）
+├── scripts/           # 測試腳本（250 Q&A 驗證）
+├── logs/              # 聊天機器人 Q&A 測試日誌
+└── sample-data/       # 測試用範例 CSV
 ```
 
-### Package: `core`
-Pure business logic, zero I/O, fully unit-tested (vitest).
+### 套件：`core`
+純商業邏輯，零 I/O，完整單元測試（vitest）。
 
-| Module | Source | Purpose |
+| 模組 | 原始碼 | 用途 |
 |---|---|---|
-| `rfm.ts` | `findRFM.R` port | RFM scoring (1-5) + 11-segment classification |
-| `markov.ts` | `rfmMC.R` port | Markov Chain transition matrix + prediction |
-| `clumpiness.ts` | `clumpiness.R` port | Inter-event time clumpiness metric |
-| `whatif.ts` | New | What-If simulation engine |
+| `rfm.ts` | 移植自 `findRFM.R` | RFM 評分（1-5）+ 11 分群分類 |
+| `markov.ts` | 移植自 `rfmMC.R` | Markov Chain 轉移矩陣 + 預測 |
+| `clumpiness.ts` | 移植自 `clumpiness.R` | 事件間隔時間集中度指標 |
+| `whatif.ts` | 新增 | What-If 情境模擬引擎 |
 
-### Package: `worker`
-Cloudflare Worker with 5 REST endpoints:
+### 套件：`worker`
+Cloudflare Worker，提供 5 個 REST 端點：
 
-| Endpoint | Method | Description |
+| 端點 | 方法 | 說明 |
 |---|---|---|
-| `/api/rfm` | POST | Compute RFM scores and segments |
-| `/api/rfm/transition` | POST | Markov Chain transition probability matrix |
-| `/api/rfm/predict` | POST | Predict future segment distribution |
-| `/api/rfm/whatif` | POST | Simulate behavioral changes |
-| `/api/chat` | POST | Qwen-powered chatbot with 14 function calls |
-| `/api/health` | GET | Health check |
+| `/api/rfm` | POST | 計算 RFM 分數與分群 |
+| `/api/rfm/transition` | POST | Markov Chain 轉移機率矩陣 |
+| `/api/rfm/predict` | POST | 預測未來分群分佈 |
+| `/api/rfm/whatif` | POST | 模擬行為變化影響 |
+| `/api/chat` | POST | 千問驅動的聊天機器人（14 個函式呼叫） |
+| `/api/health` | GET | 健康檢查 |
 
-**14 Chatbot Function Calls:**
-`getCustomerInfo`, `listAllCustomers`, `runWhatIf`, `explainSegment`, `getSegmentDistribution`, `suggestTargetSegment`, `getSegmentStats`, `getAtRiskCustomers`, `compareCustomers`, `getCustomersByFilter`, `getRevenueBySegment`, `getNewVsReturning`, `getSummaryStats`, `getSegmentMigration`
+**14 個聊天機器人函式呼叫：**
+`getCustomerInfo`、`listAllCustomers`、`runWhatIf`、`explainSegment`、`getSegmentDistribution`、`suggestTargetSegment`、`getSegmentStats`、`getAtRiskCustomers`、`compareCustomers`、`getCustomersByFilter`、`getRevenueBySegment`、`getNewVsReturning`、`getSummaryStats`、`getSegmentMigration`
 
-### Package: `frontend`
-React 18 + TypeScript dashboard with 3-language i18n (EN / 繁體中文 / 简体中文).
+### 套件：`frontend`
+React 18 + TypeScript 儀表板，支援三語 i18n（EN / 繁體中文 / 簡體中文）。
 
-**Tab structure (mirrors original R Shiny layout):**
-- Overview — Pie chart + segment distribution table
-- Characteristics — R/F/M bar charts per segment, frequency histogram
-- Segment Transition — Interactive vis-network graph + prediction line chart
-- Customer Summary — Filterable data table with CSV export
-- What-If Analysis — Slider-based simulation with target segment suggestions
-- LTV Overview — Average lifetime value per segment bar chart
+**頁籤結構（對照原始 R Shiny 佈局）：**
+- 總覽 — 圓餅圖 + 分群分佈表
+- 特徵分析 — 各分群 R/F/M 長條圖、頻率直方圖
+- 分群遷移 — 互動式 vis-network 圖 + 預測折線圖
+- 客戶明細 — 可篩選資料表，支援 CSV 匯出
+- What-If 分析 — 滑桿式模擬 + 目標分群建議
+- LTV 總覽 — 各分群平均終身價值長條圖
 
-**Right panel:** Resizable Qwen-powered chatbot with multi-turn conversation.
+**右側面板：** 可調整大小的千問聊天機器人，支援多輪對話。
 
-## Quick Start
+## 操作截圖
 
-### Prerequisites
+| 總覽 | 特徵分析 | 分群遷移 |
+|------|----------|----------|
+| ![Overview](docs/screenshots/rfm-overview.png) | ![Characteristics](docs/screenshots/rfm-characteristics.png) | ![Transition](docs/screenshots/rfm-transition.png) |
+
+| 客戶明細 | LTV (BTYD) | 情境模擬 |
+|----------|------------|----------|
+| ![Summary](docs/screenshots/rfm-customer-summary.png) | ![LTV](docs/screenshots/ltv-overview.png) | ![WhatIf](docs/screenshots/whatif.png) |
+
+| 推薦系統 | 客戶活動 |
+|----------|----------|
+| ![Recommend](docs/screenshots/recommend.png) | ![Activity](docs/screenshots/customer-activity.png) |
+
+## 快速開始
+
+### 前置需求
 - Node.js 20+
-- Cloudflare account (for deployment)
-- Qwen API key from [DashScope](https://dashscope.aliyuncs.com) (for chatbot)
+- Cloudflare 帳號（供部署用）
+- 千問 API 金鑰（從 [DashScope](https://dashscope.aliyuncs.com) 取得，供聊天機器人使用）
 
-### Local Development
+### 本地開發
 
 ```bash
-# Install dependencies
+# 安裝依賴
 cd veil-rfm
 npm install
 
-# Run core unit tests (13 tests)
+# 執行核心單元測試（13 個測試）
 npm test
 
-# Start Worker API (localhost:8787)
+# 啟動 Worker API（localhost:8787）
 npm run dev:worker
 
-# Start frontend (localhost:3000)
+# 啟動前端（localhost:3000）
 npm run dev:frontend
 ```
 
-### Deploy to Cloudflare
+### 部署至 Cloudflare
 
 ```bash
-# Set Qwen API key (for chatbot)
+# 設定千問 API 金鑰（供聊天機器人使用）
 npx -w packages/worker wrangler secret put QWEN_API_KEY
 
-# Deploy Worker API
+# 部署 Worker API
 npm run deploy:worker
 
-# Build and deploy frontend
+# 建置並部署前端
 VITE_API_URL=https://your-worker.workers.dev npm run build -w packages/frontend
 npx -w packages/frontend wrangler pages deploy dist --project-name veil-rfm
 ```
 
-### Custom Domain
+### 自訂域名
 
 ```bash
-# Add custom domain to Pages project
+# 將自訂域名加入 Pages 專案
 npx wrangler pages domain add veil-rfm your-domain.com
 ```
 
-Add a CNAME DNS record pointing to `veil-rfm.pages.dev` (proxied).
+新增 CNAME DNS 記錄指向 `veil-rfm.pages.dev`（代理模式）。
 
-## Usage Guide
+## 使用指南
 
-### Uploading Data
+### 上傳資料
 
-1. Open the dashboard
-2. Navigate to **Import** in the sidebar
-3. Drag-and-drop a CSV file with these columns:
+1. 開啟儀表板
+2. 前往側邊欄的 **Import / 匯入**
+3. 拖放包含以下欄位的 CSV 檔案：
    ```
    MemberID, OrderID, Timestamp, NetPrice, Quantity, ProductID, ProductName, Category
    ```
-4. Or click **Load Sample Data** for a demo with 8 customers
+4. 或點擊 **Load Sample Data** 載入 8 位客戶的範例資料
 
-### Understanding RFM Segments
+### 理解 RFM 分群
 
-| # | Segment | RFM Pattern | Business Action |
+| # | 分群 | RFM 模式 | 商業行動 |
 |---|---|---|---|
-| 1 | Best Customers | 555 | VIP retention, exclusive previews |
-| 2 | Loyal Customers | ≥444 | Loyalty rewards, cross-sell |
-| 3 | Potential Loyalist | ≥333 | Nurture campaigns, milestone rewards |
-| 4 | Low-spending Active Loyal | R≥4,F≥4,M≤2 | Bundle deals, upsell |
-| 5 | High-spending New Customers | R≥4,M≥4,F≤2 | Follow-up sequence, 2nd purchase discount |
-| 6 | Almost Lost Customers | R=2-3,F≥4,M≥4 | Win-back campaign NOW |
-| 7 | Churned Best Customers | R=1,F≥4,M≥4 | Aggressive win-back, survey |
-| 8 | Customers Needing Attention | Mixed | Investigate by category/channel |
-| 9 | About to Sleep Customers | ≤333 | Re-engagement campaign |
-| 10 | Hibernating Customers | ≤222 | Low-cost reactivation test |
-| 11 | Lost Cheap Customers | 111 | Minimal marketing spend |
+| 1 | Best Customers | 555 | VIP 維繫、獨家預覽 |
+| 2 | Loyal Customers | ≥444 | 忠誠獎勵、交叉銷售 |
+| 3 | Potential Loyalist | ≥333 | 培育活動、里程碑獎勵 |
+| 4 | Low-spending Active Loyal | R≥4,F≥4,M≤2 | 捆綁折扣、追加銷售 |
+| 5 | High-spending New Customers | R≥4,M≥4,F≤2 | 跟進序列、二次購買折扣 |
+| 6 | Almost Lost Customers | R=2-3,F≥4,M≥4 | 立即挽回活動 |
+| 7 | Churned Best Customers | R=1,F≥4,M≥4 | 積極挽回、調查原因 |
+| 8 | Customers Needing Attention | 混合 | 按品類/渠道細分調查 |
+| 9 | About to Sleep Customers | ≤333 | 重新參與活動 |
+| 10 | Hibernating Customers | ≤222 | 低成本重啟測試 |
+| 11 | Lost Cheap Customers | 111 | 最低行銷投入 |
 
-### Using the Chatbot
+### 使用聊天機器人
 
-The right-side chatbot is powered by Qwen LLM with 14 function calls. Example questions:
+右側聊天機器人由千問 LLM 驅動，配備 14 個函式呼叫。範例問題：
 
-- "Who are the top 5 customers by spending?"
-- "Which customers are at risk of churning?"
-- "What if C003 made 5 more purchases?"
-- "Compare C001 and C004"
-- "How much revenue does each segment generate?"
-- "What changes would move C008 to Potential Loyalist?"
-- 解釋 Best Customers 是什麼？
-- 顯示所有客戶
+- 「消費金額前 5 名的客戶是誰？」
+- 「哪些客戶有流失風險？」
+- 「如果 C003 多買 5 次會怎樣？」
+- 「比較 C001 和 C004」
+- 「各分群貢獻多少營收？」
+- 「C008 要怎樣才能變成 Potential Loyalist？」
 
-### Running Q&A Validation
+### 執行 Q&A 驗證
 
 ```bash
 bash scripts/test-chatbot.sh
 ```
 
-Tests 250 questions across 14 categories. Results saved to `logs/`.
+跨 14 個類別測試 250 個問題。結果儲存於 `logs/`。
 
-## Tech Stack
+## 技術棧
 
-| Layer | Technology |
+| 層 | 技術 |
 |---|---|
-| Frontend | React 18, TypeScript, Vite, Tailwind CSS, Recharts, vis-network |
-| API | Cloudflare Workers, TypeScript |
-| AI Chatbot | Qwen-plus via DashScope (OpenAI-compatible) |
-| Testing | Vitest |
-| Deployment | Wrangler (Workers + Pages) |
-| i18n | Custom React context (en / zh-TW / zh-CN) |
+| 前端 | React 18、TypeScript、Vite、Tailwind CSS、Recharts、vis-network |
+| API | Cloudflare Workers、TypeScript |
+| AI 聊天機器人 | Qwen-plus via DashScope（OpenAI 相容） |
+| 測試 | Vitest |
+| 部署 | Wrangler（Workers + Pages） |
+| i18n | 自訂 React context（en / zh-TW / zh-CN） |
 
-## Project Structure
+## 專案結構
 
 ```
 packages/core/src/
-├── index.ts           # Barrel export
-├── types.ts           # TypeScript interfaces + 11 segment constants
-├── rfm.ts             # RFM scoring engine
-├── markov.ts          # Markov Chain transition engine
-├── clumpiness.ts      # Clumpiness metric
-└── whatif.ts          # What-If simulation engine
+├── index.ts           # 桶狀匯出
+├── types.ts           # TypeScript 介面 + 11 分群常數
+├── rfm.ts             # RFM 評分引擎
+├── markov.ts          # Markov Chain 轉移引擎
+├── clumpiness.ts      # 集中度指標
+└── whatif.ts          # What-If 模擬引擎
 
 packages/worker/src/
-├── index.ts           # Worker entry + REST endpoints
-└── chat.ts            # Qwen chatbot proxy + 14 function implementations
+├── index.ts           # Worker 入口 + REST 端點
+└── chat.ts            # Qwen 聊天機器人代理 + 14 個函式實作
 
 packages/frontend/src/
-├── main.tsx           # Entry point + i18n provider
-├── App.tsx            # Shell: header, sidebar, KPI bar, routes
-├── index.css          # Enterprise design system
+├── main.tsx           # 入口點 + i18n 提供者
+├── App.tsx            # 外殼：頁首、側邊欄、KPI 列、路由
+├── index.css          # 企業級設計系統
 ├── lib/
-│   ├── api.ts         # API client
-│   ├── i18n.ts        # 3-language translations
-│   ├── parse.ts       # CSV parser (Papa Parse)
-│   └── sampleData.ts  # Embedded demo transactions
+│   ├── api.ts         # API 客戶端
+│   ├── i18n.ts        # 三語翻譯
+│   ├── parse.ts       # CSV 解析器（Papa Parse）
+│   └── sampleData.ts  # 內嵌範例交易資料
 ├── components/
-│   ├── ChatBot.tsx    # Qwen chatbot panel (resizable)
-│   ├── FileUpload.tsx # CSV drag-and-drop
+│   ├── ChatBot.tsx    # Qwen 聊天機器人面板（可調整大小）
+│   ├── FileUpload.tsx # CSV 拖放上傳
 │   └── DashboardSections.tsx
 └── pages/
     ├── RFMOverview.tsx
@@ -199,24 +211,24 @@ packages/frontend/src/
     └── WhatIf.tsx
 ```
 
-## Verified Q&A Coverage
+## 已驗證 Q&A 覆蓋率
 
-250 questions tested across 14 categories with 100% pass rate (see `logs/`):
+跨 14 個類別測試 250 個問題，100% 通過率（詳見 `logs/`）：
 
-| Category | Questions | Status |
+| 類別 | 問題數 | 狀態 |
 |---|---|---|
-| Customer Lookup | 20 | 100% |
-| Segment Explanation | 15 | 100% |
-| Segment Distribution | 10 | 100% |
-| Rankings | 20 | 100% |
-| What-If Simulation | 25 | 100% |
-| Churn & Risk | 20 | 100% |
-| Revenue Analysis | 20 | 100% |
-| Customer Comparison | 15 | 100% |
-| Filtering & Search | 20 | 100% |
-| New vs Returning | 10 | 100% |
-| Summary & KPIs | 15 | 100% |
-| Migration & Transition | 15 | 100% |
-| Business Actions | 25 | 100% |
-| Edge Cases | 20 | 100% |
-| **Total** | **250** | **100%** |
+| 客戶查詢 | 20 | 100% |
+| 分群解釋 | 15 | 100% |
+| 分群分佈 | 10 | 100% |
+| 排行榜 | 20 | 100% |
+| What-If 模擬 | 25 | 100% |
+| 流失與風險 | 20 | 100% |
+| 營收分析 | 20 | 100% |
+| 客戶對比 | 15 | 100% |
+| 篩選與搜尋 | 20 | 100% |
+| 新客 vs 回購 | 10 | 100% |
+| 摘要與 KPI | 15 | 100% |
+| 遷移與轉換 | 15 | 100% |
+| 商業行動 | 25 | 100% |
+| 邊界案例 | 20 | 100% |
+| **總計** | **250** | **100%** |

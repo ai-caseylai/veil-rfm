@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>rfm-vs-markov-theory-zh</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">:root{--background-body:#fff;--background:#efefef;--background-alt:#f7f7f7;--selection:#9e9e9e;--text-main:#363636;--text-bright:#000;--text-muted:#70777f;--links:#0076d1;--focus:rgba(0,150,191,0.67);--border:#dbdbdb;--code:#000;--animation-duration:0.1s;--button-base:#d0cfcf;--button-hover:#9b9b9b;--scrollbar-thumb:#aaa;--scrollbar-thumb-hover:var(--button-hover);--form-placeholder:#949494;--form-text:#1d1d1d;--variable:#39a33c;--highlight:#ff0;--select-arrow:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23161f27'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E")}@media (prefers-color-scheme:dark){:root{--background-body:#202b38;--background:#161f27;--background-alt:#1a242f;--selection:#1c76c5;--text-main:#dbdbdb;--text-bright:#fff;--text-muted:#a9b1ba;--links:#41adff;--focus:rgba(0,150,191,0.67);--border:#526980;--code:#ffbe85;--animation-duration:0.1s;--button-base:#0c151c;--button-hover:#040a0f;--scrollbar-thumb:var(--button-hover);--scrollbar-thumb-hover:#000;--form-placeholder:#a9a9a9;--form-text:#fff;--variable:#d941e2;--highlight:#efdb43;--select-arrow:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23efefef'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E")}}html{scrollbar-color:#aaa #fff;scrollbar-color:var(--scrollbar-thumb) var(--background-body);scrollbar-width:thin}@media (prefers-color-scheme:dark){html{scrollbar-color:#040a0f #202b38;scrollbar-color:var(--scrollbar-thumb) var(--background-body)}}body{font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Segoe UI Emoji,Apple Color Emoji,Noto Color Emoji,sans-serif;line-height:1.4;max-width:800px;margin:20px auto;padding:0 10px;word-wrap:break-word;color:#363636;color:var(--text-main);background:#fff;background:var(--background-body);text-rendering:optimizeLegibility}@media (prefers-color-scheme:dark){body{background:#202b38;background:var(--background-body);color:#dbdbdb;color:var(--text-main)}}button{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){button{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}input{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){input{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}textarea{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){textarea{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}h1{font-size:2.2em;margin-top:0}h1,h2,h3,h4,h5,h6{margin-bottom:12px;margin-top:24px}h1{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h1{color:#fff;color:var(--text-bright)}}h2{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h2{color:#fff;color:var(--text-bright)}}h3{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h3{color:#fff;color:var(--text-bright)}}h4{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h4{color:#fff;color:var(--text-bright)}}h5{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h5{color:#fff;color:var(--text-bright)}}h6{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h6{color:#fff;color:var(--text-bright)}}strong{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){strong{color:#fff;color:var(--text-bright)}}b,h1,h2,h3,h4,h5,h6,strong,th{font-weight:600}q:after,q:before{content:none}blockquote{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus);margin:1.5em 0;padding:.5em 1em;font-style:italic}@media (prefers-color-scheme:dark){blockquote{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus)}}q{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus);margin:1.5em 0;padding:.5em 1em;font-style:italic}@media (prefers-color-scheme:dark){q{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus)}}blockquote>footer{font-style:normal;border:0}address,blockquote cite{font-style:normal}a[href^=mailto\:]:before{content:"📧 "}a[href^=tel\:]:before{content:"📞 "}a[href^=sms\:]:before{content:"💬 "}mark{background-color:#ff0;background-color:var(--highlight);border-radius:2px;padding:0 2px;color:#000}@media (prefers-color-scheme:dark){mark{background-color:#efdb43;background-color:var(--highlight)}}a>code,a>strong{color:inherit}button,input[type=button],input[type=checkbox],input[type=radio],input[type=range],input[type=reset],input[type=submit],select{cursor:pointer}input,select{display:block}[type=checkbox],[type=radio]{display:initial}input{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){input{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}button{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){button{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}textarea{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){textarea{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}select{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){select{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}button{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){button{background-color:#0c151c;background-color:var(--button-base)}}input[type=submit]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=submit]{background-color:#0c151c;background-color:var(--button-base)}}input[type=reset]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=reset]{background-color:#0c151c;background-color:var(--button-base)}}input[type=button]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=button]{background-color:#0c151c;background-color:var(--button-base)}}button:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){button:hover{background:#040a0f;background:var(--button-hover)}}input[type=submit]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=submit]:hover{background:#040a0f;background:var(--button-hover)}}input[type=reset]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=reset]:hover{background:#040a0f;background:var(--button-hover)}}input[type=button]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=button]:hover{background:#040a0f;background:var(--button-hover)}}input[type=color]{min-height:2rem;padding:8px;cursor:pointer}input[type=checkbox],input[type=radio]{height:1em;width:1em}input[type=radio]{border-radius:100%}input{vertical-align:top}label{vertical-align:middle;margin-bottom:4px;display:inline-block}button,input:not([type=checkbox]):not([type=radio]),input[type=range],select,textarea{-webkit-appearance:none}textarea{display:block;margin-right:0;box-sizing:border-box;resize:vertical}textarea:not([cols]){width:100%}textarea:not([rows]){min-height:40px;height:140px}select{background:#efefef url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23161f27'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E") calc(100% - 12px) 50%/12px no-repeat;background:var(--background) var(--select-arrow) calc(100% - 12px) 50%/12px no-repeat;padding-right:35px}@media (prefers-color-scheme:dark){select{background:#161f27 url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23efefef'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E") calc(100% - 12px) 50%/12px no-repeat;background:var(--background) var(--select-arrow) calc(100% - 12px) 50%/12px no-repeat}}select::-ms-expand{display:none}select[multiple]{padding-right:10px;background-image:none;overflow-y:auto}input:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){input:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}select:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){select:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}button:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){button:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}textarea:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){textarea:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}button:active,input[type=button]:active,input[type=checkbox]:active,input[type=radio]:active,input[type=range]:active,input[type=reset]:active,input[type=submit]:active{transform:translateY(2px)}button:disabled,input:disabled,select:disabled,textarea:disabled{cursor:not-allowed;opacity:.5}::-moz-placeholder{color:#949494;color:var(--form-placeholder)}:-ms-input-placeholder{color:#949494;color:var(--form-placeholder)}::-ms-input-placeholder{color:#949494;color:var(--form-placeholder)}::placeholder{color:#949494;color:var(--form-placeholder)}@media (prefers-color-scheme:dark){::-moz-placeholder{color:#a9a9a9;color:var(--form-placeholder)}:-ms-input-placeholder{color:#a9a9a9;color:var(--form-placeholder)}::-ms-input-placeholder{color:#a9a9a9;color:var(--form-placeholder)}::placeholder{color:#a9a9a9;color:var(--form-placeholder)}}fieldset{border:1px solid rgba(0,150,191,.67);border:1px solid var(--focus);border-radius:6px;margin:0 0 12px;padding:10px}@media (prefers-color-scheme:dark){fieldset{border:1px solid rgba(0,150,191,.67);border:1px solid var(--focus)}}legend{font-size:.9em;font-weight:600}input[type=range]{margin:10px 0;padding:10px 0;background:transparent}input[type=range]:focus{outline:none}input[type=range]::-webkit-slider-runnable-track{width:100%;height:9.5px;-webkit-transition:.2s;transition:.2s;background:#efefef;background:var(--background);border-radius:3px}@media (prefers-color-scheme:dark){input[type=range]::-webkit-slider-runnable-track{background:#161f27;background:var(--background)}}input[type=range]::-webkit-slider-thumb{box-shadow:0 1px 1px #000,0 0 1px #0d0d0d;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border);-webkit-appearance:none;margin-top:-7px}@media (prefers-color-scheme:dark){input[type=range]::-webkit-slider-thumb{background:#526980;background:var(--border)}}input[type=range]:focus::-webkit-slider-runnable-track{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-webkit-slider-runnable-track{background:#161f27;background:var(--background)}}input[type=range]::-moz-range-track{width:100%;height:9.5px;-moz-transition:.2s;transition:.2s;background:#efefef;background:var(--background);border-radius:3px}@media (prefers-color-scheme:dark){input[type=range]::-moz-range-track{background:#161f27;background:var(--background)}}input[type=range]::-moz-range-thumb{box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border)}@media (prefers-color-scheme:dark){input[type=range]::-moz-range-thumb{background:#526980;background:var(--border)}}input[type=range]::-ms-track{width:100%;height:9.5px;background:transparent;border-color:transparent;border-width:16px 0;color:transparent}input[type=range]::-ms-fill-lower{background:#efefef;background:var(--background);border:.2px solid #010101;border-radius:3px;box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d}@media (prefers-color-scheme:dark){input[type=range]::-ms-fill-lower{background:#161f27;background:var(--background)}}input[type=range]::-ms-fill-upper{background:#efefef;background:var(--background);border:.2px solid #010101;border-radius:3px;box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d}@media (prefers-color-scheme:dark){input[type=range]::-ms-fill-upper{background:#161f27;background:var(--background)}}input[type=range]::-ms-thumb{box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d;border:1px solid #000;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border)}@media (prefers-color-scheme:dark){input[type=range]::-ms-thumb{background:#526980;background:var(--border)}}input[type=range]:focus::-ms-fill-lower{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-ms-fill-lower{background:#161f27;background:var(--background)}}input[type=range]:focus::-ms-fill-upper{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-ms-fill-upper{background:#161f27;background:var(--background)}}a{text-decoration:none;color:#0076d1;color:var(--links)}@media (prefers-color-scheme:dark){a{color:#41adff;color:var(--links)}}a:hover{text-decoration:underline}code{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){code{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}samp{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){samp{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}time{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){time{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}pre>code{padding:10px;display:block;overflow-x:auto}var{color:#39a33c;color:var(--variable);font-style:normal;font-family:monospace}@media (prefers-color-scheme:dark){var{color:#d941e2;color:var(--variable)}}kbd{background:#efefef;background:var(--background);border:1px solid #dbdbdb;border:1px solid var(--border);border-radius:2px;color:#363636;color:var(--text-main);padding:2px 4px}@media (prefers-color-scheme:dark){kbd{color:#dbdbdb;color:var(--text-main);border:1px solid #526980;border:1px solid var(--border);background:#161f27;background:var(--background)}}img,video{max-width:100%;height:auto}hr{border:none;border-top:1px solid #dbdbdb;border-top:1px solid var(--border)}@media (prefers-color-scheme:dark){hr{border-top:1px solid #526980;border-top:1px solid var(--border)}}table{border-collapse:collapse;margin-bottom:10px;width:100%;table-layout:fixed}table caption,td,th{text-align:left}td,th{padding:6px;vertical-align:top;word-wrap:break-word}thead{border-bottom:1px solid #dbdbdb;border-bottom:1px solid var(--border)}@media (prefers-color-scheme:dark){thead{border-bottom:1px solid #526980;border-bottom:1px solid var(--border)}}tfoot{border-top:1px solid #dbdbdb;border-top:1px solid var(--border)}@media (prefers-color-scheme:dark){tfoot{border-top:1px solid #526980;border-top:1px solid var(--border)}}tbody tr:nth-child(2n){background-color:#efefef;background-color:var(--background)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n){background-color:#161f27;background-color:var(--background)}}tbody tr:nth-child(2n) button{background-color:#f7f7f7;background-color:var(--background-alt)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n) button{background-color:#1a242f;background-color:var(--background-alt)}}tbody tr:nth-child(2n) button:hover{background-color:#fff;background-color:var(--background-body)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n) button:hover{background-color:#202b38;background-color:var(--background-body)}}::-webkit-scrollbar{height:10px;width:10px}::-webkit-scrollbar-track{background:#efefef;background:var(--background);border-radius:6px}@media (prefers-color-scheme:dark){::-webkit-scrollbar-track{background:#161f27;background:var(--background)}}::-webkit-scrollbar-thumb{background:#aaa;background:var(--scrollbar-thumb);border-radius:6px}@media (prefers-color-scheme:dark){::-webkit-scrollbar-thumb{background:#040a0f;background:var(--scrollbar-thumb)}}::-webkit-scrollbar-thumb:hover{background:#9b9b9b;background:var(--scrollbar-thumb-hover)}@media (prefers-color-scheme:dark){::-webkit-scrollbar-thumb:hover{background:#000;background:var(--scrollbar-thumb-hover)}}::-moz-selection{background-color:#9e9e9e;background-color:var(--selection);color:#000;color:var(--text-bright)}::selection{background-color:#9e9e9e;background-color:var(--selection);color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){::-moz-selection{color:#fff;color:var(--text-bright)}::selection{color:#fff;color:var(--text-bright)}}@media (prefers-color-scheme:dark){::-moz-selection{background-color:#1c76c5;background-color:var(--selection)}::selection{background-color:#1c76c5;background-color:var(--selection)}}details{display:flex;flex-direction:column;align-items:flex-start;background-color:#f7f7f7;background-color:var(--background-alt);padding:10px 10px 0;margin:1em 0;border-radius:6px;overflow:hidden}@media (prefers-color-scheme:dark){details{background-color:#1a242f;background-color:var(--background-alt)}}details[open]{padding:10px}details>:last-child{margin-bottom:0}details[open] summary{margin-bottom:10px}summary{display:list-item;background-color:#efefef;background-color:var(--background);padding:10px;margin:-10px -10px 0;cursor:pointer;outline:none}@media (prefers-color-scheme:dark){summary{background-color:#161f27;background-color:var(--background)}}summary:focus,summary:hover{text-decoration:underline}details>:not(summary){margin-top:0}summary::-webkit-details-marker{color:#363636;color:var(--text-main)}@media (prefers-color-scheme:dark){summary::-webkit-details-marker{color:#dbdbdb;color:var(--text-main)}}dialog{background-color:#f7f7f7;background-color:var(--background-alt);color:#363636;color:var(--text-main);border-radius:6px;border:#dbdbdb;border-color:var(--border);padding:10px 30px}@media (prefers-color-scheme:dark){dialog{border-color:#526980;border-color:var(--border);color:#dbdbdb;color:var(--text-main);background-color:#1a242f;background-color:var(--background-alt)}}dialog>header:first-child{background-color:#efefef;background-color:var(--background);border-radius:6px 6px 0 0;margin:-10px -30px 10px;padding:10px;text-align:center}@media (prefers-color-scheme:dark){dialog>header:first-child{background-color:#161f27;background-color:var(--background)}}dialog::-webkit-backdrop{background:rgba(0,0,0,.61);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}dialog::backdrop{background:rgba(0,0,0,.61);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}footer{border-top:1px solid #dbdbdb;border-top:1px solid var(--border);padding-top:10px;color:#70777f;color:var(--text-muted)}@media (prefers-color-scheme:dark){footer{color:#a9b1ba;color:var(--text-muted);border-top:1px solid #526980;border-top:1px solid var(--border)}}body>footer{margin-top:40px}@media print{body,button,code,details,input,pre,summary,textarea{background-color:#fff}button,input,textarea{border:1px solid #000}body,button,code,footer,h1,h2,h3,h4,h5,h6,input,pre,strong,summary,textarea{color:#000}summary::marker{color:#000}summary::-webkit-details-marker{color:#000}tbody tr:nth-child(2n){background-color:#f2f2f2}a{color:#00f;text-decoration:underline}}</style>
+</head>
+<body>
+<h1 id="rfm-與-markov-chain客戶分析的雙劍合璧">RFM 與 Markov
+Chain：客戶分析的雙劍合璧</h1>
+<blockquote>
+<p>理論基礎文檔 · Veil RFM Analytics Platform 說明 RFM
+靜態分群與馬可夫鏈動態預測如何互補</p>
+</blockquote>
+<hr />
+<p>這兩個模型都是資料分析和數位行銷中經典的使用者行為預測與分群工具，但它們的切入點和應用場景有很大不同。</p>
+<p>簡單來說：<strong>RFM 關注的是「現狀與價值」，而馬可夫鏈（Markov
+Chain）關注的是「動態變化與趨勢」。</strong></p>
+<h2 id="一rfm-模型客戶價值的靜態聽診器">一、RFM
+模型：客戶價值的「靜態聽診器」</h2>
+<p>RFM
+模型是基於客戶歷史交易資料的經典分群工具。它透過三個核心指標來給客戶畫像：</p>
+<table>
+<colgroup>
+<col style="width: 21%" />
+<col style="width: 21%" />
+<col style="width: 21%" />
+<col style="width: 35%" />
+</colgroup>
+<thead>
+<tr>
+<th>指標</th>
+<th>英文</th>
+<th>含義</th>
+<th>業務意義</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>R</strong></td>
+<td>Recency</td>
+<td>最近一次消費時間</td>
+<td>離現在越近，客戶越活躍，對行銷越敏感</td>
+</tr>
+<tr>
+<td><strong>F</strong></td>
+<td>Frequency</td>
+<td>消費頻率</td>
+<td>在一定時間內消費了多少次，代表客戶的忠誠度</td>
+</tr>
+<tr>
+<td><strong>M</strong></td>
+<td>Monetary</td>
+<td>消費金額</td>
+<td>累計消費了多少錢，代表客戶的貢獻度</td>
+</tr>
+</tbody>
+</table>
+<h3 id="工作原理">工作原理</h3>
+<ol type="1">
+<li>對所有客戶的 R、F、M 分別進行打分（1-5 分）</li>
+<li>打分方式為百分位數排名：每位客戶的表現是與「所有其他客戶」比較的相對值</li>
+<li>組合得分，透過規則引擎分類為 11 種客戶類型</li>
+</ol>
+<h3 id="veil-的-11-個-rfm-分群">Veil 的 11 個 RFM 分群</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>分群</th>
+<th>RFM 模式</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Best Customers</td>
+<td>555</td>
+<td>三項滿分，最高價值</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Loyal Customers</td>
+<td>≥444</td>
+<td>穩定回購，忠誠度高</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Potential Loyalist</td>
+<td>≥333</td>
+<td>有忠誠潛力，正在成長</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Low-spending Active Loyal</td>
+<td>R≥4,F≥4,M≤2</td>
+<td>常來但花得少</td>
+</tr>
+<tr>
+<td>5</td>
+<td>High-spending New Customers</td>
+<td>R≥4,M≥4,F≤2</td>
+<td>首次消費高但尚未回購</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Almost Lost Customers</td>
+<td>R=2-3,F≥4,M≥4</td>
+<td>曾經很好，正在流失</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Churned Best Customers</td>
+<td>R=1,F≥4,M≥4</td>
+<td>前 VIP 已流失</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Customers Needing Attention</td>
+<td>混合分數</td>
+<td>無明顯模式</td>
+</tr>
+<tr>
+<td>9</td>
+<td>About to Sleep Customers</td>
+<td>≤333</td>
+<td>趨向休眠</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Hibernating Customers</td>
+<td>≤222</td>
+<td>極低活躍</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Lost Cheap Customers</td>
+<td>111</td>
+<td>不活躍，最低價值</td>
+</tr>
+</tbody>
+</table>
+<h3 id="優缺點">優缺點</h3>
+<p><strong>✅ 優點</strong> - 簡單直觀，業務解釋性極強 -
+幾乎不需要複雜的數學推導 -
+能直接指導營運：如給「重要挽留客戶」發大額優惠券 -
+資料容易獲取（只需交易時間、頻次、金額）</p>
+<p><strong>❌ 缺點</strong> -
+它是<strong>靜態</strong>的：只告訴你客戶「目前」屬於什麼類別 -
+無法預測客戶下個月會變成什麼類別 -
+無法量化行銷活動對客戶狀態轉移的長期影響</p>
+<hr />
+<h2 id="二馬可夫鏈轉移模型客戶旅程的動態天氣預報">二、馬可夫鏈轉移模型：客戶旅程的「動態天氣預報」</h2>
+<p>馬可夫鏈（Markov
+Chain）是一種狀態空間模型，核心思想是：<strong>未來的狀態只與當前狀態有關，而與過去的狀態無關</strong>（無記憶性，Memoryless
+Property）。</p>
+<p>在行銷中，我們用它來建立狀態轉移矩陣，研究客戶在不同行為狀態之間的流轉機率。</p>
+<h3 id="工作原理-1">工作原理</h3>
+<p><strong>第一步：定義狀態（States）</strong>
+將客戶狀態定義為明確的類別。Veil 使用 RFM 的 11 個分群作為 11
+個狀態。</p>
+<p><strong>第二步：構建轉移矩陣（Transition Matrix）</strong>
+根據歷史資料，計算客戶從一個狀態變到另一個狀態的機率。矩陣的每一列代表「從某狀態出發」，每一欄代表「到達某狀態」。</p>
+<pre><code>範例轉移矩陣（簡化版）：
+
+              到下個月 →
+從本月 ↓      Best   Loyal  Potential  ...  Lost
+Best         0.70   0.20    0.08     ...  0.00
+Loyal        0.05   0.65    0.20     ...  0.00
+Potential    0.02   0.15    0.60     ...  0.02
+...
+Lost         0.00   0.00    0.01     ...  0.68</code></pre>
+<p>舉例解讀：本月是 Best Customers 的客戶，下個月有 70% 的機率繼續保持
+Best，20% 降為 Loyal，8% 降為 Potential Loyalist。</p>
+<p><strong>第三步：預測未來分佈</strong>
+將初始狀態分佈向量乘以轉移矩陣的 n 次方，即可預測 n
+個週期後的客戶分佈：</p>
+<pre><code>未來狀態 = 當前狀態 × (轉移矩陣)^n</code></pre>
+<h3 id="核心應用">核心應用</h3>
+<table>
+<thead>
+<tr>
+<th>應用</th>
+<th>說明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>長期預測</strong></td>
+<td>預測 3 個月、半年後各分群的客戶數量</td>
+</tr>
+<tr>
+<td><strong>終身價值（LTV）</strong></td>
+<td>預測客戶在流失前還能貢獻多少次購買</td>
+</tr>
+<tr>
+<td><strong>流失預警</strong></td>
+<td>識別哪些客戶有高機率在下一期降級</td>
+</tr>
+<tr>
+<td><strong>歸因分析</strong></td>
+<td>評估哪個行銷渠道最能促成狀態升級</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="三核心差異對比">三、核心差異對比</h2>
+<table>
+<colgroup>
+<col style="width: 17%" />
+<col style="width: 29%" />
+<col style="width: 52%" />
+</colgroup>
+<thead>
+<tr>
+<th>維度</th>
+<th>RFM 模型</th>
+<th>馬可夫鏈轉移模型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>本質屬性</strong></td>
+<td>基於屬性的客戶分群工具</td>
+<td>基於機率的動態隨機過程模型</td>
+</tr>
+<tr>
+<td><strong>時間視角</strong></td>
+<td>關注過去到當前的累積結果（靜態）</td>
+<td>關注當前到未來的狀態演變（動態）</td>
+</tr>
+<tr>
+<td><strong>資料要求</strong></td>
+<td>只需要交易時間、頻次和金額（容易獲取）</td>
+<td>需要連續的時間序列行為日誌（門檻較高）</td>
+</tr>
+<tr>
+<td><strong>業務輸出</strong></td>
+<td>「他是誰？他現在值多少錢？」</td>
+<td>「他下一步有多大概率會流失/轉化？」</td>
+</tr>
+<tr>
+<td><strong>行銷應用</strong></td>
+<td>分群精準行銷、優惠券發放策略</td>
+<td>長期 ROI 預測、流失預警、生命週期管理</td>
+</tr>
+<tr>
+<td><strong>計算複雜度</strong></td>
+<td>低（百分位數 + 規則引擎）</td>
+<td>中（矩陣運算、機率歸一化）</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="四強強聯手veil-如何結合-rfm-markov-chain">四、強強聯手：Veil
+如何結合 RFM + Markov Chain</h2>
+<p>在 Veil 平台中，這兩個模型不是對立的，而是完美互補的：</p>
+<h3 id="用-rfm-定義馬可夫鏈的狀態">1. 用 RFM 定義馬可夫鏈的狀態</h3>
+<p>傳統的馬可夫狀態（如「活躍」、「沉默」、「流失」）定義太寬泛。Veil
+直接把 RFM 劃分出的 <strong>11 類客戶作為馬可夫鏈的 11
+個狀態</strong>。</p>
+<p>這樣做的好處： - 狀態定義有明確的業務含義 -
+每個狀態都有對應的行銷策略 - 狀態轉移的解讀更直觀（例如「Best → Almost
+Lost」比「活躍 → 沉默」更有操作性）</p>
+<h3 id="預測客戶價值的流轉">2. 預測客戶價值的流轉</h3>
+<p>透過馬可夫轉移矩陣，你可以觀察： - <strong>Best Customers</strong>
+在下個月有多大機率退化為 Almost Lost？ - <strong>Potential
+Loyalist</strong> 升級為 Loyal 的機率是多少？ -
+<strong>Hibernating</strong> 客戶有多大機率永遠沉睡？</p>
+<p>這比單純看 RFM
+分數變化更精準——因為它考慮了<strong>整體客戶群的競爭動態</strong>。</p>
+<h3 id="評估行銷策略的長期-roi">3. 評估行銷策略的長期 ROI</h3>
+<p>當營運團隊做了一次大促活動： - <strong>短期</strong>：可以看到 RFM
+得分提升（例如一批客戶從 Hibernating 變成 Potential Loyalist） -
+<strong>長期</strong>：透過轉移矩陣可以看到，這些客戶是否<strong>穩定地</strong>停留在高價值狀態，還是短暫躍升後又回落</p>
+<p>這是評估行銷活動真正成效的關鍵指標：不是「當下提升了多少」，而是「提升是否可持續」。</p>
+<h3 id="what-if-情境模擬的底層邏輯">4. What-If 情境模擬的底層邏輯</h3>
+<p>當你使用 What-If 功能調整客戶的 R、F、M 值： 1.
+系統重新計算整個客戶群的百分位數排名 2. 該客戶的相對位置改變 → RFM
+分數改變 → 分群改變 3.
+同時，轉移機率矩陣告訴你：這個客戶從當前分群跳到新分群的機率有多大</p>
+<p>這不是簡單的「改了數字就換分群」，而是在<strong>整體客戶競爭環境中的相對位置變化</strong>。</p>
+<h3 id="從知道到預測的飛躍">5. 從「知道」到「預測」的飛躍</h3>
+<pre><code>RFM 告訴你：
+  「C002 目前是 Potential Loyalist，價值 $2,005」
+
+Markov Chain 告訴你：
+  「C002 下個月有 40% 機率留在 Potential Loyalist，
+    25% 機率升級為 Loyal，15% 機率降級為 Almost Lost」
+
+結合後你可以：
+  「若現在給 C002 一張 $50 優惠券（成本 $10），
+    她升級為 Loyal 的機率從 25% 提升到 45%，
+    預期增量營收為 $300，ROI = 30x」</code></pre>
+<hr />
+<h2 id="五實務應用場景">五、實務應用場景</h2>
+<table>
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 22%" />
+<col style="width: 43%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>場景</th>
+<th>RFM 做什麼</th>
+<th>Markov Chain 做什麼</th>
+<th>結合效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>VIP 維繫</strong></td>
+<td>識別 Best Customers</td>
+<td>預測流失機率</td>
+<td>在客戶降級前提前干預</td>
+</tr>
+<tr>
+<td><strong>忠誠培育</strong></td>
+<td>找到 Potential Loyalist</td>
+<td>計算升級機率</td>
+<td>優先投資升級機率最高的客戶</td>
+</tr>
+<tr>
+<td><strong>流失挽回</strong></td>
+<td>找到 Churned Best</td>
+<td>預測挽回成功機率</td>
+<td>只挽回「有機會回來」的客戶</td>
+</tr>
+<tr>
+<td><strong>預算分配</strong></td>
+<td>按分群分配行銷預算</td>
+<td>預測各分群的長期價值</td>
+<td>動態調整預算配置</td>
+</tr>
+<tr>
+<td><strong>活動評估</strong></td>
+<td>活動前後 RFM 對比</td>
+<td>活動前後轉移機率對比</td>
+<td>評估活動的長期影響</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<blockquote>
+<p><strong>Veil RFM Analytics Platform</strong> · 100% TypeScript ·
+Cloudflare Workers + Pages + Qwen LLM 250 題 Q&amp;A 驗證，100% 通過率
+GitHub: https://github.com/ai-caseylai/veil-rfm</p>
+</blockquote>
+</body>
+</html>

@@ -13,6 +13,8 @@ import RFMTransition from "./pages/RFMTransition"
 import RFMCustomerSummary from "./pages/RFMCustomerSummary"
 import LTVOverview from "./pages/LTVOverview"
 import WhatIf from "./pages/WhatIf"
+import CustomerActivity from "./pages/CustomerActivity"
+import Recommend from "./pages/Recommend"
 
 export interface AppData {
   transactions: Transaction[]
@@ -68,6 +70,12 @@ export default function App() {
           <NavLink to="/rfm-characteristics" className={({ isActive }) => isActive ? "active" : ""}>{t.characteristics}</NavLink>
           <NavLink to="/rfm-transition" className={({ isActive }) => isActive ? "active" : ""}>{t.segmentTransition}</NavLink>
           <NavLink to="/rfm-customer-summary" className={({ isActive }) => isActive ? "active" : ""}>{t.customerSummary}</NavLink>
+          <NavLink to="/customer-activity" className={({ isActive }) => isActive ? "active" : ""}>
+            {lang === "zh-TW" ? "客戶活動" : lang === "zh-CN" ? "客户活动" : "Customer Activity"}
+          </NavLink>
+          <NavLink to="/recommend" className={({ isActive }) => isActive ? "active" : ""}>
+            {lang === "zh-TW" ? "推薦系統" : lang === "zh-CN" ? "推荐系统" : "Recommender"}
+          </NavLink>
           <div className="sidebar-header">{t.whatIfAnalysis}</div>
           <NavLink to="/whatif" className={({ isActive }) => isActive ? "active" : ""}>{t.simulateScenarios}</NavLink>
           <div className="sidebar-header">{t.customerLifetimeValue}</div>
@@ -95,6 +103,8 @@ export default function App() {
             <Route path="/rfm-characteristics" element={<RFMCharacteristics data={data} />} />
             <Route path="/rfm-transition" element={<RFMTransition data={data} />} />
             <Route path="/rfm-customer-summary" element={<RFMCustomerSummary data={data} />} />
+            <Route path="/customer-activity" element={<CustomerActivity data={data} />} />
+            <Route path="/recommend" element={<Recommend data={data} />} />
             <Route path="/whatif" element={<WhatIf data={data} />} />
             <Route path="/ltv-overview" element={<LTVOverview data={data} />} />
             <Route path="*" element={<RFMOverview data={data} />} />

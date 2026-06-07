@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>comic-script-rfm-zh</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">:root{--background-body:#fff;--background:#efefef;--background-alt:#f7f7f7;--selection:#9e9e9e;--text-main:#363636;--text-bright:#000;--text-muted:#70777f;--links:#0076d1;--focus:rgba(0,150,191,0.67);--border:#dbdbdb;--code:#000;--animation-duration:0.1s;--button-base:#d0cfcf;--button-hover:#9b9b9b;--scrollbar-thumb:#aaa;--scrollbar-thumb-hover:var(--button-hover);--form-placeholder:#949494;--form-text:#1d1d1d;--variable:#39a33c;--highlight:#ff0;--select-arrow:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23161f27'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E")}@media (prefers-color-scheme:dark){:root{--background-body:#202b38;--background:#161f27;--background-alt:#1a242f;--selection:#1c76c5;--text-main:#dbdbdb;--text-bright:#fff;--text-muted:#a9b1ba;--links:#41adff;--focus:rgba(0,150,191,0.67);--border:#526980;--code:#ffbe85;--animation-duration:0.1s;--button-base:#0c151c;--button-hover:#040a0f;--scrollbar-thumb:var(--button-hover);--scrollbar-thumb-hover:#000;--form-placeholder:#a9a9a9;--form-text:#fff;--variable:#d941e2;--highlight:#efdb43;--select-arrow:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23efefef'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E")}}html{scrollbar-color:#aaa #fff;scrollbar-color:var(--scrollbar-thumb) var(--background-body);scrollbar-width:thin}@media (prefers-color-scheme:dark){html{scrollbar-color:#040a0f #202b38;scrollbar-color:var(--scrollbar-thumb) var(--background-body)}}body{font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Segoe UI Emoji,Apple Color Emoji,Noto Color Emoji,sans-serif;line-height:1.4;max-width:800px;margin:20px auto;padding:0 10px;word-wrap:break-word;color:#363636;color:var(--text-main);background:#fff;background:var(--background-body);text-rendering:optimizeLegibility}@media (prefers-color-scheme:dark){body{background:#202b38;background:var(--background-body);color:#dbdbdb;color:var(--text-main)}}button{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){button{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}input{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){input{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}textarea{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){textarea{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}h1{font-size:2.2em;margin-top:0}h1,h2,h3,h4,h5,h6{margin-bottom:12px;margin-top:24px}h1{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h1{color:#fff;color:var(--text-bright)}}h2{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h2{color:#fff;color:var(--text-bright)}}h3{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h3{color:#fff;color:var(--text-bright)}}h4{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h4{color:#fff;color:var(--text-bright)}}h5{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h5{color:#fff;color:var(--text-bright)}}h6{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h6{color:#fff;color:var(--text-bright)}}strong{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){strong{color:#fff;color:var(--text-bright)}}b,h1,h2,h3,h4,h5,h6,strong,th{font-weight:600}q:after,q:before{content:none}blockquote{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus);margin:1.5em 0;padding:.5em 1em;font-style:italic}@media (prefers-color-scheme:dark){blockquote{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus)}}q{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus);margin:1.5em 0;padding:.5em 1em;font-style:italic}@media (prefers-color-scheme:dark){q{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus)}}blockquote>footer{font-style:normal;border:0}address,blockquote cite{font-style:normal}a[href^=mailto\:]:before{content:"📧 "}a[href^=tel\:]:before{content:"📞 "}a[href^=sms\:]:before{content:"💬 "}mark{background-color:#ff0;background-color:var(--highlight);border-radius:2px;padding:0 2px;color:#000}@media (prefers-color-scheme:dark){mark{background-color:#efdb43;background-color:var(--highlight)}}a>code,a>strong{color:inherit}button,input[type=button],input[type=checkbox],input[type=radio],input[type=range],input[type=reset],input[type=submit],select{cursor:pointer}input,select{display:block}[type=checkbox],[type=radio]{display:initial}input{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){input{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}button{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){button{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}textarea{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){textarea{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}select{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){select{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}button{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){button{background-color:#0c151c;background-color:var(--button-base)}}input[type=submit]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=submit]{background-color:#0c151c;background-color:var(--button-base)}}input[type=reset]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=reset]{background-color:#0c151c;background-color:var(--button-base)}}input[type=button]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=button]{background-color:#0c151c;background-color:var(--button-base)}}button:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){button:hover{background:#040a0f;background:var(--button-hover)}}input[type=submit]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=submit]:hover{background:#040a0f;background:var(--button-hover)}}input[type=reset]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=reset]:hover{background:#040a0f;background:var(--button-hover)}}input[type=button]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=button]:hover{background:#040a0f;background:var(--button-hover)}}input[type=color]{min-height:2rem;padding:8px;cursor:pointer}input[type=checkbox],input[type=radio]{height:1em;width:1em}input[type=radio]{border-radius:100%}input{vertical-align:top}label{vertical-align:middle;margin-bottom:4px;display:inline-block}button,input:not([type=checkbox]):not([type=radio]),input[type=range],select,textarea{-webkit-appearance:none}textarea{display:block;margin-right:0;box-sizing:border-box;resize:vertical}textarea:not([cols]){width:100%}textarea:not([rows]){min-height:40px;height:140px}select{background:#efefef url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23161f27'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E") calc(100% - 12px) 50%/12px no-repeat;background:var(--background) var(--select-arrow) calc(100% - 12px) 50%/12px no-repeat;padding-right:35px}@media (prefers-color-scheme:dark){select{background:#161f27 url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23efefef'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E") calc(100% - 12px) 50%/12px no-repeat;background:var(--background) var(--select-arrow) calc(100% - 12px) 50%/12px no-repeat}}select::-ms-expand{display:none}select[multiple]{padding-right:10px;background-image:none;overflow-y:auto}input:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){input:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}select:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){select:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}button:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){button:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}textarea:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){textarea:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}button:active,input[type=button]:active,input[type=checkbox]:active,input[type=radio]:active,input[type=range]:active,input[type=reset]:active,input[type=submit]:active{transform:translateY(2px)}button:disabled,input:disabled,select:disabled,textarea:disabled{cursor:not-allowed;opacity:.5}::-moz-placeholder{color:#949494;color:var(--form-placeholder)}:-ms-input-placeholder{color:#949494;color:var(--form-placeholder)}::-ms-input-placeholder{color:#949494;color:var(--form-placeholder)}::placeholder{color:#949494;color:var(--form-placeholder)}@media (prefers-color-scheme:dark){::-moz-placeholder{color:#a9a9a9;color:var(--form-placeholder)}:-ms-input-placeholder{color:#a9a9a9;color:var(--form-placeholder)}::-ms-input-placeholder{color:#a9a9a9;color:var(--form-placeholder)}::placeholder{color:#a9a9a9;color:var(--form-placeholder)}}fieldset{border:1px solid rgba(0,150,191,.67);border:1px solid var(--focus);border-radius:6px;margin:0 0 12px;padding:10px}@media (prefers-color-scheme:dark){fieldset{border:1px solid rgba(0,150,191,.67);border:1px solid var(--focus)}}legend{font-size:.9em;font-weight:600}input[type=range]{margin:10px 0;padding:10px 0;background:transparent}input[type=range]:focus{outline:none}input[type=range]::-webkit-slider-runnable-track{width:100%;height:9.5px;-webkit-transition:.2s;transition:.2s;background:#efefef;background:var(--background);border-radius:3px}@media (prefers-color-scheme:dark){input[type=range]::-webkit-slider-runnable-track{background:#161f27;background:var(--background)}}input[type=range]::-webkit-slider-thumb{box-shadow:0 1px 1px #000,0 0 1px #0d0d0d;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border);-webkit-appearance:none;margin-top:-7px}@media (prefers-color-scheme:dark){input[type=range]::-webkit-slider-thumb{background:#526980;background:var(--border)}}input[type=range]:focus::-webkit-slider-runnable-track{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-webkit-slider-runnable-track{background:#161f27;background:var(--background)}}input[type=range]::-moz-range-track{width:100%;height:9.5px;-moz-transition:.2s;transition:.2s;background:#efefef;background:var(--background);border-radius:3px}@media (prefers-color-scheme:dark){input[type=range]::-moz-range-track{background:#161f27;background:var(--background)}}input[type=range]::-moz-range-thumb{box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border)}@media (prefers-color-scheme:dark){input[type=range]::-moz-range-thumb{background:#526980;background:var(--border)}}input[type=range]::-ms-track{width:100%;height:9.5px;background:transparent;border-color:transparent;border-width:16px 0;color:transparent}input[type=range]::-ms-fill-lower{background:#efefef;background:var(--background);border:.2px solid #010101;border-radius:3px;box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d}@media (prefers-color-scheme:dark){input[type=range]::-ms-fill-lower{background:#161f27;background:var(--background)}}input[type=range]::-ms-fill-upper{background:#efefef;background:var(--background);border:.2px solid #010101;border-radius:3px;box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d}@media (prefers-color-scheme:dark){input[type=range]::-ms-fill-upper{background:#161f27;background:var(--background)}}input[type=range]::-ms-thumb{box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d;border:1px solid #000;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border)}@media (prefers-color-scheme:dark){input[type=range]::-ms-thumb{background:#526980;background:var(--border)}}input[type=range]:focus::-ms-fill-lower{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-ms-fill-lower{background:#161f27;background:var(--background)}}input[type=range]:focus::-ms-fill-upper{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-ms-fill-upper{background:#161f27;background:var(--background)}}a{text-decoration:none;color:#0076d1;color:var(--links)}@media (prefers-color-scheme:dark){a{color:#41adff;color:var(--links)}}a:hover{text-decoration:underline}code{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){code{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}samp{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){samp{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}time{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){time{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}pre>code{padding:10px;display:block;overflow-x:auto}var{color:#39a33c;color:var(--variable);font-style:normal;font-family:monospace}@media (prefers-color-scheme:dark){var{color:#d941e2;color:var(--variable)}}kbd{background:#efefef;background:var(--background);border:1px solid #dbdbdb;border:1px solid var(--border);border-radius:2px;color:#363636;color:var(--text-main);padding:2px 4px}@media (prefers-color-scheme:dark){kbd{color:#dbdbdb;color:var(--text-main);border:1px solid #526980;border:1px solid var(--border);background:#161f27;background:var(--background)}}img,video{max-width:100%;height:auto}hr{border:none;border-top:1px solid #dbdbdb;border-top:1px solid var(--border)}@media (prefers-color-scheme:dark){hr{border-top:1px solid #526980;border-top:1px solid var(--border)}}table{border-collapse:collapse;margin-bottom:10px;width:100%;table-layout:fixed}table caption,td,th{text-align:left}td,th{padding:6px;vertical-align:top;word-wrap:break-word}thead{border-bottom:1px solid #dbdbdb;border-bottom:1px solid var(--border)}@media (prefers-color-scheme:dark){thead{border-bottom:1px solid #526980;border-bottom:1px solid var(--border)}}tfoot{border-top:1px solid #dbdbdb;border-top:1px solid var(--border)}@media (prefers-color-scheme:dark){tfoot{border-top:1px solid #526980;border-top:1px solid var(--border)}}tbody tr:nth-child(2n){background-color:#efefef;background-color:var(--background)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n){background-color:#161f27;background-color:var(--background)}}tbody tr:nth-child(2n) button{background-color:#f7f7f7;background-color:var(--background-alt)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n) button{background-color:#1a242f;background-color:var(--background-alt)}}tbody tr:nth-child(2n) button:hover{background-color:#fff;background-color:var(--background-body)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n) button:hover{background-color:#202b38;background-color:var(--background-body)}}::-webkit-scrollbar{height:10px;width:10px}::-webkit-scrollbar-track{background:#efefef;background:var(--background);border-radius:6px}@media (prefers-color-scheme:dark){::-webkit-scrollbar-track{background:#161f27;background:var(--background)}}::-webkit-scrollbar-thumb{background:#aaa;background:var(--scrollbar-thumb);border-radius:6px}@media (prefers-color-scheme:dark){::-webkit-scrollbar-thumb{background:#040a0f;background:var(--scrollbar-thumb)}}::-webkit-scrollbar-thumb:hover{background:#9b9b9b;background:var(--scrollbar-thumb-hover)}@media (prefers-color-scheme:dark){::-webkit-scrollbar-thumb:hover{background:#000;background:var(--scrollbar-thumb-hover)}}::-moz-selection{background-color:#9e9e9e;background-color:var(--selection);color:#000;color:var(--text-bright)}::selection{background-color:#9e9e9e;background-color:var(--selection);color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){::-moz-selection{color:#fff;color:var(--text-bright)}::selection{color:#fff;color:var(--text-bright)}}@media (prefers-color-scheme:dark){::-moz-selection{background-color:#1c76c5;background-color:var(--selection)}::selection{background-color:#1c76c5;background-color:var(--selection)}}details{display:flex;flex-direction:column;align-items:flex-start;background-color:#f7f7f7;background-color:var(--background-alt);padding:10px 10px 0;margin:1em 0;border-radius:6px;overflow:hidden}@media (prefers-color-scheme:dark){details{background-color:#1a242f;background-color:var(--background-alt)}}details[open]{padding:10px}details>:last-child{margin-bottom:0}details[open] summary{margin-bottom:10px}summary{display:list-item;background-color:#efefef;background-color:var(--background);padding:10px;margin:-10px -10px 0;cursor:pointer;outline:none}@media (prefers-color-scheme:dark){summary{background-color:#161f27;background-color:var(--background)}}summary:focus,summary:hover{text-decoration:underline}details>:not(summary){margin-top:0}summary::-webkit-details-marker{color:#363636;color:var(--text-main)}@media (prefers-color-scheme:dark){summary::-webkit-details-marker{color:#dbdbdb;color:var(--text-main)}}dialog{background-color:#f7f7f7;background-color:var(--background-alt);color:#363636;color:var(--text-main);border-radius:6px;border:#dbdbdb;border-color:var(--border);padding:10px 30px}@media (prefers-color-scheme:dark){dialog{border-color:#526980;border-color:var(--border);color:#dbdbdb;color:var(--text-main);background-color:#1a242f;background-color:var(--background-alt)}}dialog>header:first-child{background-color:#efefef;background-color:var(--background);border-radius:6px 6px 0 0;margin:-10px -30px 10px;padding:10px;text-align:center}@media (prefers-color-scheme:dark){dialog>header:first-child{background-color:#161f27;background-color:var(--background)}}dialog::-webkit-backdrop{background:rgba(0,0,0,.61);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}dialog::backdrop{background:rgba(0,0,0,.61);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}footer{border-top:1px solid #dbdbdb;border-top:1px solid var(--border);padding-top:10px;color:#70777f;color:var(--text-muted)}@media (prefers-color-scheme:dark){footer{color:#a9b1ba;color:var(--text-muted);border-top:1px solid #526980;border-top:1px solid var(--border)}}body>footer{margin-top:40px}@media print{body,button,code,details,input,pre,summary,textarea{background-color:#fff}button,input,textarea{border:1px solid #000}body,button,code,footer,h1,h2,h3,h4,h5,h6,input,pre,strong,summary,textarea{color:#000}summary::marker{color:#000}summary::-webkit-details-marker{color:#000}tbody tr:nth-child(2n){background-color:#f2f2f2}a{color:#00f;text-decoration:underline}}</style>
+</head>
+<body>
+<h1 id="老教授與菜鳥的十四堂-rfm-課">《老教授與菜鳥的十四堂 RFM
+課》</h1>
+<blockquote>
+<p>漫畫劇本 · 改編自 Veil RFM 綜合問答手冊 風格致敬《最後 14
+堂星期二的課》(Tuesdays with Morrie) 角色：莫教授（老教授，68 歲，RFM
+分析領域泰斗）/ 小林（菜鳥資料分析師，26 歲）</p>
+</blockquote>
+<hr />
+<h2 id="角色設定">角色設定</h2>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>莫教授</th>
+<th>小林</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>年齡</td>
+<td>68</td>
+<td>26</td>
+</tr>
+<tr>
+<td>身份</td>
+<td>零售分析學退休教授</td>
+<td>剛入職的資料分析師</td>
+</tr>
+<tr>
+<td>個性</td>
+<td>睿智、溫暖、愛用比喻</td>
+<td>好學、急躁、容易焦慮</td>
+</tr>
+<tr>
+<td>口頭禪</td>
+<td>「資料是活的，你要聽它說話。」</td>
+<td>「教授，我不懂⋯⋯」</td>
+</tr>
+<tr>
+<td>服裝</td>
+<td>老花眼鏡、素色襯衫、總是帶著一杯茶</td>
+<td>格子襯衫、牛仔褲、MacBook 不離手</td>
+</tr>
+<tr>
+<td>場景</td>
+<td>莫教授的書房，滿牆的書和資料圖表</td>
+<td>同一書房，坐在沙發上做筆記</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="第一課初見-什麼是-rfm">第一課：初見 — 什麼是 RFM？</h2>
+<pre><code>[畫面：一間充滿書香的書房。夕陽透過窗簾灑進來。
+莫教授坐在藤椅上，手裡捧著一杯熱茶。小林緊張地坐在對面沙發上。]
+
+小林：（緊張地搓手）
+「莫教授，謝謝您願意見我。我剛入職一週，
+老闆叫我做 RFM 分析，我完全不知道那是什麼⋯⋯」
+
+莫教授：（微微一笑，放下茶杯）
+「小林啊，你吃過樓下的牛肉麵嗎？」
+
+小林：（愣住）
+「吃⋯⋯吃過啊。上週吃了三次。」
+
+莫教授：
+「那老闆認得你了嗎？」
+
+小林：
+「認得了！現在遠遠看到我就喊『小帥哥，今天要大碗的？』」
+
+莫教授：（眼睛發亮）
+「這就是了。你上週才來過（Recency 高），
+一週來三次（Frequency 高），
+每次都點大碗加滷蛋（Monetary 高）。
+在牛肉麵老闆眼中，你就是他的 Best Customer。」
+
+小林：
+「所以 RFM 是⋯⋯」
+
+莫教授：
+「R，Recency，你上次來的時間——越近越好。
+F，Frequency，你來的次數——越多越好。
+M，Monetary，你花的錢——老闆當然希望你點大碗的。」
+「把這三個維度各打 1 到 5 分，
+三項都滿分的就是你——Best Customer 555。」
+
+小林：（恍然大悟）
+「原來這麼簡單！」
+
+莫教授：（搖頭）
+「簡單？下一課我們再聊。現在，先喝茶。」</code></pre>
+<hr />
+<h2 id="第二課十一張臉-認識你的客戶">第二課：十一張臉 —
+認識你的客戶</h2>
+<pre><code>[畫面：莫教授從書架上拿出一疊手繪的人物卡片，共 11 張。]
+
+莫教授：
+「昨天我睡不著，畫了這個。」
+
+小林：（拿起第一張，上面畫著一個穿西裝、戴皇冠的人）
+「Best Customers⋯⋯國王？」
+
+莫教授：
+「VIP。每次來都坐最好的位子、點最貴的菜。
+你覺得該怎麼對他？」
+
+小林：
+「當然是好好伺候啊！不能讓他跑掉！」
+
+莫教授：（點頭）
+「對。那這個呢？」
+
+[小林拿起第二張：畫著一個穿圍裙的人，手裡提著菜籃]
+
+小林：
+「Loyal Customers⋯⋯家庭主婦？」
+
+莫教授：
+「忠誠、穩定、每週固定來兩次。
+不會跑，但你要給她一個跑的理由——『累積點數換免費菜』。
+別讓她覺得理所當然。」
+
+[小林一一翻閱剩下九張卡片]
+
+莫教授：
+「第三張，Potential Loyalist——那個剛搬家到你店附近的新鄰居，
+還在試探期，多對他笑一笑。」
+「第四張，Low-spending Active Loyal——每天都來，
+只買一顆茶葉蛋。你可以試試問他『今天要不要順便帶杯豆漿？』」
+「第五張，High-spending New——第一次來就點滿漢全席的怪客。
+他可能只是路過。不跟進，下週就忘了你。」
+「第六張，Almost Lost——以前常來的老客人，
+最近不來了。你不打電話問，他就真的走了。」
+「第七張，Churned Best——你以前最愛的老客人，已經三個月沒見。
+他可能去了對面新開的店。你要用最大的誠意去挽回。」
+「第八張到第十一張⋯⋯」（嘆氣）
+「是那些你已經快忘記，或真的忘了的客人。」
+
+小林：（沉默了一會）
+「教授，您畫這些的時候⋯⋯在想什麼？」
+
+莫教授：
+「我在想，每一個數字背後，都是一個人。」
+「資料分析不是算數字，是聽故事。」</code></pre>
+<hr />
+<h2 id="第三課數學的溫柔-分數怎麼來">第三課：數學的溫柔 —
+分數怎麼來？</h2>
+<pre><code>[畫面：白板上畫滿了百分位數的公式。小林皺著眉頭。]
+
+小林：
+「教授，percentile rank 到底是什麼⋯⋯」
+
+莫教授：
+「你小時候考試，全班 40 人，你考第 3 名，
+你的百分位數是多少？」
+
+小林：
+「呃⋯⋯(40-3)/40 = 92.5%？」
+
+莫教授：
+「對。RFM 也是一樣。你不是跟滿分比，
+你是跟其他客戶比。」
+「你買了 10 次，覺得很多？
+但如果其他人平均買了 20 次，你就只有 2 分。」
+「你花了 $100？如果其他人平均花 $500，你也只有 1 分。」
+
+小林：
+「所以 RFM 是一個⋯⋯相對的概念？」
+
+莫教授：（滿意地笑）
+「你終於懂了。資料是活的。
+它不是絕對值，是你的客戶們一起投票決定的。」</code></pre>
+<hr />
+<h2 id="第四課排行榜的傲慢">第四課：排行榜的傲慢</h2>
+<pre><code>[畫面：小林看著螢幕上的排行榜，眼睛發光。]
+
+小林：
+「教授！C004 好厲害！$7,130，16 筆訂單，RFM 555！
+她一個人貢獻了 60% 的營收！」
+
+莫教授：（放下茶杯，表情嚴肅）
+「你知道這代表什麼嗎？」
+
+小林：
+「代表她是最重要的客戶？」
+
+莫教授：
+「代表你們公司岌岌可危。」
+「如果她明天不買了呢？後天呢？」
+「你 60% 的營收押在一個人身上。
+這不是成功，這是風險。」
+
+小林：（愣住）
+「那⋯⋯怎麼辦？」
+
+莫教授：
+「你看第二名的 C002——$2,005，10 筆訂單。
+第三名的 C001——$1,456，12 筆。
+還有三個 Potential Loyalist。」
+「你要做的不是崇拜第一名，
+而是讓第二三四五六名都變強。」
+
+小林：
+「就像⋯⋯不能只養一頭金牛？」
+
+莫教授：
+「對。牧場裡要多養幾頭。」</code></pre>
+<hr />
+<h2 id="第五課如果-情境模擬的魔法">第五課：如果 — 情境模擬的魔法</h2>
+<pre><code>[畫面：小林興奮地操作著 What-If 面板。]
+
+小林：
+「教授教授！如果 C008——那個 Lost Cheap——
+買了 5 次、花了 $200 每次⋯⋯」
+
+莫教授：
+「她會從 111 變成什麼？」
+
+小林：（按下模擬鍵）
+「⋯⋯Potential Loyalist！」
+
+莫教授：
+「你看，這就是資料的魔法。」
+「它告訴你：沒有人是不可救藥的。」
+
+小林：
+「但 C008 已經 84 天沒買了⋯⋯」
+
+莫教授：
+「你有沒有想過，為什麼是 84 天？」
+
+小林：
+「呃⋯⋯因為她不想買？」
+
+莫教授：
+「也可能是她搬家了、生病了、
+或者根本不知道你們開了線上商店。」
+「資料告訴你『什麼』，但不會告訴你『為什麼』。」
+「『為什麼』需要你去問。」
+
+小林：（若有所思）
+「所以 What-If 不只是模擬數字改變⋯⋯」
+
+莫教授：
+「它是模擬『如果你真的去關心一個客戶，會發生什麼』。」</code></pre>
+<hr />
+<h2 id="第六課告別-流失的真相">第六課：告別 — 流失的真相</h2>
+<pre><code>[畫面：窗外下著雨。茶涼了。]
+
+小林：
+「教授，C002 已經 22 天沒買了。
+她以前花那麼多錢⋯⋯為什麼不來了？」
+
+莫教授：（望著窗外）
+「你談過戀愛嗎？」
+
+小林：（臉紅）
+「呃⋯⋯有。」
+
+莫教授：
+「分手的時候，你不會在前一天晚上通知對方吧。」
+
+小林：
+「⋯⋯不會。」
+
+莫教授：
+「客戶也一樣。她不會告訴你『我要離開了』。」
+「她只是⋯⋯慢慢地不來了。」
+「第 1 天沒來，你沒發現。第 7 天沒來，你覺得還好。
+第 14 天沒來，你開始緊張。第 22 天⋯⋯」
+「她已經在對面那家店辦會員卡了。」
+
+小林：（急切地）
+「所以我們要在第幾天的時候行動？」
+
+莫教授：
+「不是第幾天。是她還在的時候。」
+「Recency = 4 的時候你不打電話，
+等到 Recency = 1，她已經忘記你店名了。」
+
+小林：（低下頭）
+「那我現在該對 C002 說什麼？」
+
+莫教授：
+「不是『我們最近有優惠喔』。
+是『好久不見，我們很想你。你最近還好嗎？』」</code></pre>
+<hr />
+<h2 id="第七課錢的重量-營收的真相">第七課：錢的重量 — 營收的真相</h2>
+<pre><code>[畫面：莫教授在茶几上排硬幣。一個大金幣，幾個銀幣，幾個銅幣。]
+
+莫教授：
+「這是你們公司的營收地圖。」
+
+小林：（指著最大的金幣）
+「C004⋯⋯」
+
+莫教授：（用放大鏡照著金幣）
+「你看到什麼？」
+
+小林：
+「一個很大的客戶。」
+
+莫教授：（把放大鏡遞給小林）
+「再仔細看。」
+
+小林：（湊近看）
+「⋯⋯上面有裂痕？」
+
+莫教授：
+「集中風險。一個客戶拿走 60% 營收。」
+「你們不是在經營一個客戶群，
+是在供奉一尊神。」
+「神走了，廟就空了。」
+
+小林：
+「那要怎麼分散⋯⋯」
+
+莫教授：（把幾個銀幣推到中間）
+「你的三個 Potential Loyalist——C001、C002、C005。」
+「如果每個人的消費提升 30%⋯⋯」
+「你就從一神教，變成多神教。」
+
+小林：（笑出來）
+「教授，您的比喻⋯⋯」
+
+莫教授：
+「資料不神聖，客戶才神聖。」
+「把雞蛋放在不同籃子裡——這是祖母的智慧，不是大數據。」</code></pre>
+<hr />
+<h2 id="第八課對比-學會欣賞差異">第八課：對比 — 學會欣賞差異</h2>
+<pre><code>[畫面：莫教授拿出兩片葉子。]
+
+莫教授：
+「哪片比較好？」
+
+小林：
+「左邊這片比較大、比較綠⋯⋯」
+
+莫教授：
+「C004 和 C001？」
+
+小林：（看資料）
+「呃，C004 明顯比較好。分數、消費、頻率都贏⋯⋯」
+
+莫教授：
+「但 C001 在成長。她從 6 筆變成 12 筆。
+你看到了嗎？不是現在的數字，是趨勢。」
+「C004 是已經登頂的山。
+C001 是還在爬的山。」
+「你不能只欣賞山頂的風景。」
+
+小林：
+「所以客戶對比不是比高低⋯⋯」
+
+莫教授：
+「是比故事。每個客戶有不同的故事線。
+你的工作是讀懂每個故事，而不是給他們排名。」</code></pre>
+<hr />
+<h2 id="第九課尋找-篩選的藝術">第九課：尋找 — 篩選的藝術</h2>
+<pre><code>[畫面：小林在螢幕前輸入各種篩選條件。]
+
+小林：
+「訂單 &gt;10、消費 &gt;$1,000、recency &lt;30⋯⋯
+只有兩個人符合！」
+「教授，篩選條件是不是太嚴格了？」
+
+莫教授：
+「你為什麼要篩選？」
+
+小林：
+「因為⋯⋯老闆叫我找出最好的客戶？」
+
+莫教授：（搖頭）
+「你是在找『符合你條件』的客戶，
+而不是『真正需要你』的客戶。」
+「試試這些條件：訂單 = 1、消費 &gt;$100。」
+
+小林：（輸入）
+「⋯⋯C006？只有一筆訂單，花了 $200。」
+
+莫教授：
+「她為什麼只買一次？
+是產品不好？是價格太貴？是忘記你們了？」
+「她需要你，比 C004 更需要你。」
+「C004 會自己來。C006 不會。」
+
+小林：
+「所以我篩選時應該⋯⋯」
+
+莫教授：
+「不要找『你最愛的客戶』。
+找『最需要你的客戶』。」</code></pre>
+<hr />
+<h2 id="第十課新與舊-時間的朋友">第十課：新與舊 — 時間的朋友</h2>
+<pre><code>[畫面：莫教授翻著一本舊相簿。]
+
+莫教授：
+「你覺得，老朋友和新朋友，哪個重要？」
+
+小林：
+「都重要？」
+
+莫教授：
+「你只有 $100 預算。」
+「老朋友（回購客戶）平均消費 $1,935。
+新朋友（新客戶）平均消費 $125。」
+「你要把錢花在哪？」
+
+小林：
+「⋯⋯老朋友？」
+
+莫教授：
+「但不是不交新朋友。」
+「你看 C006——新客戶，花了 $200。
+她只是還沒回來。」
+「新客戶是種子，回購客戶是果實。」
+「你要澆水給種子，但靠果實吃飯。」
+
+小林：
+「所以⋯⋯75% 精力給回購客戶，25% 給新客戶？」
+
+莫教授：
+「比例你自己抓。但記住：
+一個老朋友的回頭，勝過十個新朋友的試探。」</code></pre>
+<hr />
+<h2 id="第十一課全景-從山頂往下看">第十一課：全景 — 從山頂往下看</h2>
+<pre><code>[畫面：莫教授拉開窗簾，窗外是整座城市。]
+
+莫教授：
+「來，站在這裡。」
+
+小林：（走到窗前）
+「好美⋯⋯」
+
+莫教授：
+「你現在看到什麼？」
+
+小林：
+「房子、馬路、公園⋯⋯整個城市。」
+
+莫教授：
+「你之前都在看什麼？」
+
+小林：（不好意思）
+「一條街⋯⋯一棟樓⋯⋯一個客戶⋯⋯」
+
+莫教授：
+「資料分析有兩個境界。」
+「第一個境界：看得細——知道 C004 昨天買了什麼。」
+「第二個境界：看得遠——知道 3 個月後，
+哪些客戶會走，哪些客戶會留，哪些客戶會變成 C004。」
+
+小林：
+「那第二個境界⋯⋯怎麼學？」
+
+莫教授：
+「你已經在學了。」
+（指著窗外）
+「這座城市，就是你客戶的未來地圖。」</code></pre>
+<hr />
+<h2 id="第十二課遷移-客戶的旅行">第十二課：遷移 — 客戶的旅行</h2>
+<pre><code>[畫面：莫教授在茶几上鋪開一張手繪地圖。
+上面有 11 個區域，用箭頭連線。]
+
+莫教授：
+「這是我花了四十年的心血——
+客戶遷移地圖。」
+
+小林：（仔細看著箭頭）
+「所以客戶不會停在一個地方⋯⋯」
+
+莫教授：
+「對。今天是 Best Customers，
+下個月可能變成 Almost Lost。」
+「這條紅色的箭頭，從 Best 指向 Churned——」
+「就是你們公司的 C004，如果有一天不來了。」
+
+小林：（緊張）
+「那⋯⋯綠色箭頭呢？」
+
+莫教授：
+「Hibernating → Potential Loyalist。
+這是最美的旅程。」
+「一個已經快睡著的客戶，因為你的一通電話、
+一張優惠券、一句問候——」
+「他醒了，開始買，變成忠誠客戶。」
+「這條路很少人走，但走通了的，都是傳奇。」
+
+小林：
+「教授，哪條路最難走？」
+
+莫教授：（手指移到地圖的右下角）
+「Lost Cheap → 任何地方。」
+「一旦掉到這裡，就像流沙。
+不是不能救，是救了之後的代價，
+可能比開發新客戶還高。」
+
+小林：（靜靜地看著地圖）
+「所以我們要在他們掉進去之前⋯⋯」
+
+莫教授：
+「對。在 Almost Lost 的時候。
+那是黃金救援時間。」</code></pre>
+<hr />
+<h2 id="第十三課行動-策略的溫度">第十三課：行動 — 策略的溫度</h2>
+<pre><code>[畫面：小林拿著筆記本，密密麻麻寫滿了策略。]
+
+小林：
+「教授，我整理了 90 天計劃：
+第 1-30 天挽回 C002，
+第 31-60 天培育 C001 和 C005，
+第 61-90 天鎖定 C004 做 VIP 計劃⋯⋯」
+
+莫教授：（微笑）
+「很好。但你漏了一件事。」
+
+小林：（慌張地翻筆記）
+「什麼？」
+
+莫教授：
+「打電話。」
+
+小林：
+「⋯⋯打電話？」
+
+莫教授：
+「不是發電子郵件。不是推播通知。
+是拿起電話，打給 C002。」
+「說：『好久不見，我們很想你。你最近還好嗎？』」
+「我在大學教了四十年書，
+學生畢業後還會回來的，
+都是那些我曾經和他們吃過飯的。」
+
+小林：
+「可是⋯⋯C004 一個月花 $7,000，我打電話給她不會很奇怪嗎？」
+
+莫教授：
+「你覺得奇怪，是因為你把她當成數字。」
+「你把她當成人，打電話就很正常。」
+「試試看。說不定她會告訴你，
+她不買牛奶的原因是因為她搬家了。」
+
+小林：（闔上筆記本）
+「教授⋯⋯您不是在教我 RFM，對不對？」
+
+莫教授：（微笑著喝茶）
+「⋯⋯」</code></pre>
+<hr />
+<h2 id="第十四課最後一堂-資料的靈魂">第十四課：最後一堂 —
+資料的靈魂</h2>
+<p>``` [畫面：夕陽西下。書房裡的光線變得柔和。
+茶壺已經空了。小林的眼眶有點紅。]</p>
+<p>莫教授： 「小林，你覺得 RFM 三個字母，哪個最重要？」</p>
+<p>小林： 「Recency？越近越好⋯⋯」</p>
+<p>莫教授：（搖頭） 「不。」</p>
+<p>小林： 「那⋯⋯Frequency？越多越好？」</p>
+<p>莫教授：（再搖頭） 「也不對。」</p>
+<p>小林： 「Monetary？⋯⋯」</p>
+<p>莫教授： 「是 Human。」 「不是 R、不是 F、不是 M。是 H。」</p>
+<p>小林：（困惑） 「可是⋯⋯RFM 沒有 H 啊？」</p>
+<p>莫教授： 「我教書教了四十年。 到最後我才發現， Best Customers
+不一定是花最多錢的客戶。」 「他們是那些會在 Facebook 上幫你推薦的人。
+是那些寫 email 說『你們的產品改變了我的生活』的人。
+是那些你生病時會寄慰問卡的人——即使他們三個月沒買。」</p>
+<p>小林：（沉默了很久） 「⋯⋯教授，我明白了。」</p>
+<p>莫教授：（站起身，拍拍小林的肩膀） 「不，你才剛開始。」
+「這十四堂課，只是入門。」 「真正的大數據，在你的心裡。」
+「機器可以告訴你誰買了什麼。 但只有你，可以問『為什麼』。
+只有你，可以打那通電話。 只有你，可以在對方說『我搬家了』的時候，
+說『沒關係，我們可以幫你轉到附近的店』。」</p>
+<p>[畫面：小林走出書房。回頭看了一眼。]</p>
+<p>小林： 「教授⋯⋯我下週還可以來嗎？」</p>
+<p>莫教授：（站在門口，夕陽在他身後） 「隨時。這是我家的地址——」 「不是
+email，不是 LINE。是地址。」
+「因為有些東西，要靠人傳，不能靠資料傳。」</p>
+<p>[最後一格：莫教授回到書房，拿起桌上的老花眼鏡，
+看著小林留下的筆記本。筆記本第一頁寫著： 「H =
+Human。資料的靈魂。」]</p>
+<p>莫教授：（對著空房間自言自語） 「⋯⋯這個學生，會比我厲害。」</p>
+<table>
+<tbody>
+<tr>
+<td>[全劇終]</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>改編自《Veil RFM 綜合問答手冊》（250 題，14 類別，100% 回答率）
+原作：Veil RFM Analytics Platform 漫畫劇本版：2026-06-07
+靈感致敬：《最後 14 堂星期二的課》(Tuesdays with Morrie) by Mitch
+Albom</p>
+</blockquote>
+</body>
+</html>

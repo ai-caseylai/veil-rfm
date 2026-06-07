@@ -7,33 +7,57 @@ import { useT } from "../lib/i18n"
 
 interface Props { data: AppData }
 
-function Skeleton() {
-  return <div className="card"><div className="card-header"><div className="skeleton h-5 w-64" /></div><div className="card-body"><div className="skeleton h-96 w-full" /></div></div>
+const API_BASE = "https://veil-rfm-api.ai-caseylai.workers.dev"
+
+interface CLVReport {
+  params: { pnbd: number[]; ggg: number[] }
+  customers: Array<{
+    customerID: string
+    pAlive: number
+    expectedTransactions: number
+    expectedSpendPerTxn: number
+    lifetimeValue: number
+  }>
+  summary: {
+    totalCLV: number
+    avgCLV: number
+    totalPAlive: number
+    activeCustomerCount: number
+  }
 }
 
 export default function LTVOverview({ data }: Props) {
   const { t } = useT()
   const [rfmResult, setRfmResult] = useState<Record<string, unknown> | null>(data.rfmData as Record<string, unknown> | null)
+  const [clvReport, setClvReport] = useState<CLVReport | null>(null)
   const [loading, setLoading] = useState(!rfmResult)
 
   useEffect(() => {
-    if (rfmResult) return
-    setLoading(true)
-    computeRFM({ transactions: data.transactions })
-      .then(setRfmResult)
-      .catch(console.error)
-      .finally(() => setLoading(false))
+    async function load() {
+      try {
+        const [rfm, clv] = await Promise.all([
+          rfmResult ? Promise.resolve(rfmResult) : computeRFM({ transactions: data.transactions }),
+          fetch(`${API_BASE}/api/rfm/clv`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ transactions: data.transactions }),
+          }).then((r) => r.json()),
+        ])
+        setRfmResult(rfm)
+        if (!clv.error) setClvReport(clv)
+      } catch (e) { console.error(e) }
+      finally { setLoading(false) }
+    }
+    load()
   }, [data.transactions])
 
-  if (loading) return <Skeleton />
+  if (loading) return <div className="card"><div className="card-header"><div className="skeleton h-5 w-64" /></div><div className="card-body space-y-4"><div className="skeleton h-5 w-full" /><div className="skeleton h-96 w-full" /></div></div>
   if (!rfmResult) return <p className="text-red-500">{t.errorLoading}</p>
 
-  const results = rfmResult.results as { Segment: string; TotalSpending: number }[]
+  const results = rfmResult.results as { Segment: string; TotalSpending: number; CustomerID: string }[]
   const segSpending = new Map<string, number[]>()
-  for (const r of results) {
-    const arr = segSpending.get(r.Segment) ?? []; arr.push(r.TotalSpending); segSpending.set(r.Segment, arr)
-  }
-  const chartData = RFM_SEGMENT.map((seg) => {
+  for (const r of results) { const arr = segSpending.get(r.Segment) ?? []; arr.push(r.TotalSpending); segSpending.set(r.Segment, arr) }
+  const ltvData = RFM_SEGMENT.map((seg) => {
     const vals = segSpending.get(seg) ?? []
     return { Segment: seg, "Avg LTV ($)": vals.length > 0 ? vals.reduce((s, v) => s + v, 0) / vals.length : 0 }
   }).filter((d) => d["Avg LTV ($)"] > 0)
@@ -42,14 +66,14 @@ export default function LTVOverview({ data }: Props) {
 
   return (
     <div>
-      <div className="card">
+      <div className="card mb-4">
         <div className="card-header">{t.avgLTVPerSegment}</div>
         <div className="card-body">
           <p className="text-sm text-gray-500 mb-4">
             {t.simpleEstimate} {t.overallAvg}: <strong>${overallAvg.toLocaleString(undefined, { maximumFractionDigits: 0 })}</strong>
           </p>
-          <ResponsiveContainer width="100%" height={450}>
-            <BarChart data={chartData}>
+          <ResponsiveContainer width="100%" height={400}>
+            <BarChart data={ltvData}>
               <CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" />
               <XAxis dataKey="Segment" angle={-45} textAnchor="end" height={120} tick={{ fontSize: 11 }} />
               <YAxis />
@@ -59,6 +83,78 @@ export default function LTVOverview({ data }: Props) {
           </ResponsiveContainer>
         </div>
       </div>
+
+      {/* BTYD CLV Table */}
+      {clvReport && (
+        <div className="card">
+          <div className="card-header">
+            {loading ? "..." : "BTYD Customer Lifetime Value (Pareto/NBD + Gamma-Gamma)"}
+          </div>
+          <div className="card-body">
+            {/* Model params */}
+            <div className="grid grid-cols-2 gap-4 mb-4 text-xs">
+              <div className="bg-gray-50 rounded p-3">
+                <div className="font-semibold text-gray-500 mb-1">Pareto/NBD Parameters</div>
+                <div className="grid grid-cols-2 gap-1">
+                  <span>r: {clvReport.params.pnbd[0]?.toFixed(3)}</span>
+                  <span>α: {clvReport.params.pnbd[1]?.toFixed(3)}</span>
+                  <span>s: {clvReport.params.pnbd[2]?.toFixed(3)}</span>
+                  <span>β: {clvReport.params.pnbd[3]?.toFixed(3)}</span>
+                </div>
+              </div>
+              <div className="bg-gray-50 rounded p-3">
+                <div className="font-semibold text-gray-500 mb-1">Gamma-Gamma Parameters</div>
+                <div className="grid grid-cols-3 gap-1">
+                  <span>p: {clvReport.params.ggg[0]?.toFixed(3)}</span>
+                  <span>q: {clvReport.params.ggg[1]?.toFixed(3)}</span>
+                  <span>γ: {clvReport.params.ggg[2]?.toFixed(3)}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Summary */}
+            <div className="grid grid-cols-4 gap-3 mb-4">
+              {[
+                ["Total CLV", `$${clvReport.summary.totalCLV.toLocaleString(undefined, { maximumFractionDigits: 0 })}`],
+                ["Avg CLV", `$${clvReport.summary.avgCLV.toLocaleString(undefined, { maximumFractionDigits: 0 })}`],
+                ["Total P(Alive)", clvReport.summary.totalPAlive.toFixed(1)],
+                ["Active (>50%)", String(clvReport.summary.activeCustomerCount)],
+              ].map(([label, value]) => (
+                <div key={label} className="bg-white border rounded p-2 text-center">
+                  <div className="text-[10px] text-gray-400">{label}</div>
+                  <div className="font-bold text-[var(--primary)]">{value}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* Per-customer table */}
+            <div className="overflow-auto max-h-80">
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Customer</th>
+                    <th className="text-right">P(Alive)</th>
+                    <th className="text-right">Expected Txns (52w)</th>
+                    <th className="text-right">Avg Spend/Txn</th>
+                    <th className="text-right">Lifetime Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {clvReport.customers.map((c) => (
+                    <tr key={c.customerID}>
+                      <td className="mono">{c.customerID}</td>
+                      <td className="text-right">{(c.pAlive * 100).toFixed(1)}%</td>
+                      <td className="text-right">{c.expectedTransactions.toFixed(1)}</td>
+                      <td className="text-right">${c.expectedSpendPerTxn.toFixed(0)}</td>
+                      <td className="text-right font-bold">${c.lifetimeValue.toFixed(0)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

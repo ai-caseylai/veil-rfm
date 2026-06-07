@@ -188,37 +188,41 @@ export function rfmCompute(
  * Port of findRFM.R::rfmSegmentation()
  */
 export function rfmSegmentation(rfmScore: RFMScore[]): RFMSegment[] {
+  // Matches R's sequential overwrite pattern in findRFM.R lines 182-209
+  // Later assignments overwrite earlier ones for matching rows
   return rfmScore.map((s) => {
     const { RecencyScore: R, FrequencyScore: F, MonetaryScore: M } = s
-    let segment: string
+    let segment: string = RFM_SEGMENT[7] // default: Needs Attention
 
-    if (R === 5 && F === 5 && M === 5) {
-      segment = RFM_SEGMENT[0] // Best Customers
-    } else if (R >= 4 && F >= 4 && M >= 4) {
-      segment = RFM_SEGMENT[1] // Loyal Customers
-    } else if (R >= 3 && F >= 3 && M >= 3) {
-      segment = RFM_SEGMENT[2] // Potential Loyalist
-    } else if (R >= 4 && F >= 4 && M <= 2) {
-      segment = RFM_SEGMENT[3] // Low-spending Active Loyal
-    } else if (R >= 4 && F <= 2 && M >= 4) {
-      segment = RFM_SEGMENT[4] // High-spending New Customers
-    } else if (
-      (R === 2 || R === 3) &&
-      F >= 4 &&
-      M >= 4
-    ) {
-      segment = RFM_SEGMENT[5] // Almost Lost Customers
-    } else if (R === 1 && F >= 4 && M >= 4) {
-      segment = RFM_SEGMENT[6] // Churned Best Customers
-    } else if (R === 1 && F === 1 && M === 1) {
-      segment = RFM_SEGMENT[10] // Lost Cheap Customers
-    } else if (R <= 2 && F <= 2 && M <= 2) {
-      segment = RFM_SEGMENT[9] // Hibernating
-    } else if (R <= 3 && F <= 3 && M <= 3) {
-      segment = RFM_SEGMENT[8] // About to Sleep
-    } else {
-      segment = RFM_SEGMENT[7] // Needs Attention (catch-all)
-    }
+    // Step 1: Potential Loyalist (R≥3, F≥3, M≥3)
+    if (R >= 3 && F >= 3 && M >= 3) segment = RFM_SEGMENT[2]
+
+    // Step 2: Loyal (R≥4, F≥4, M≥4) — overwrites Potential
+    if (R >= 4 && F >= 4 && M >= 4) segment = RFM_SEGMENT[1]
+
+    // Step 3: Best (R=5, F=5, M=5) — overwrites Loyal
+    if (R === 5 && F === 5 && M === 5) segment = RFM_SEGMENT[0]
+
+    // Step 4: High-spending New (R≥4, F≤2, M≥4)
+    if (R >= 4 && F <= 2 && M >= 4) segment = RFM_SEGMENT[4]
+
+    // Step 5: Low-spending Active Loyal (R≥4, F≥4, M≤2)
+    if (R >= 4 && F >= 4 && M <= 2) segment = RFM_SEGMENT[3]
+
+    // Step 6: Churned Best (R=1, F≥4, M≥4)
+    if (R === 1 && F >= 4 && M >= 4) segment = RFM_SEGMENT[6]
+
+    // Step 7: Almost Lost (R=2-3, F≥4, M≥4) — overwrites Potential for these specific cases
+    if ((R === 2 || R === 3) && F >= 4 && M >= 4) segment = RFM_SEGMENT[5]
+
+    // Step 8: About to Sleep (R≤3, F≤3, M≤3)
+    if (R <= 3 && F <= 3 && M <= 3) segment = RFM_SEGMENT[8]
+
+    // Step 9: Hibernating (R≤2, F≤2, M≤2) — overwrites About to Sleep
+    if (R <= 2 && F <= 2 && M <= 2) segment = RFM_SEGMENT[9]
+
+    // Step 10: Lost Cheap (R=1, F=1, M=1) — overwrites Hibernating
+    if (R === 1 && F === 1 && M === 1) segment = RFM_SEGMENT[10]
 
     return { CustomerID: s.CustomerID, Segment: segment }
   })

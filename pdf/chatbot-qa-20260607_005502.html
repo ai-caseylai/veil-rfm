@@ -1,0 +1,2090 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>chatbot-qa-20260607_005502</title>
+  <style>
+
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+</style>
+  <style type="text/css">:root{--background-body:#fff;--background:#efefef;--background-alt:#f7f7f7;--selection:#9e9e9e;--text-main:#363636;--text-bright:#000;--text-muted:#70777f;--links:#0076d1;--focus:rgba(0,150,191,0.67);--border:#dbdbdb;--code:#000;--animation-duration:0.1s;--button-base:#d0cfcf;--button-hover:#9b9b9b;--scrollbar-thumb:#aaa;--scrollbar-thumb-hover:var(--button-hover);--form-placeholder:#949494;--form-text:#1d1d1d;--variable:#39a33c;--highlight:#ff0;--select-arrow:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23161f27'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E")}@media (prefers-color-scheme:dark){:root{--background-body:#202b38;--background:#161f27;--background-alt:#1a242f;--selection:#1c76c5;--text-main:#dbdbdb;--text-bright:#fff;--text-muted:#a9b1ba;--links:#41adff;--focus:rgba(0,150,191,0.67);--border:#526980;--code:#ffbe85;--animation-duration:0.1s;--button-base:#0c151c;--button-hover:#040a0f;--scrollbar-thumb:var(--button-hover);--scrollbar-thumb-hover:#000;--form-placeholder:#a9a9a9;--form-text:#fff;--variable:#d941e2;--highlight:#efdb43;--select-arrow:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23efefef'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E")}}html{scrollbar-color:#aaa #fff;scrollbar-color:var(--scrollbar-thumb) var(--background-body);scrollbar-width:thin}@media (prefers-color-scheme:dark){html{scrollbar-color:#040a0f #202b38;scrollbar-color:var(--scrollbar-thumb) var(--background-body)}}body{font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,Segoe UI Emoji,Apple Color Emoji,Noto Color Emoji,sans-serif;line-height:1.4;max-width:800px;margin:20px auto;padding:0 10px;word-wrap:break-word;color:#363636;color:var(--text-main);background:#fff;background:var(--background-body);text-rendering:optimizeLegibility}@media (prefers-color-scheme:dark){body{background:#202b38;background:var(--background-body);color:#dbdbdb;color:var(--text-main)}}button{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){button{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}input{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){input{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}textarea{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}@media (prefers-color-scheme:dark){textarea{transition:background-color .1s linear,border-color .1s linear,color .1s linear,box-shadow .1s linear,transform .1s ease;transition:background-color var(--animation-duration) linear,border-color var(--animation-duration) linear,color var(--animation-duration) linear,box-shadow var(--animation-duration) linear,transform var(--animation-duration) ease}}h1{font-size:2.2em;margin-top:0}h1,h2,h3,h4,h5,h6{margin-bottom:12px;margin-top:24px}h1{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h1{color:#fff;color:var(--text-bright)}}h2{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h2{color:#fff;color:var(--text-bright)}}h3{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h3{color:#fff;color:var(--text-bright)}}h4{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h4{color:#fff;color:var(--text-bright)}}h5{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h5{color:#fff;color:var(--text-bright)}}h6{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){h6{color:#fff;color:var(--text-bright)}}strong{color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){strong{color:#fff;color:var(--text-bright)}}b,h1,h2,h3,h4,h5,h6,strong,th{font-weight:600}q:after,q:before{content:none}blockquote{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus);margin:1.5em 0;padding:.5em 1em;font-style:italic}@media (prefers-color-scheme:dark){blockquote{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus)}}q{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus);margin:1.5em 0;padding:.5em 1em;font-style:italic}@media (prefers-color-scheme:dark){q{border-left:4px solid rgba(0,150,191,.67);border-left:4px solid var(--focus)}}blockquote>footer{font-style:normal;border:0}address,blockquote cite{font-style:normal}a[href^=mailto\:]:before{content:"📧 "}a[href^=tel\:]:before{content:"📞 "}a[href^=sms\:]:before{content:"💬 "}mark{background-color:#ff0;background-color:var(--highlight);border-radius:2px;padding:0 2px;color:#000}@media (prefers-color-scheme:dark){mark{background-color:#efdb43;background-color:var(--highlight)}}a>code,a>strong{color:inherit}button,input[type=button],input[type=checkbox],input[type=radio],input[type=range],input[type=reset],input[type=submit],select{cursor:pointer}input,select{display:block}[type=checkbox],[type=radio]{display:initial}input{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){input{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}button{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){button{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}textarea{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){textarea{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}select{color:#1d1d1d;color:var(--form-text);background-color:#efefef;background-color:var(--background);font-family:inherit;font-size:inherit;margin-right:6px;margin-bottom:6px;padding:10px;border:none;border-radius:6px;outline:none}@media (prefers-color-scheme:dark){select{background-color:#161f27;background-color:var(--background);color:#fff;color:var(--form-text)}}button{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){button{background-color:#0c151c;background-color:var(--button-base)}}input[type=submit]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=submit]{background-color:#0c151c;background-color:var(--button-base)}}input[type=reset]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=reset]{background-color:#0c151c;background-color:var(--button-base)}}input[type=button]{background-color:#d0cfcf;background-color:var(--button-base);padding-right:30px;padding-left:30px}@media (prefers-color-scheme:dark){input[type=button]{background-color:#0c151c;background-color:var(--button-base)}}button:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){button:hover{background:#040a0f;background:var(--button-hover)}}input[type=submit]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=submit]:hover{background:#040a0f;background:var(--button-hover)}}input[type=reset]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=reset]:hover{background:#040a0f;background:var(--button-hover)}}input[type=button]:hover{background:#9b9b9b;background:var(--button-hover)}@media (prefers-color-scheme:dark){input[type=button]:hover{background:#040a0f;background:var(--button-hover)}}input[type=color]{min-height:2rem;padding:8px;cursor:pointer}input[type=checkbox],input[type=radio]{height:1em;width:1em}input[type=radio]{border-radius:100%}input{vertical-align:top}label{vertical-align:middle;margin-bottom:4px;display:inline-block}button,input:not([type=checkbox]):not([type=radio]),input[type=range],select,textarea{-webkit-appearance:none}textarea{display:block;margin-right:0;box-sizing:border-box;resize:vertical}textarea:not([cols]){width:100%}textarea:not([rows]){min-height:40px;height:140px}select{background:#efefef url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23161f27'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E") calc(100% - 12px) 50%/12px no-repeat;background:var(--background) var(--select-arrow) calc(100% - 12px) 50%/12px no-repeat;padding-right:35px}@media (prefers-color-scheme:dark){select{background:#161f27 url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' height='63' width='117' fill='%23efefef'%3E%3Cpath d='M115 2c-1-2-4-2-5 0L59 53 7 2a4 4 0 00-5 5l54 54 2 2 3-2 54-54c2-1 2-4 0-5z'/%3E%3C/svg%3E") calc(100% - 12px) 50%/12px no-repeat;background:var(--background) var(--select-arrow) calc(100% - 12px) 50%/12px no-repeat}}select::-ms-expand{display:none}select[multiple]{padding-right:10px;background-image:none;overflow-y:auto}input:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){input:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}select:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){select:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}button:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){button:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}textarea:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}@media (prefers-color-scheme:dark){textarea:focus{box-shadow:0 0 0 2px rgba(0,150,191,.67);box-shadow:0 0 0 2px var(--focus)}}button:active,input[type=button]:active,input[type=checkbox]:active,input[type=radio]:active,input[type=range]:active,input[type=reset]:active,input[type=submit]:active{transform:translateY(2px)}button:disabled,input:disabled,select:disabled,textarea:disabled{cursor:not-allowed;opacity:.5}::-moz-placeholder{color:#949494;color:var(--form-placeholder)}:-ms-input-placeholder{color:#949494;color:var(--form-placeholder)}::-ms-input-placeholder{color:#949494;color:var(--form-placeholder)}::placeholder{color:#949494;color:var(--form-placeholder)}@media (prefers-color-scheme:dark){::-moz-placeholder{color:#a9a9a9;color:var(--form-placeholder)}:-ms-input-placeholder{color:#a9a9a9;color:var(--form-placeholder)}::-ms-input-placeholder{color:#a9a9a9;color:var(--form-placeholder)}::placeholder{color:#a9a9a9;color:var(--form-placeholder)}}fieldset{border:1px solid rgba(0,150,191,.67);border:1px solid var(--focus);border-radius:6px;margin:0 0 12px;padding:10px}@media (prefers-color-scheme:dark){fieldset{border:1px solid rgba(0,150,191,.67);border:1px solid var(--focus)}}legend{font-size:.9em;font-weight:600}input[type=range]{margin:10px 0;padding:10px 0;background:transparent}input[type=range]:focus{outline:none}input[type=range]::-webkit-slider-runnable-track{width:100%;height:9.5px;-webkit-transition:.2s;transition:.2s;background:#efefef;background:var(--background);border-radius:3px}@media (prefers-color-scheme:dark){input[type=range]::-webkit-slider-runnable-track{background:#161f27;background:var(--background)}}input[type=range]::-webkit-slider-thumb{box-shadow:0 1px 1px #000,0 0 1px #0d0d0d;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border);-webkit-appearance:none;margin-top:-7px}@media (prefers-color-scheme:dark){input[type=range]::-webkit-slider-thumb{background:#526980;background:var(--border)}}input[type=range]:focus::-webkit-slider-runnable-track{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-webkit-slider-runnable-track{background:#161f27;background:var(--background)}}input[type=range]::-moz-range-track{width:100%;height:9.5px;-moz-transition:.2s;transition:.2s;background:#efefef;background:var(--background);border-radius:3px}@media (prefers-color-scheme:dark){input[type=range]::-moz-range-track{background:#161f27;background:var(--background)}}input[type=range]::-moz-range-thumb{box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border)}@media (prefers-color-scheme:dark){input[type=range]::-moz-range-thumb{background:#526980;background:var(--border)}}input[type=range]::-ms-track{width:100%;height:9.5px;background:transparent;border-color:transparent;border-width:16px 0;color:transparent}input[type=range]::-ms-fill-lower{background:#efefef;background:var(--background);border:.2px solid #010101;border-radius:3px;box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d}@media (prefers-color-scheme:dark){input[type=range]::-ms-fill-lower{background:#161f27;background:var(--background)}}input[type=range]::-ms-fill-upper{background:#efefef;background:var(--background);border:.2px solid #010101;border-radius:3px;box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d}@media (prefers-color-scheme:dark){input[type=range]::-ms-fill-upper{background:#161f27;background:var(--background)}}input[type=range]::-ms-thumb{box-shadow:1px 1px 1px #000,0 0 1px #0d0d0d;border:1px solid #000;height:20px;width:20px;border-radius:50%;background:#dbdbdb;background:var(--border)}@media (prefers-color-scheme:dark){input[type=range]::-ms-thumb{background:#526980;background:var(--border)}}input[type=range]:focus::-ms-fill-lower{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-ms-fill-lower{background:#161f27;background:var(--background)}}input[type=range]:focus::-ms-fill-upper{background:#efefef;background:var(--background)}@media (prefers-color-scheme:dark){input[type=range]:focus::-ms-fill-upper{background:#161f27;background:var(--background)}}a{text-decoration:none;color:#0076d1;color:var(--links)}@media (prefers-color-scheme:dark){a{color:#41adff;color:var(--links)}}a:hover{text-decoration:underline}code{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){code{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}samp{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){samp{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}time{background:#efefef;background:var(--background);color:#000;color:var(--code);padding:2.5px 5px;border-radius:6px;font-size:1em}@media (prefers-color-scheme:dark){time{color:#ffbe85;color:var(--code);background:#161f27;background:var(--background)}}pre>code{padding:10px;display:block;overflow-x:auto}var{color:#39a33c;color:var(--variable);font-style:normal;font-family:monospace}@media (prefers-color-scheme:dark){var{color:#d941e2;color:var(--variable)}}kbd{background:#efefef;background:var(--background);border:1px solid #dbdbdb;border:1px solid var(--border);border-radius:2px;color:#363636;color:var(--text-main);padding:2px 4px}@media (prefers-color-scheme:dark){kbd{color:#dbdbdb;color:var(--text-main);border:1px solid #526980;border:1px solid var(--border);background:#161f27;background:var(--background)}}img,video{max-width:100%;height:auto}hr{border:none;border-top:1px solid #dbdbdb;border-top:1px solid var(--border)}@media (prefers-color-scheme:dark){hr{border-top:1px solid #526980;border-top:1px solid var(--border)}}table{border-collapse:collapse;margin-bottom:10px;width:100%;table-layout:fixed}table caption,td,th{text-align:left}td,th{padding:6px;vertical-align:top;word-wrap:break-word}thead{border-bottom:1px solid #dbdbdb;border-bottom:1px solid var(--border)}@media (prefers-color-scheme:dark){thead{border-bottom:1px solid #526980;border-bottom:1px solid var(--border)}}tfoot{border-top:1px solid #dbdbdb;border-top:1px solid var(--border)}@media (prefers-color-scheme:dark){tfoot{border-top:1px solid #526980;border-top:1px solid var(--border)}}tbody tr:nth-child(2n){background-color:#efefef;background-color:var(--background)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n){background-color:#161f27;background-color:var(--background)}}tbody tr:nth-child(2n) button{background-color:#f7f7f7;background-color:var(--background-alt)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n) button{background-color:#1a242f;background-color:var(--background-alt)}}tbody tr:nth-child(2n) button:hover{background-color:#fff;background-color:var(--background-body)}@media (prefers-color-scheme:dark){tbody tr:nth-child(2n) button:hover{background-color:#202b38;background-color:var(--background-body)}}::-webkit-scrollbar{height:10px;width:10px}::-webkit-scrollbar-track{background:#efefef;background:var(--background);border-radius:6px}@media (prefers-color-scheme:dark){::-webkit-scrollbar-track{background:#161f27;background:var(--background)}}::-webkit-scrollbar-thumb{background:#aaa;background:var(--scrollbar-thumb);border-radius:6px}@media (prefers-color-scheme:dark){::-webkit-scrollbar-thumb{background:#040a0f;background:var(--scrollbar-thumb)}}::-webkit-scrollbar-thumb:hover{background:#9b9b9b;background:var(--scrollbar-thumb-hover)}@media (prefers-color-scheme:dark){::-webkit-scrollbar-thumb:hover{background:#000;background:var(--scrollbar-thumb-hover)}}::-moz-selection{background-color:#9e9e9e;background-color:var(--selection);color:#000;color:var(--text-bright)}::selection{background-color:#9e9e9e;background-color:var(--selection);color:#000;color:var(--text-bright)}@media (prefers-color-scheme:dark){::-moz-selection{color:#fff;color:var(--text-bright)}::selection{color:#fff;color:var(--text-bright)}}@media (prefers-color-scheme:dark){::-moz-selection{background-color:#1c76c5;background-color:var(--selection)}::selection{background-color:#1c76c5;background-color:var(--selection)}}details{display:flex;flex-direction:column;align-items:flex-start;background-color:#f7f7f7;background-color:var(--background-alt);padding:10px 10px 0;margin:1em 0;border-radius:6px;overflow:hidden}@media (prefers-color-scheme:dark){details{background-color:#1a242f;background-color:var(--background-alt)}}details[open]{padding:10px}details>:last-child{margin-bottom:0}details[open] summary{margin-bottom:10px}summary{display:list-item;background-color:#efefef;background-color:var(--background);padding:10px;margin:-10px -10px 0;cursor:pointer;outline:none}@media (prefers-color-scheme:dark){summary{background-color:#161f27;background-color:var(--background)}}summary:focus,summary:hover{text-decoration:underline}details>:not(summary){margin-top:0}summary::-webkit-details-marker{color:#363636;color:var(--text-main)}@media (prefers-color-scheme:dark){summary::-webkit-details-marker{color:#dbdbdb;color:var(--text-main)}}dialog{background-color:#f7f7f7;background-color:var(--background-alt);color:#363636;color:var(--text-main);border-radius:6px;border:#dbdbdb;border-color:var(--border);padding:10px 30px}@media (prefers-color-scheme:dark){dialog{border-color:#526980;border-color:var(--border);color:#dbdbdb;color:var(--text-main);background-color:#1a242f;background-color:var(--background-alt)}}dialog>header:first-child{background-color:#efefef;background-color:var(--background);border-radius:6px 6px 0 0;margin:-10px -30px 10px;padding:10px;text-align:center}@media (prefers-color-scheme:dark){dialog>header:first-child{background-color:#161f27;background-color:var(--background)}}dialog::-webkit-backdrop{background:rgba(0,0,0,.61);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}dialog::backdrop{background:rgba(0,0,0,.61);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}footer{border-top:1px solid #dbdbdb;border-top:1px solid var(--border);padding-top:10px;color:#70777f;color:var(--text-muted)}@media (prefers-color-scheme:dark){footer{color:#a9b1ba;color:var(--text-muted);border-top:1px solid #526980;border-top:1px solid var(--border)}}body>footer{margin-top:40px}@media print{body,button,code,details,input,pre,summary,textarea{background-color:#fff}button,input,textarea{border:1px solid #000}body,button,code,footer,h1,h2,h3,h4,h5,h6,input,pre,strong,summary,textarea{color:#000}summary::marker{color:#000}summary::-webkit-details-marker{color:#000}tbody tr:nth-child(2n){background-color:#f2f2f2}a{color:#00f;text-decoration:underline}}</style>
+</head>
+<body>
+<h1 id="rfm-chatbot-qa-test-2026年-6月-7日-星期日-00時55分02秒-hkt">RFM
+Chatbot Q&amp;A Test — 2026年 6月 7日 星期日 00時55分02秒 HKT</h1>
+<p><strong>Model</strong>: Qwen-plus via DashScope Intl
+<strong>Functions</strong>: 14 (getCustomerInfo, listAllCustomers,
+runWhatIf, explainSegment, getSegmentDistribution, suggestTargetSegment,
+getSegmentStats, getAtRiskCustomers, compareCustomers,
+getCustomersByFilter, getRevenueBySegment, getNewVsReturning,
+getSummaryStats, getSegmentMigration) <strong>Sample Data</strong>: 8
+customers, 54 transactions</p>
+<table>
+<colgroup>
+<col style="width: 7%" />
+<col style="width: 25%" />
+<col style="width: 47%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Answer (truncated)</th>
+<th>Status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Tell me about customer C001</td>
+<td>Customer <strong>C001</strong> is classified as a <strong>Potential
+Loyalist</strong> (RFM score: <strong>453</strong>) — meaning they’re
+highly engaged and valuable, with strong frequency and monetary
+behavior, and recently purchased</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>2</td>
+<td>What is C004’s segment?</td>
+<td>C004 is in the <strong>Best Customers</strong> segment (RFM score:
+555) — meaning they are highly valuable, recently active (purchased just
+4 days ago), very frequent (16 orders), and high-spending ($446 avg
+per</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Show me C007’s RFM score</td>
+<td>Customer <strong>C007</strong> has an RFM score of
+<strong>222</strong>, placing them in the <strong>Hibernating
+Customers</strong> segment. - <strong>Recency</strong>: 24 days since
+last purchase (score: 2) - <strong>Frequency</strong>: 5 total orders
+(score: 2</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>4</td>
+<td>How much has C002 spent in total?</td>
+<td>Customer C002 has spent a total of $2,005. They are currently
+classified as a “Potential Loyalist” (RFM score 345), meaning they have
+moderate recency (purchased 22 days ago), good frequency (10 orde</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>5</td>
+<td>How many orders does C003 have?</td>
+<td>Customer C003 has <strong>3 orders</strong>. They are currently
+classified as <strong>Hibernating Customers</strong> (RFM score 121),
+meaning they’re inactive (35 days since last purchase), have low order
+frequency, and low</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>6</td>
+<td>When did C005 last purchase?</td>
+<td>Customer C005 last purchased <strong>14 days ago</strong>. They are
+currently in the <strong>Potential Loyalist</strong> segment (RFM score:
+333), with 6 orders and total spending of $630 ($105 avg per order). 💡
+*Next ste</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>7</td>
+<td>What is the average spending of C001 per order?</td>
+<td>The average spending per order for customer <strong>C001</strong> is
+<strong>$121.00</strong>. They are currently classified as a
+<strong>Potential Loyalist</strong> (RFM score: 453), indicating strong
+frequency and monetary value, with r</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Is C006 a new customer?</td>
+<td>Yes — <strong>C006 is a new customer</strong>. - ✅ <strong>Orders =
+1</strong>, confirming they’ve only made a single purchase so far. - ✅
+Their segment is <strong>“High-spending New Customers”</strong>, which
+aligns with</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>9</td>
+<td>What segment does C008 belong to?</td>
+<td>Customer <strong>C008</strong> belongs to the <strong>Lost Cheap
+Customers</strong> segment (RFM score: <strong>111</strong>). This
+means: - They haven’t purchased in <strong>84 days</strong> (low
+recency), - Made only <strong>1 order</strong> ever (low freque</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Tell me everything about C004</td>
+<td>Customer <strong>C004</strong> is a top-tier <strong>Best
+Customer</strong> (RFM score: <strong>555</strong>) — the highest
+possible tier, indicating exceptional value and engagement: - ✅
+<strong>Recency</strong>: Purchased just <strong>4 days ago</strong>
+(sc</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>11</td>
+<td>What is C001’s recency score?</td>
+<td>C001’s <strong>recency score is 4</strong>, based on a recency of
+<strong>6 days since last purchase</strong> (scored on a 1–5 scale,
+where lower days = higher score). Their full RFM score is
+<strong>453</strong>, meaning: - **Recency</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>12</td>
+<td>How does C002 rank in terms of spending?</td>
+<td>Customer <strong>C002</strong> has an <strong>RFM score of
+345</strong>, placing them in the <strong>Potential Loyalist</strong>
+segment. Their key spending metrics are: - <strong>Total
+spending</strong>: $2,005 - <strong>Average spending per order</strong>:
+$20</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Describe C003’s purchase behavior</td>
+<td>Customer <strong>C003</strong> is classified as a
+<strong>Hibernating Customer</strong> (RFM score: <strong>121</strong>)
+— indicating very low engagement and minimal value: -
+<strong>Recency</strong>: Last purchased <strong>35 days ago</strong>
+(score 1 → wel</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Is C005 a loyal customer?</td>
+<td>Customer <strong>C005</strong> has an RFM score of
+<strong>333</strong>, placing them in the <strong>Potential
+Loyalist</strong> segment — <em>not</em> the <strong>Loyal
+Customers</strong> segment (which requires ≥444). - ✅ <strong>Frequency
+= 6</strong> → strong</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>15</td>
+<td>What is C007’s frequency score?</td>
+<td>C007’s frequency score is <strong>2</strong> (out of 5), as
+reflected in their RFM score <strong>222</strong>, where the middle
+digit represents Frequency. They have placed <strong>5 orders</strong>,
+which falls in the lower tier for fr</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>16</td>
+<td>How long has C008 been inactive?</td>
+<td>Customer C008 has been inactive for <strong>84 days</strong>, which
+is why they’re classified as “Lost Cheap Customers” (RFM score 111).
+They’ve only made 1 purchase totaling $50. Since they’re in the
+lowest-valu</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Is C004 a Best Customer?</td>
+<td>Yes, <strong>C004 is a Best Customer</strong> — they have the
+top-tier RFM score of <strong>555</strong>, meaning: -
+<strong>Recency</strong>: Purchased just <strong>4 days ago</strong>
+(score 5) - <strong>Frequency</strong>: <strong>16 orders</strong>,
+indicating strong l</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>18</td>
+<td>What is the monetary score for C002?</td>
+<td>Customer C002 has a monetary score of <strong>5</strong>, as shown
+in their RFM score “345” (where the third digit represents the monetary
+component). Their average spending per order is $201, which places them
+i</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>19</td>
+<td>How many transactions does C001 have?</td>
+<td>Customer C001 has <strong>12 transactions</strong>. They are
+currently classified as a “Potential Loyalist” with an RFM score of 453
+(Recency: 4, Frequency: 5, Monetary: 3), meaning they’ve purchased
+recently (6</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Show me C006’s complete profile</td>
+<td>Customer <strong>C006</strong> has the following RFM profile: -
+<strong>RFM Score</strong>: 514 - Recency: <strong>5</strong> (purchased
+<em>today</em> — most recent) - Frequency: <strong>1</strong>
+(first-time buyer) - Monetary: <strong>4</strong> (high av</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>21</td>
+<td>What does Best Customers mean?</td>
+<td>“Best Customers” are your top-tier customers — they score <strong>5
+out of 5 on Recency, Frequency, and Monetary</strong> (i.e., RFM = 555).
+This means they: ✅ Purchased <strong>very recently</strong>, ✅ Buy
+**ver</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>22</td>
+<td>Explain Loyal Customers</td>
+<td><strong>Loyal Customers (RFM ≥444)</strong> are your dependable
+repeat buyers — they shop frequently, recently, and spend well. They
+represent high engagement and trust in your brand. ✅ <strong>Key
+traits</strong>: -</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>23</td>
+<td>What is a Potential Loyalist?</td>
+<td>A <strong>Potential Loyalist</strong> is a customer with an RFM
+score of <strong>3 or higher on all three dimensions</strong> (Recency
+≥3, Frequency ≥3, Monetary ≥3). This means they’ve: - Purchased
+relatively recentl</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>24</td>
+<td>Describe High-spending New Customers</td>
+<td><strong>High-spending New Customers</strong> (RFM score: R≥4, M≥4,
+F≤2) are customers who: - ✅ Made a <strong>recent purchase</strong>
+(within last ~30 days — high Recency score), - ✅ Spent **significantly
+above</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>25</td>
+<td>What are Almost Lost Customers?</td>
+<td><strong>Almost Lost Customers</strong> are high-value, loyal
+customers who have recently become inactive — they have: -
+<strong>Recency = 2–3</strong> (purchased 2–3 time periods ago — e.g.,
+2–3 months ago, dependin</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>26</td>
+<td>Explain Churned Best Customers</td>
+<td><strong>Churned Best Customers</strong> (Rank #7) are your
+<em>former top-tier customers</em>: - <strong>Recency = 1</strong> →
+Last purchase was <strong>very long ago</strong> (e.g., &gt;180 days),
+indicating full disengagement. - **Frequency</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>27</td>
+<td>What does Hibernating Customers mean?</td>
+<td><strong>Hibernating Customers</strong> (RFM score ≤222) are those
+with: - <strong>Low Recency</strong>: Last purchase was long ago (e.g.,
+&gt;180 days), - <strong>Low Frequency</strong>: Very few orders (often
+just 1–2), - **Low Mone</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>28</td>
+<td>Explain Lost Cheap Customers</td>
+<td><strong>Lost Cheap Customers (111)</strong> are the lowest-value
+segment: - <strong>Recency = 1</strong>: Haven’t purchased in a very
+long time (e.g., &gt;365 days) - <strong>Frequency = 1</strong>: Only 1
+lifetime order - **Monetary</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>29</td>
+<td>What is Customers Needing Attention?</td>
+<td><strong>Customers Needing Attention</strong> (Rank #8) are those
+with <em>mixed or inconsistent RFM scores</em> — for example, high
+recency but low frequency and monetary, or medium on all three — making
+their behavi</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>30</td>
+<td>Describe About to Sleep Customers</td>
+<td><strong>About to Sleep Customers (Rank #9)</strong> These customers
+have <strong>low Recency, low Frequency, and low Monetary scores (≤3 on
+all three RFM dimensions)</strong> — indicating they’re showing early
+signs of</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>31</td>
+<td>What is Low-spending Active Loyal Customers?</td>
+<td><strong>Low-spending Active Loyal Customers</strong> are highly
+engaged — they shop <em>frequently</em> (≥4 orders) and
+<em>recently</em> (R ≥ 4, i.e., purchased within the top 20% most recent
+window), but their average o</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Which segment is the most valuable?</td>
+<td>The <strong>Best Customers</strong> segment is the most valuable: -
+<strong>1 customer</strong>, contributing <strong>$7,130</strong> —
+<strong>60.1% of total revenue</strong> - Average revenue per customer:
+<strong>$7,130</strong> (by far the highest) Desp</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>33</td>
+<td>Which segment is the worst?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>34</td>
+<td>How do you identify a Best Customer?</td>
+<td>A <strong>Best Customer</strong> is identified by the highest
+possible RFM scores: ✅ <strong>Recency = 5</strong> — Purchased very
+recently (e.g., within ~7 days) ✅ <strong>Frequency = 5</strong> — Has
+placed many orders (e.g.,</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>35</td>
+<td>What is the difference between Hibernating and Lost Cheap?</td>
+<td>Here’s the clear distinction: / Dimension / <strong>Hibernating
+Customers (≤222)</strong> / <strong>Lost Cheap Customers (111)</strong>
+/ /———-/———————————-/——————————–/ / **</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>36</td>
+<td>How many customers are in each segment?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>37</td>
+<td>What is the segment distribution?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>38</td>
+<td>Which segment has the most customers?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>39</td>
+<td>Which segment has the fewest customers?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>40</td>
+<td>How many segments are active?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>41</td>
+<td>What percentage of customers are Best Customers?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>42</td>
+<td>How many customers are in the Loyal segment?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>43</td>
+<td>Show me the segment breakdown</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>44</td>
+<td>Are there any empty segments?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>45</td>
+<td>What proportion of customers are at risk?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>46</td>
+<td>Who are the top 5 customers by spending?</td>
+<td>Here are the <strong>top 5 customers by total spending</strong>: 1.
+<strong>C004</strong> — $7,130 → <em>Best Customers</em> (RFM: 555) 2.
+<strong>C002</strong> — $2,005 → <em>Potential Loyalist</em> (RFM: 345)
+3. <strong>C001</strong> — $1,455.80 →</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>47</td>
+<td>List all customers sorted by orders</td>
+<td>Here are all 8 customers sorted by number of orders (highest first):
+/ Customer / Segment / RFM / Orders / Spending / Recency (days) /
+/———-/————————–/——/</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>48</td>
+<td>Who has the most transactions?</td>
+<td>Customer <strong>C004</strong> has the most transactions with
+<strong>16 orders</strong>, placing them in the <strong>Best
+Customers</strong> segment (RFM score 555). They’ve spent $7,130 total
+and made their most recent purchase just 4 da</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>49</td>
+<td>Who spent the least?</td>
+<td>The customer who spent the least is <strong>C004</strong>, with a
+total spending of <strong>$7,130</strong>. However, this seems unusually
+high for “least spent” — likely because all 8 customers in your dataset
+are high</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>50</td>
+<td>Rank customers by recency</td>
+<td>Here’s your customer list ranked by <strong>recency</strong> (most
+recent first): / Rank / Customer ID / Segment / RFM / Orders / Avg.
+Spending / Days Since Last Purchase / /——/———–</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>51</td>
+<td>Who are the top 3 customers?</td>
+<td>Here are the top 3 customers ranked by total spending: 1.
+<strong>C004</strong> - Best Customers (RFM: 555) - $7,130 spent / 16
+orders / Last purchased 4 days ago *True VIP: most recent, most
+frequent,</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>52</td>
+<td>Which customer has the highest order count?</td>
+<td>Customer <strong>C004</strong> has the highest order count with
+<strong>16 orders</strong>. They’re classified as a <strong>Best
+Customer</strong> (RFM score 555), meaning they’re also very recent
+(purchased just 4 days ago) and high-spend</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>53</td>
+<td>Show me the bottom 3 customers by spending</td>
+<td>✅ Here are the <strong>bottom 3 customers by spending</strong>
+(lowest to lowest): 1. <strong>C008</strong> — Lost Cheap Customers
+(111), $50, 1 order, last purchase <strong>84 days ago</strong> 2.
+<strong>C003</strong> — Hibernating Customers</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>54</td>
+<td>Who is the most recent buyer?</td>
+<td>The most recent buyer is <strong>Customer C006</strong>, who made a
+purchase today (0 days ago). They’re classified as a “High-spending New
+Customer” with an RFM score of 514 — meaning they’re very recent (5),
+h</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>55</td>
+<td>Who is the least recent buyer?</td>
+<td>Processing loop limit reached. Please try a simpler query.</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>56</td>
+<td>List customers in Hibernating segment</td>
+<td>There are <strong>8 customers</strong> in the
+<strong>Hibernating</strong> segment (score ≤222: very low recency,
+frequency, and monetary value), but none are currently returned — likely
+because the default limit is 10 and</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>57</td>
+<td>Show me customers with more than 5 orders</td>
+<td>Here are the 5 customers with <strong>more than 5 orders</strong>,
+ranked by order count: / Customer / Segment / RFM / Orders / Spending /
+Recency (days) / /———-/———————/——/–</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>58</td>
+<td>Who are the customers in Potential Loyalist?</td>
+<td>Here are the 3 customers currently classified as <strong>Potential
+Loyalist</strong>: / Customer ID / RFM Score / Orders / Avg.
+Spending/Order / Days Since Last Purchase / /————-/———–/——–/—-</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>59</td>
+<td>List all customers in Best Customers segment</td>
+<td>There is <strong>1 customer</strong> in the <strong>Best
+Customers</strong> segment: - <strong>C004</strong>: RFM = 555
+(top-tier), 16 orders, $7,130 total spending, last purchased <strong>4
+days ago</strong>. ✅ This is your highest-value, most eng</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>60</td>
+<td>Who has spent more than 000?</td>
+<td>It looks like your query is incomplete — you wrote “spent more than
+000”, but the amount is missing (e.g., $500, $1,000, etc.). Could you
+please clarify the spending threshold? For example: -</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>61</td>
+<td>Show me the highest value customers</td>
+<td>Here are your highest value customers, ranked by total spending: 1.
+<strong>C004</strong> - Best Customers (555) - $7,130 spent across 16
+orders, last purchased 4 days ago 2. <strong>C002</strong> - Potential
+Loyalist (345) -</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>62</td>
+<td>Which customers buy most frequently?</td>
+<td>The most frequent buyers are: 1. <strong>C004</strong> — <em>Best
+Customers</em> (RFM: 555) — <strong>16 orders</strong>, $7,130 spent,
+last purchased 4 days ago 2. <strong>C001</strong> — <em>Potential
+Loyalist</em> (RFM: 453) — **12 orders*</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>63</td>
+<td>Who are the churned best customers?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>64</td>
+<td>List customers who haven’t purchased in 30+ days</td>
+<td>None of the listed customers meet the “haven’t purchased in 30+
+days” criteria — all have recencyDays ≤ 24. The most dormant is
+<strong>C007</strong> (Hibernating, 24 days), but still under 30. 🔍
+To</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>65</td>
+<td>Show me all customers sorted by total spending</td>
+<td>Here are all 8 customers sorted by total spending (highest first): /
+Customer / Segment / RFM / Orders / Spending / Recency (days) /
+/———-/————————–/—–/—-</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>66</td>
+<td>What if C003 made 10 purchases?</td>
+<td>If <strong>C003</strong> increased their order count from 3 to
+<strong>10 purchases</strong>, while keeping spending ($135 avg/order)
+and recency (35 days since last purchase) unchanged, their RFM score
+would improve from **12</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>67</td>
+<td>If C008 bought something today, would their segment change?</td>
+<td>Yes — <strong>C008’s segment would change</strong> if they purchased
+today: - ✅ <strong>Current segment</strong>: <em>Lost Cheap
+Customers</em> (111) - 🎯 <strong>New segment</strong>: <em>Customers
+Needing Attention</em> (511) - 🔁 **Cha</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>68</td>
+<td>What if C005 increased their spending to 00 per order?</td>
+<td>It looks like the monetary value you entered for customer C005 is
+“00”, which appears to be incomplete or invalid (e.g., $0 or missing
+digits). To run a meaningful <em>What-If</em> simulation, we need a
+real</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>69</td>
+<td>Simulate C002 making 5 more orders</td>
+<td>✅ Corrected simulation: If <strong>C002 makes 5 more
+orders</strong> (total orders → <strong>15</strong>), their RFM score
+improves from <strong>345 → 355</strong>, but they <strong>remain in the
+<em>Potential Loyalist</em> segment</strong>, as this s</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>70</td>
+<td>What happens to C001 if they don’t buy for 90 days?</td>
+<td>If customer <strong>C001</strong> doesn’t make another purchase for
+<strong>90 days</strong>, their RFM profile changes significantly: -
+<strong>Current</strong>: <code>453</code> → <strong>Potential
+Loyalist</strong> (strong frequency &amp; spending, very recen</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>71</td>
+<td>If C003 spent 00 per order, what segment would they be?</td>
+<td>✅ Confirmed: If C003’s average spending drops to <strong>$0 per
+order</strong>, their RFM score remains <strong>121</strong>, and they
+stay in the <strong>Hibernating Customers</strong> segment. Why? -
+Monetary score is based on *re</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>72</td>
+<td>What if C007 ordered 15 times?</td>
+<td>If <strong>C007</strong> increased their order count from <strong>5
+to 15</strong>, while keeping spending ($255) and recency (24 days)
+unchanged, their RFM score would improve from <strong>222 →
+252</strong>, and their segment would shi</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>73</td>
+<td>Simulate C008 becoming a daily shopper</td>
+<td>✅ <strong>Simulation Result for C008</strong>: - <strong>Current
+segment</strong>: <em>Lost Cheap Customers</em> (111) - <strong>After
+becoming a daily shopper</strong>: → <strong><em>Low-spending Active
+Loyal Customers</em></strong> (<strong>551</strong>) 🔍 **Key</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>74</td>
+<td>What changes would move C006 to Loyal Customers?</td>
+<td>To move <strong>C006</strong> from <em>High-spending New
+Customers</em> to <strong>Loyal Customers</strong>, the following
+changes are required: - ✅ <strong>Recency</strong>: Already optimal —
+purchased <strong>today</strong> (0 days ago). - ➕ **Freq</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>75</td>
+<td>How can C003 become a Potential Loyalist?</td>
+<td>Here’s the precise path for <strong>C003</strong> to become a
+<strong>Potential Loyalist</strong>: ✅ <strong>Achievable?</strong> Yes
+🔹 <strong>Required changes</strong>: - <strong>Recency</strong>:
+Purchase <strong>within the next 0–2 days</strong> (i.e., *immine</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>76</td>
+<td>What if C005 had recency of 0 days?</td>
+<td>If customer <strong>C005</strong> had a recency of <strong>0
+days</strong> (i.e., purchased today), their RFM score would improve
+from <strong>333 → 533</strong>, moving their <em>Recency</em> score
+from 3 to 5 — but their **segment remains</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>77</td>
+<td>Simulate doubling C002’s order count</td>
+<td>Doubling C002’s order count from 10 to 14 moves their RFM score from
+<strong>345 → 355</strong>, but they remain in the <strong>Potential
+Loyalist</strong> segment. Key insights: - Their Frequency score
+improved from 4 →</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>78</td>
+<td>What if C004 reduced their spending by half?</td>
+<td>Even with spending cut in half (from $446 → $223 avg/order),
+<strong>C004 remains in the <em>Best Customers</em> segment
+(555)</strong> — no segment change. ✅ Why? Their Recency (4 days) and
+Frequency (16 orders)</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>79</td>
+<td>If C001 doubled their frequency, what changes?</td>
+<td>Great — here’s the impact of <strong>doubling C001’s order
+frequency</strong> (from 12 → 24): - ✅ <strong>RFM score
+changes</strong>: <code>453</code> → <code>455</code> - ✅
+<strong>Segment upgrades</strong>: <strong>Potential Loyalist</strong> →
+**Loyal Cu</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>80</td>
+<td>What would it take for C008 to reach Best Customers?</td>
+<td>Thanks for the confirmation — C008 is indeed a <strong>111 (Lost
+Cheap)</strong>: - 🕒 Recency: 84 days (score = 1) - 📦 Frequency: 1
+order (score = 1) - 💰 Monetary: $50/order (score = 1) To reach</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>81</td>
+<td>Simulate C007 with 12 orders and 00 avg spend</td>
+<td>The simulation for <strong>C007</strong> shows a dramatic shift: -
+<strong>Before</strong>: Hibernating Customers (RFM 222) — inactive, low
+spend, low frequency - <strong>After</strong>: Low-spending Active Loyal
+Customers (RFM 541)</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>82</td>
+<td>What if C006’s recency was 1 day?</td>
+<td>If C006’s recency increased from 0 to 1 day (i.e., their last
+purchase shifts from <em>today</em> to <em>1 day ago</em>), their RFM
+score remains <strong>514</strong>, and they stay in the
+<strong>High-spending New Customers</strong> segm</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>83</td>
+<td>How to move C003 to Loyal Customers?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>84</td>
+<td>What changes would upgrade C005’s segment?</td>
+<td>Customer C005 is currently in the <strong>Potential
+Loyalist</strong> segment (RFM score: 333), meaning they’re moderately
+engaged — purchased 6 times, most recently 14 days ago, and spend ~$105
+per order. To</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>85</td>
+<td>If C002 came back today, what segment?</td>
+<td>If <strong>C002 came back today</strong>, their RFM score would
+improve from <strong>345 → 545</strong>, moving them from
+<strong>Potential Loyalist</strong> to <strong>Loyal Customers</strong>
+— a high-value, active segment. ✅ Key impact: - R</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>86</td>
+<td>Simulate C008 with recency=0, frequency=5, monetary=150</td>
+<td>Simulating <strong>C008</strong> with updated behavior (recency = 0
+days, frequency = 5 orders, monetary = $150) results in a
+<strong>significant positive shift</strong>: - ✅ <strong>Segment
+change</strong>: From **Lost Cheap Customers</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>87</td>
+<td>What if all customers bought one more time?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>88</td>
+<td>Can C007 reach Best Customers?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>89</td>
+<td>What minimal changes upgrade C003?</td>
+<td>The suggestion shows that moving C003 from <strong>Hibernating
+(121)</strong> → <strong>Potential Loyalist (≥333)</strong> would
+require <em>very large</em> changes: - Recency: <strong>0 days</strong>
+(i.e., purchase <em>today</em>), - Orders: j</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>90</td>
+<td>How to turn C008 into a valuable customer?</td>
+<td>Processing loop limit reached. Please try a simpler query.</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>91</td>
+<td>Which customers are at risk of churning?</td>
+<td>Based on the analysis, I’ve identified <strong>1 customer at risk of
+churning</strong>: <strong>C002</strong>. - <strong>Segment</strong>:
+Potential Loyalist (RFM: 345) - <strong>Recency</strong>: 22 days since
+last purchase - <strong>Orders</strong>: 10 total ord</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>92</td>
+<td>Show me the churn risk analysis</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>93</td>
+<td>Who is most likely to churn?</td>
+<td>The system identified <strong>1 at-risk customer</strong>, with
+<strong>moderate urgency</strong>: - <strong>Customer ID</strong>: C002
+- <strong>Current Segment</strong>: <em>Potential Loyalist</em> (RFM =
+345) - <strong>Recency</strong>: 22 days since last purcha</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>94</td>
+<td>Which high-value customers are slipping away?</td>
+<td>Only <strong>1 customer</strong> is currently flagged as
+<em>at-risk</em> — <strong>C002</strong>, classified as
+<strong>Potential Loyalist (345)</strong> with: - Recency: 22 days since
+last purchase - 10 orders, $2,005 average spending per o</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>95</td>
+<td>Are there any critical churn risks?</td>
+<td>There is <strong>1 at-risk customer</strong>, but the urgency level
+is only <em>moderate</em>, not critical. Customer <strong>C002</strong>
+is in the <em>Potential Loyalist</em> segment (RFM 345): they’ve placed
+10 orders, spent $2,005 on</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>96</td>
+<td>Which Almost Lost customers need attention?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>97</td>
+<td>Who are the churned best customers?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>98</td>
+<td>How many customers are in the danger zone?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>99</td>
+<td>Which loyal customers have stopped buying?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>100</td>
+<td>What is the churn rate?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>101</td>
+<td>Identify customers who were best but are now lost</td>
+<td>Only <strong>1 customer (C004)</strong> meets high-frequency +
+high-monetary criteria — and they’re <em>still active</em> (recency = 4
+days), firmly in <strong>Best Customers (555)</strong>. 🔍 Conclusion:
+There are **no cus</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>102</td>
+<td>Who needs win-back campaigns?</td>
+<td>Only <strong>1 customer (C002)</strong> is flagged as
+<em>at-risk</em>: - <strong>Segment</strong>: Potential Loyalist (RFM =
+345) - <strong>Recency</strong>: 22 days since last purchase -
+<strong>Orders</strong>: 10 (frequent) - <strong>Spending</strong>:
+$2,005</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>103</td>
+<td>Which customers have high spending but low recency?</td>
+<td>Only <strong>1 customer</strong> is currently flagged as <em>at-risk
+with high spending but low recency</em>: - <strong>C002</strong>, in the
+<em>Potential Loyalist</em> segment (RFM: 345) - Recency: <strong>22
+days</strong> since last purchase</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>104</td>
+<td>Who is about to sleep?</td>
+<td>The filtered results show <strong>2 customers</strong> who
+<em>behave like</em> “About to Sleep” (low frequency, low spend,
+moderately recent), but they’re currently classified as: -
+<strong>C003</strong>: *Hibernating Custome</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>105</td>
+<td>Show customers with RFM score below 333</td>
+<td>Here are the 8 customers with RFM scores <strong>≤ 333</strong>,
+grouped by segment and sorted by recency (most recent first): / Customer
+/ RFM / Segment / Orders / Avg. Spending / Recency (da</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>106</td>
+<td>Which customers have the highest churn probability?</td>
+<td>Only <strong>1 customer</strong> is currently flagged as at-risk: -
+<strong>C002</strong>, in the <em>Potential Loyalist</em> segment (RFM =
+345), with <strong>22 days since last purchase</strong>, <strong>10
+orders</strong>, and <strong>$2,005 average spending</strong></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>107</td>
+<td>Are Best Customers at risk?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>108</td>
+<td>How urgent is the churn situation?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>109</td>
+<td>Which customers should we contact today?</td>
+<td>Only <strong>1 customer</strong> is currently flagged as
+<em>at-risk</em>: - <strong>C002</strong>, <em>Potential Loyalist</em>
+(RFM 345), last purchased <strong>22 days ago</strong>, with <strong>10
+orders</strong> and <strong>$2,005 total spending</strong>. While not
+critic</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>110</td>
+<td>What percentage of revenue is at risk?</td>
+<td>Based on the revenue-by-segment breakdown: - <strong>At-risk
+segments</strong> (those showing disengagement or low retention
+likelihood) include: - <em>Hibernating Customers</em>:
+<strong>3.3%</strong> of total revenue ($390)</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>111</td>
+<td>What is the total revenue?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>112</td>
+<td>How is revenue distributed across segments?</td>
+<td>Revenue is highly concentrated among top-tier segments: -
+<strong>Best Customers</strong> (1 person): $7,130 →
+<strong>60.1%</strong> of total revenue - <strong>Potential
+Loyalist</strong> (3 people): $4,091 → <strong>34.5%</strong> -
+Remainin</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>113</td>
+<td>Which segment generates the most revenue?</td>
+<td>The <strong>Best Customers</strong> segment generates the most
+revenue — <strong>$7,130</strong>, accounting for <strong>60.1%</strong>
+of total revenue ($11,860.80), despite having only <strong>1
+customer</strong>. 💡 <strong>Actionable insight</strong>: This</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>114</td>
+<td>What percentage of revenue comes from Best Customers?</td>
+<td><strong>60.1%</strong> of total revenue comes from <strong>Best
+Customers</strong>, despite representing only 1 out of 8 total customers
+(12.5% of the customer base). This highlights extreme revenue
+concentration among top-ti</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>115</td>
+<td>Show revenue by segment</td>
+<td>Here’s the revenue breakdown by RFM segment: / Segment / Customers /
+Total Revenue / Avg Revenue/Customer / % of Total Revenue /
+/—————————–/———–/——-</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>116</td>
+<td>What is the average revenue per customer?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>117</td>
+<td>Which segment has the highest average spending?</td>
+<td>Based on the segment statistics, the <strong>Best Customers</strong>
+segment has the highest average spending at <strong>$7,130</strong> per
+customer. This makes sense as “Best Customers” represents your top-tier
+VIPs who are</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>118</td>
+<td>How much revenue do Loyal Customers generate?</td>
+<td>Loyal Customers are not explicitly listed in the revenue breakdown —
+the top segment shown is <strong>Best Customers</strong>, which
+generated <strong>$7,130</strong> (60.1% of total revenue). However, per
+your RFM definitio</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>119</td>
+<td>What is the revenue contribution of each segment?</td>
+<td>Here’s the revenue contribution by RFM segment: / Segment /
+Customers / Total Revenue / % of Total Revenue / Avg Revenue/Customer /
+/—————————–/———–/—-</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>120</td>
+<td>Which segment is the most profitable?</td>
+<td>The <strong>Best Customers</strong> segment is the most profitable:
+- <strong>Total revenue</strong>: $7,130 - <strong>Share of total
+revenue</strong>: <strong>60.1%</strong> - Only <strong>1
+customer</strong>, but they drive more than half of all revenue —</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>121</td>
+<td>How much did C004 contribute to total revenue?</td>
+<td>Customer C004, who is in the “Best Customers” segment (RFM score
+555), contributed <strong>$7,130</strong> to total revenue. This
+customer is a top-tier VIP—purchasing very recently (4 days ago),
+frequently (16</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>122</td>
+<td>What is the average order value across all customers?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>123</td>
+<td>Show revenue breakdown by segment</td>
+<td>Here’s the revenue breakdown by RFM segment: / Segment / Customers /
+Total Revenue / Avg Revenue/Customer / % of Total Revenue /
+/—————————–/———–/——-</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>124</td>
+<td>Which low-value segments drag down revenue?</td>
+<td>The low-value segments dragging down revenue are: - <strong>Lost
+Cheap Customers</strong>: - 1 customer, $50 total revenue → <strong>0.4%
+of total revenue</strong> - Lowest avg. revenue per customer ($50) —
+truly</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>125</td>
+<td>What percentage of revenue is from new customers?</td>
+<td>New customers (those with only one purchase) contribute
+<strong>2.1%</strong> of total revenue: - New customers: $250 revenue -
+Total revenue: $250 + $11,610.80 = <strong>$11,860.80</strong> -
+Percentage: ($250 / $11,860.</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>126</td>
+<td>How concentrated is revenue in top segments?</td>
+<td>Revenue is <strong>highly concentrated</strong> in the top two
+segments: - <strong>Best Customers (1 person)</strong>: $7,130 →
+<strong>60.1%</strong> of total revenue ($11,861) - <strong>Potential
+Loyalist (3 people)</strong>: $4,091 → **34.5%*</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>127</td>
+<td>What is the revenue per segment per customer?</td>
+<td>Here’s the <strong>revenue per customer by segment</strong>, ranked
+by average contribution: / Segment / Customers / Total Revenue / Avg
+Revenue per Customer / /—————————–/-</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>128</td>
+<td>Which segment has the highest total spending?</td>
+<td>The <strong>Best Customers</strong> segment has the highest total
+spending at <strong>$7,130</strong>, representing <strong>60.1%</strong>
+of the company’s total revenue ($11,860.80). This makes sense — these
+are your VIP customers (RFM</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>129</td>
+<td>Compare revenue between Loyal and Hibernating</td>
+<td>Here’s the revenue comparison between <strong>Loyal
+Customers</strong> and <strong>Hibernating Customers</strong>: ⚠️
+Important note: In your current segmentation, there is <strong>no “Loyal
+Customers” segment</strong> listed in t</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>130</td>
+<td>What drives the majority of our revenue?</td>
+<td>The <strong>Best Customers segment (RFM score 555)</strong> drives
+the majority of your revenue — <strong>$7,130</strong>, representing
+<strong>60.1%</strong> of your total revenue ($11,860.80). Just
+<strong>1 customer</strong> in this segment accou</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>131</td>
+<td>Compare C001 and C004</td>
+<td>Here’s how <strong>C001</strong> and <strong>C004</strong> compare:
+/ Metric / C001 (Potential Loyalist) / C004 (Best Customers) /
+Difference / /—————-/—————————-/——————-</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>132</td>
+<td>How does C002 compare to C003?</td>
+<td>Here’s how <strong>C002</strong> and <strong>C003</strong> compare:
+/ Metric / C002 (Potential Loyalist) / C003 (Hibernating) / Difference /
+/—————-/—————————-/———————/—</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>133</td>
+<td>Who is better: C004 or C002?</td>
+<td>Based on the RFM comparison: <strong>C004 is significantly better
+than C002:</strong> - <strong>Segment</strong>: C004 is a “Best
+Customer” (555) — the top-tier segment, while C002 is a “Potential
+Loyalist” (345) - **Spend</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>134</td>
+<td>Compare the top two spenders</td>
+<td>Here’s a comparison of your top two spenders: <strong>C004 (Best
+Customers - RFM 555)</strong> - Total spending: $7,130 - Orders: 16 -
+Recency: 4 days since last purchase - Segment: Best Customers (VIP tier)
+**C</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>135</td>
+<td>Side by side: C001 vs C008</td>
+<td>Here’s the side-by-side comparison of <strong>C001</strong> and
+<strong>C008</strong>: / Metric / C001 (Potential Loyalist) / C008 (Lost
+Cheap) / Difference / /——————-/————————–</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>136</td>
+<td>Compare C005 with C007</td>
+<td>Here’s how <strong>C005</strong> and <strong>C007</strong> compare:
+/ Metric / C005 (Potential Loyalist) / C007 (Hibernating) / Difference /
+/——–/—————————-/———————-/————/ / RFM Sc</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>137</td>
+<td>What is the difference between C004 and C001?</td>
+<td>Here’s the key difference between C004 and C001: <strong>C004 (Best
+Customers - RFM 555)</strong> - ✅ <strong>Higher value</strong>: $7,130
+total spending vs C001’s $1,456 (<strong>$5,674 more</strong>) - ✅
+<strong>More orders</strong>: 16 ord</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>138</td>
+<td>Compare best and worst customer</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>139</td>
+<td>How does C003 stack up against C002?</td>
+<td>Here’s how <strong>C003</strong> and <strong>C002</strong> compare:
+/ Metric / C003 (Hibernating) / C002 (Potential Loyalist) / Difference /
+/—————-/——————–/—————————-/-</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>140</td>
+<td>Compare C006 to the average customer</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>141</td>
+<td>Which of C001 and C002 is more loyal?</td>
+<td>Based on the comparison: - <strong>C001</strong> has <strong>12
+orders</strong>, <strong>$1,455.80 total spending</strong>, and
+purchased <strong>6 days ago</strong> - <strong>C002</strong> has
+<strong>10 orders</strong>, <strong>$2,005.00 total spending</strong>,
+but purchased **22 days</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>142</td>
+<td>Compare all customers in Potential Loyalist</td>
+<td>Here are the 3 customers currently classified as <strong>Potential
+Loyalist</strong> (RFM score ≥ 333, showing emerging loyalty): /
+Customer / RFM / Orders / Avg. Spending/Order / Recency (Days) /
+/———-/-</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>143</td>
+<td>C004 vs C005: who spends more per order?</td>
+<td>C004 spends <strong>$7,130</strong> across 16 orders →
+<strong>$445.63 per order</strong> C005 spends <strong>$630</strong>
+across 6 orders → <strong>$105.00 per order</strong> ✅ <strong>C004
+spends $340.63 more per order</strong> than C005 — and is in t</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>144</td>
+<td>Compare recency between C001 and C008</td>
+<td>C001 is <strong>78 days more recent</strong> than C008 — C001
+purchased just <strong>6 days ago</strong>, while C008’s last purchase
+was <strong>84 days ago</strong>, placing them in the <em>Lost Cheap
+Customers</em> segment. - ✅ <strong>C001</strong>:</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>145</td>
+<td>Who has better metrics: C002 or C005?</td>
+<td>C002 has significantly better metrics than C005: -
+<strong>Spending</strong>: $2,005 vs. $630 → <strong>$1,375
+higher</strong> - <strong>Orders</strong>: 10 vs. 6 → <strong>4 more
+orders</strong> - <strong>Recency</strong>: 22 days vs. 14 days → C005
+is</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>146</td>
+<td>Show customers with more than 10 orders</td>
+<td>Here are the 3 customers with <strong>10+ orders</strong>: / ID /
+Segment / RFM / Orders / Spending / Recency (days) /
+/——-/——————-/——/——–/———-/—————-/ / C00</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>147</td>
+<td>Find customers who spent over 000</td>
+<td>It looks like your query is incomplete — you wrote “spent over 000”,
+but the amount is missing (e.g., $500, $1,000, etc.). Could you please
+clarify the minimum spending threshold? For example:</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>148</td>
+<td>Who purchased in the last 7 days?</td>
+<td>Here are the 3 customers who purchased in the last 7 days: 1.
+<strong>C001</strong> - Potential Loyalist (RFM: 453) - 12 orders,
+$1,455.80 total spending, purchased 6 days ago 2. <strong>C004</strong>
+- Best Customers (</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>149</td>
+<td>List customers with recency under 30 days</td>
+<td>Here are the 6 customers who purchased within the last 30 days: /
+Customer / Segment / RFM / Orders / Avg. Spending / Recency (days) /
+/———-/——————————-</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>150</td>
+<td>Show customers with fewer than 3 orders</td>
+<td>Here are 2 customers with fewer than 3 orders: -
+<strong>C006</strong>: <em>High-spending New Customer</em> — just made
+their first purchase (R=5, F=1, M=4), spent <strong>$200</strong>, and
+bought <strong>today</strong>. High-potential new bu</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>151</td>
+<td>Find customers in Loyal segment with low spending</td>
+<td>No customers currently classified as “Loyal Customers” have average
+spending ≤ $100 — meaning all loyal customers spend above that
+threshold. Would you like to: - Lower the spending threshold</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>152</td>
+<td>Who has 5-10 orders?</td>
+<td>Here are 3 customers with <strong>5–10 orders</strong>, limited to
+top 10 results: / Customer / Segment / RFM / Orders / Spending / Recency
+(days) / /———-/———————/—–/——–/</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>153</td>
+<td>Show customers spending 00-000</td>
+<td>It looks like your spending range “00-000” is incomplete or invalid
+(e.g., missing actual numeric values like “$100–$500”). Could you please
+clarify: - The <strong>minimum spending</strong> (e.g., $0, $100,
+$50</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>154</td>
+<td>Find Best Customers who haven’t purchased in 14 days</td>
+<td>Based on the search results, there is <strong>1 Best Customer
+(C004)</strong> who matches your criteria, but there’s an important
+clarification needed: - Customer C004 has a recency of <strong>4
+days</strong> (not 14+ days),</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>155</td>
+<td>List customers with RFM starting with 5</td>
+<td>There is <strong>1 customer</strong> in the “Best Customers” segment
+(RFM = 555): - <strong>C004</strong>: 16 orders, $7,130 total spending,
+last purchased <strong>4 days ago</strong>. 🔍 <em>Note</em>: The full
+list shows 8 total custom</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>156</td>
+<td>Who has exactly 1 order?</td>
+<td>Two customers have exactly 1 order: - <strong>C006</strong>:
+<em>High-spending New Customer</em> — just made a $200 purchase (recency
+= 0 days), RFM = 514 - <strong>C008</strong>: <em>Lost Cheap
+Customer</em> — purchased $50 once, 84</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>157</td>
+<td>Find customers with monetary score of 5</td>
+<td>Only <strong>1 customer</strong> meets the criteria of having a
+monetary score of 5 — <strong>C004</strong>, who is in the <strong>Best
+Customers (555)</strong> segment: - ✅ <strong>RFM Score</strong>: 555 -
+🛒 <strong>Orders</strong>: 16 - 💰 **Total</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>158</td>
+<td>Show new customers with high spending</td>
+<td>I found 1 new customer with high spending: - <strong>Customer
+C006</strong>: High-spending New Customer - RFM Score: 514 (Recency=5,
+Frequency=1, Monetary=4) - Made 1 order (truly new customer) - Spent
+$200</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>159</td>
+<td>Find customers at the intersection of high orders and high
+recency</td>
+<td>Here are the <strong>5 customers</strong> who meet both criteria: ✅
+<strong>≥ 5 orders</strong> (high frequency) ✅ <strong>Purchased within
+last 30 days</strong> (high recency) / Customer / RFM / Segment / Orders
+/ A</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>160</td>
+<td>Who purchased in the last 24 hours?</td>
+<td>Only <strong>1 customer</strong> purchased in the last 24 hours: -
+<strong>Customer ID</strong>: C006 - <strong>Segment</strong>:
+High-spending New Customers - <strong>RFM Score</strong>: 514
+(Recency=5, Frequency=1, Monetary=4) - <strong>Orders</strong>: 1</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>161</td>
+<td>Show customers with frequency score 1</td>
+<td>Here are 2 customers with a frequency score of 1 (i.e., they’ve
+placed exactly <strong>one order</strong>): / Customer ID / Segment /
+RFM / Orders / Avg Spending / Recency (days) / /————</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>162</td>
+<td>List customers who are either Best or Loyal</td>
+<td>There is <strong>1 Best Customer</strong>: - <strong>C004</strong>,
+RFM = 555, 16 orders, $7,130 total spending, last purchased <strong>4
+days ago</strong>. No customers are currently classified as <em>Loyal
+Customers</em> (segment ≥444 but</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>163</td>
+<td>Find customers over 000 total</td>
+<td>It looks like your query is incomplete — “customers over 000 total”
+doesn’t specify a metric (e.g., spending, orders, recency) or threshold.
+Could you please clarify? For example: - “Custom</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>164</td>
+<td>Who has more than 10 orders but low spending?</td>
+<td>I found 3 customers with 10+ orders. Among them, the relatively
+lower-spending high-frequency customers are: - <strong>C001</strong>: 12
+orders, $1,455 total spending ($121 avg/order), Recency: 6 days →
+*Potent</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>165</td>
+<td>Show customers with perfect recency but low frequency</td>
+<td>Found <strong>1 customer</strong> matching your criteria: ✅
+<strong>Perfect recency (R = 5)</strong> — purchased <em>today</em> (0
+days ago) ⚠️ <strong>Low frequency (F = 1)</strong> — only 1 order ever
+💰 **High monetary (M = 4</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>166</td>
+<td>How many new customers do we have?</td>
+<td>We have <strong>2 new customers</strong>, representing
+<strong>25%</strong> of our total customer base. They’ve generated
+<strong>$250</strong> in revenue, with an average spending of
+<strong>$125</strong> per customer. In contrast, the 6 returning</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>167</td>
+<td>What is the ratio of new to returning customers?</td>
+<td>The ratio of <strong>new to returning customers</strong> is
+<strong>2:6</strong>, or simplified, <strong>1:3</strong>. - <strong>New
+customers</strong>: 2 (25% of total) - <strong>Returning
+customers</strong>: 6 (75% of total) 💡 <strong>Insight</strong>:
+Returning customer</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>168</td>
+<td>How much do new customers spend vs returning?</td>
+<td>Here’s how new vs returning customers compare in spending:
+<strong>New Customers (25% of total):</strong> - 2 customers (25% of
+total) - Total revenue: $250 - Average spending per customer:
+<strong>$125</strong> **Returning</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>169</td>
+<td>Show me the new customer breakdown</td>
+<td>Here’s your new vs. returning customer breakdown: - <strong>New
+Customers</strong>: 2 customers (25% of total) - Total revenue: $250 -
+Avg. spending per new customer: $125 - <strong>Returning
+Customers</strong>: 6</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>170</td>
+<td>Are new customers more valuable than returning?</td>
+<td>No — <strong>returning customers are significantly more
+valuable</strong> than new customers: - ✅ <strong>Revenue</strong>:
+Returning customers generated <strong>$11,611</strong>, vs. just
+<strong>$250</strong> from new customers — **46× more r</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>171</td>
+<td>What percentage of customers are first-time buyers?</td>
+<td>25.0% of customers are first-time buyers (2 out of 8 total
+customers). 💡 <strong>Actionable insight</strong>: While the majority
+(75%) are returning customers — indicating strong retention — the
+relatively</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>172</td>
+<td>How many repeat customers are there?</td>
+<td>There are <strong>6 repeat (returning) customers</strong>, making up
+<strong>75%</strong> of the total customer base. These returning
+customers: - Generated <strong>$11,610.80</strong> in revenue (97.9% of
+total revenue) - Average **8.7 o</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>173</td>
+<td>Compare new customer spending to average</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>174</td>
+<td>What is the retention rate?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>175</td>
+<td>How many single-purchase customers are there?</td>
+<td>There are <strong>2 single-purchase customers</strong>, representing
+<strong>25.0%</strong> of the total customer base. - Total revenue from
+these new customers: <strong>$250</strong> - Average spending per new
+customer: <strong>$125</strong> 💡</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>176</td>
+<td>Give me a business summary</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>177</td>
+<td>What are the key metrics?</td>
+<td>The key RFM metrics are: 1. <strong>Recency (R)</strong> – Days
+since the customer’s <em>most recent purchase</em>. → Lower days =
+higher score (5 = purchased today or very recently). → Measures
+engage</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>178</td>
+<td>Show me the dashboard overview</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>179</td>
+<td>What is the health of our customer base?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>180</td>
+<td>Summarize the customer analytics</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>181</td>
+<td>What is the average recency?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>182</td>
+<td>How many total orders were placed?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>183</td>
+<td>What is the average order value?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>184</td>
+<td>Give me the executive summary</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>185</td>
+<td>What are the top 3 insights from the data?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>186</td>
+<td>How is customer engagement?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>187</td>
+<td>What is the overall customer value?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>188</td>
+<td>Summarize revenue, customers, and segments</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>189</td>
+<td>What should I focus on to grow revenue?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>190</td>
+<td>What is the biggest opportunity in this data?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>191</td>
+<td>How do customers move between segments?</td>
+<td>Here’s how <strong>Best Customers (555)</strong> move between
+segments: - <strong>Retention rate</strong>: 0.0% — <em>No Best
+Customers stayed in the same segment</em> in the observed period. This
+signals high volatility — the</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>192</td>
+<td>What is the transition probability from Best Customers?</td>
+<td>From the <strong>Best Customers</strong> segment: -
+<strong>Retention rate is 0.0%</strong> — none remain in the “Best
+Customers” segment over the observed period. - <strong>100% migrate to
+Loyal Customers</strong>, indicating they</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>193</td>
+<td>Where do Hibernating customers typically go?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>194</td>
+<td>Show migration for Loyal Customers</td>
+<td>Here’s the migration analysis for <strong>Loyal Customers</strong>:
+- <strong>Retention Rate</strong>: 40% — less than half stay in this
+segment year-over-year - <strong>Top Outgoing Transitions</strong>: - →
+<strong>Loyal Customers</strong></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>195</td>
+<td>How likely is a Potential Loyalist to become Loyal?</td>
+<td>The migration analysis shows that <strong>Potential Loyalists have a
+25% probability of upgrading to <em>Best Customers</em></strong> — but
+notably, **there is *no direct outgoing transition listed to “Loyal
+Customer</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>196</td>
+<td>What percentage of Best Customers stay Best?</td>
+<td>The migration analysis shows that <strong>0.0% of Best Customers
+remain in the “Best Customers” segment</strong> — meaning <em>none</em>
+retained their 555 RFM score in the observed period. All Best Customers
+migr</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>197</td>
+<td>Where do customers go after being Almost Lost?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>198</td>
+<td>Segment migration for Churned Best Customers</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>199</td>
+<td>How do new customers transition?</td>
+<td>After placing a second order in 30 days (recency = 15 days),
+<strong>C006 moves from “High-spending New Customers” → “Customers
+Needing Attention”</strong> (RFM 314). That’s <em>not yet</em> ideal —
+they</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>200</td>
+<td>What is the retention rate for each segment?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>201</td>
+<td>Show transition probabilities for Hibernating</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>202</td>
+<td>Where do Lost Cheap Customers come from?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>203</td>
+<td>How stable is the Best Customers segment?</td>
+<td>The <strong>Best Customers</strong> segment shows <strong>0%
+retention rate</strong>, meaning <em>no one stayed in the 555
+segment</em> — all migrated out. The <strong>entire outflow (100%) went
+to “Loyal Customers”</strong>, suggesting the</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>204</td>
+<td>What segment has the worst retention?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>205</td>
+<td>Analyze the customer lifecycle through segments</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>206</td>
+<td>How can I increase customer loyalty?</td>
+<td>To increase customer loyalty, you need a data-driven strategy
+focused on your <strong>high-potential and at-risk segments</strong>,
+not just blanket promotions. Here’s how to start — backed by RFM
+insights: #</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>207</td>
+<td>What should I do about churning customers?</td>
+<td>Only <strong>1 customer is currently flagged as at-risk</strong>,
+and they’re in the <em>Potential Loyalist</em> segment (RFM: 345) —
+meaning they’re frequent (10 orders) and high-spending ($2,005
+avg/order), but h</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>208</td>
+<td>Give me a win-back strategy</td>
+<td>Only <strong>1 at-risk customer</strong> was found —
+<strong>C002</strong>, classified as <em>Potential Loyalist</em> (RFM
+345), with: - <strong>22 days since last purchase</strong> (moderate
+recency drop) - <strong>10 orders</strong>, **$2,005 total spe</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>209</td>
+<td>How to convert Potential Loyalists to Loyal?</td>
+<td>Great — here’s what the data tells us about <strong>Potential
+Loyalists</strong>: - ✅ <strong>Current profile</strong>: Avg 9.3
+orders, $1,364 avg spend/order, last purchase ~14 days ago - ⚠️ **Key
+gap to Loyal (≥</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>210</td>
+<td>What campaign should I run for Hibernating customers?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>211</td>
+<td>How to increase average order value?</td>
+<td>Thanks for the data — here’s what stands out and what to do next:
+### 🔍 Key Insights - <strong>Best Customers (1 person)</strong> drive
+<strong>60.1% of total revenue</strong> ($7,130) — <em>extremely
+concentrated value</em>.</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>212</td>
+<td>What is the best strategy for Best Customers?</td>
+<td>The best strategy for <strong>Best Customers</strong> is a
+<strong>VIP retention and delight program</strong>, because they already
+demonstrate maximum loyalty and spending power. ✅ <strong>Recommended
+actions:</strong> - Assign dedicat</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>213</td>
+<td>How to re-engage Almost Lost customers?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>214</td>
+<td>What offers work for Low-spending Active Loyal?</td>
+<td>Low-spending Active Loyal customers (R≥4, F≥4, M≤2) are highly
+engaged and loyal — they shop frequently and recently — but their
+average order value is low. They’re <em>not</em> price-sensitive;</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>215</td>
+<td>How to prevent Best Customers from churning?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>216</td>
+<td>What is the ROI of targeting Churned Best?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>217</td>
+<td>Should we focus on acquisition or retention?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>218</td>
+<td>What segments should we prioritize?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>219</td>
+<td>How to reduce the number of Hibernating customers?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>220</td>
+<td>What loyalty program would work best?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>221</td>
+<td>How to increase purchase frequency?</td>
+<td>To increase purchase frequency, you need to understand <em>which
+customers</em> are most responsive to frequency-boosting tactics — and
+what behavioral levers actually move them. Let me help you identify</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>222</td>
+<td>What pricing strategy for different segments?</td>
+<td>Pricing strategies should be tailored to each RFM segment’s
+behavior, value, and sensitivity — not one-size-fits-all. Here’s a
+strategic, action-oriented breakdown by segment, grounded in RFM
+logi</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>223</td>
+<td>How to move customers up the value chain?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>224</td>
+<td>Which customers should get VIP treatment?</td>
+<td>Only <strong>1 customer</strong> — <strong>C004</strong> — is
+currently classified as a <em>Best Customer</em> (RFM 555), with: -
+<strong>16 orders</strong>, - <strong>$7,130 total spending</strong>, -
+<strong>Last purchase just 4 days ago</strong>. ✅ This is</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>225</td>
+<td>What is the most cost-effective growth lever?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>226</td>
+<td>How to design a re-engagement campaign?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>227</td>
+<td>What email frequency for each segment?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>228</td>
+<td>How to reduce customer acquisition cost?</td>
+<td>Reducing customer acquisition cost (CAC) is best achieved by
+<strong>shifting focus from acquiring new customers to retaining and
+expanding value from existing ones</strong> — especially high-potential
+segments</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>229</td>
+<td>What cross-sell opportunities exist?</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>230</td>
+<td>Give me a 90-day customer growth plan</td>
+<td></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>231</td>
+<td>What is RFM analysis?</td>
+<td>RFM analysis is a customer segmentation technique used in marketing
+and retail to understand and rank customers based on three key
+behavioral metrics: - <strong>Recency (R)</strong>: How recently a
+customer made</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>232</td>
+<td>How do you calculate RFM scores?</td>
+<td>RFM scoring is calculated using three behavioral metrics —
+<strong>Recency</strong>, <strong>Frequency</strong>, and
+<strong>Monetary</strong> — each scored independently on a <strong>1–5
+scale</strong>, where <strong>5 = best</strong> (most recent, most
+freq</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>233</td>
+<td>Why are there 11 segments?</td>
+<td>The 11 RFM segments are not arbitrary — they’re a strategic grouping
+of the full 5×5×5 = <strong>125 possible RFM score combinations</strong>
+(R=1–5, F=1–5, M=1–5) into *behaviorally meaningful and ope</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>234</td>
+<td>What is a good RFM score?</td>
+<td>A “good” RFM score depends on your business goals—but <strong>the
+highest possible score is 555</strong>, representing: - <strong>Recency
+= 5</strong>: Purchased <em>very recently</em> (e.g., within last 7
+days) - **Frequency =</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>235</td>
+<td>How often should I refresh RFM analysis?</td>
+<td>RFM analysis should typically be refreshed: -
+<strong>Weekly</strong> for high-velocity businesses (e.g., e-commerce,
+grocery, subscriptions) — to capture recent behavior shifts and support
+timely campaigns (e.</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>236</td>
+<td>Can RFM predict customer lifetime value?</td>
+<td>RFM itself is <strong>not a direct CLV (Customer Lifetime Value)
+prediction model</strong>, but it’s a <strong>powerful, intuitive proxy
+and foundation</strong> for estimating and prioritizing CLV—especially
+when combined</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>237</td>
+<td>What data do I need for RFM?</td>
+<td>For a robust <strong>RFM analysis</strong>, you need three core
+behavioral metrics per customer: 1. <strong>Recency (R)</strong> →
+<em>Days since their most recent purchase.</em> → Lower number = more
+recent engagement</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>238</td>
+<td>How accurate is the Markov Chain prediction?</td>
+<td>The Markov Chain prediction in RFM analytics estimates <em>segment
+migration probabilities</em> — i.e., how likely customers in a given
+segment (e.g., “Potential Loyalist”) are to move to other segment</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>239</td>
+<td>What is the difference between RFM and CLV?</td>
+<td>RFM (Recency, Frequency, Monetary) and CLV (Customer Lifetime Value)
+are both critical customer analytics frameworks—but they serve different
+purposes and operate at different levels of sophisticati</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>240</td>
+<td>Can I export this analysis?</td>
+<td>Currently, this interface doesn’t support direct file export (e.g.,
+CSV, PDF). However, I can help you <strong>prepare the data for
+export</strong> by: ✅ Generating clean, structured summaries (e.g.,
+segment</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>241</td>
+<td>How to interpret the transition graph?</td>
+<td>The <strong>RFM segment transition graph</strong> shows how
+customers are likely to move between RFM segments over time — based on
+observed behavioral patterns (e.g., changes in recency, frequency, or
+monetary v</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>242</td>
+<td>What does recency really measure?</td>
+<td>Recency measures <strong>how many days have passed since a
+customer’s most recent purchase</strong> — it’s a direct indicator of
+<em>engagement timing</em>. A low recency value (e.g., 0–7 days) means
+the customer</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>243</td>
+<td>Why is frequency important?</td>
+<td>Frequency is critically important in RFM analysis because it
+measures <strong>how often a customer purchases</strong>, which directly
+reflects: - <strong>Loyalty and engagement</strong>: High-frequency
+customers are more like</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>244</td>
+<td>How does monetary value affect segmentation?</td>
+<td>Monetary value has a <strong>disproportionate impact on revenue
+concentration</strong>, even when customer count is small: - 🥇
+<strong>Best Customers (1 person)</strong> → $7,130 revenue →
+<strong>60.1% of total revenue</strong></td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>245</td>
+<td>Can I combine segments for campaigns?</td>
+<td>Yes — combining RFM segments for campaigns is not only possible, but
+often <em>strategic</em>. Grouping complementary segments allows you to:
+✅ <strong>Increase campaign scale</strong> while preserving
+relevance</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>246</td>
+<td>What is the minimum data for meaningful RFM?</td>
+<td>For <strong>meaningful RFM analysis</strong>, you need <em>at
+minimum</em> the following three data points per customer: ✅
+<strong>Recency (R)</strong>: Days since their <em>most recent
+purchase</em> ✅ <strong>Frequency (F)</strong>: Total number</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>247</td>
+<td>How do seasonal patterns affect RFM?</td>
+<td>Seasonal patterns significantly impact RFM metrics — and
+understanding them is key to avoiding misclassification and enabling
+proactive marketing. Here’s how each component is affected: -
+**Recency</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>248</td>
+<td>Can I customize the segment definitions?</td>
+<td>No — the RFM segment definitions (e.g., “Best Customers” = 555,
+“Churned Best” = R=1,F≥4,M≥4) are <strong>predefined and fixed</strong>
+based on industry-standard behavioral logic and statistical clu</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>249</td>
+<td>What other metrics complement RFM?</td>
+<td>RFM is a powerful foundational framework—but it becomes even more
+actionable when enriched with complementary metrics. Here are key ones
+that add depth and context: ### ✅ <strong>Behavioral Metrics</strong>
+-</td>
+<td>✅ PASS</td>
+</tr>
+<tr>
+<td>250</td>
+<td>How to track segment changes over time?</td>
+<td>To track segment changes over time, you need <strong>historical RFM
+snapshots</strong> — i.e., periodic recalculation (e.g., weekly/monthly)
+of each customer’s R, F, M scores and their resulting segment. Whil</td>
+<td>✅ PASS</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="summary">Summary</h2>
+<ul>
+<li><strong>Passed</strong>: 250 / 250</li>
+<li><strong>Failed</strong>: 0 / 250</li>
+<li><strong>Success Rate</strong>: 100.0%</li>
+</ul>
+</body>
+</html>

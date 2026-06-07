@@ -1,6 +1,13 @@
 import {
   computeRFM,
   computeTransition,
+  computeActivity,
+  computeCLV,
+  buildCBS,
+  buildSpendData,
+  recommendForCustomer,
+  recommendAll,
+  mineAssociationRules,
   predictSegmentMovement,
   mcSeq2Prop,
   mcCounts2Prob,
@@ -95,6 +102,71 @@ export default {
         return error(
           `RFM computation failed: ${e instanceof Error ? e.message : String(e)}`
         )
+      }
+    }
+
+    // ── POST /api/rfm/recommend ──
+    if (path === "/api/rfm/recommend" && request.method === "POST") {
+      try {
+        const body: { customerID?: string; transactions: RFMRequest["transactions"]; topN?: number } = await request.json()
+        if (!body.transactions?.length) {
+          return error("transactions array is required")
+        }
+        if (body.customerID) {
+          const result = recommendForCustomer(body.customerID, body.transactions, body.topN ?? 5)
+          return json(result ?? { error: "Customer not found" })
+        }
+        const results = recommendAll(body.transactions, body.topN ?? 5)
+        return json(results)
+      } catch (e) {
+        return error(`Recommend failed: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    }
+
+    // ── POST /api/rfm/associate ──
+    if (path === "/api/rfm/associate" && request.method === "POST") {
+      try {
+        const body: { transactions: RFMRequest["transactions"]; minSupport?: number; minConfidence?: number } = await request.json()
+        if (!body.transactions?.length) {
+          return error("transactions array is required")
+        }
+        const rules = mineAssociationRules(body.transactions, body.minSupport ?? 0.05, body.minConfidence ?? 0.1)
+        return json(rules)
+      } catch (e) {
+        return error(`Association mining failed: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    }
+
+    // ── POST /api/rfm/clv ──
+    if (path === "/api/rfm/clv" && request.method === "POST") {
+      try {
+        const body: { transactions: RFMRequest["transactions"] } = await request.json()
+        if (!body.transactions?.length) {
+          return error("transactions array is required and must not be empty")
+        }
+        const cbs = buildCBS(body.transactions)
+        const spendData = buildSpendData(body.transactions)
+        if (cbs.length < 3) {
+          return error("Need at least 3 customers for BTYD model estimation")
+        }
+        const result = computeCLV({ cbs, spendData, discountRate: 0.1, margin: 1.0, forecastPeriods: 52 })
+        return json(result)
+      } catch (e) {
+        return error(`CLV computation failed: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    }
+
+    // ── POST /api/rfm/activity ──
+    if (path === "/api/rfm/activity" && request.method === "POST") {
+      try {
+        const body: { transactions: RFMRequest["transactions"] } = await request.json()
+        if (!body.transactions?.length) {
+          return error("transactions array is required and must not be empty")
+        }
+        const result = computeActivity(body.transactions)
+        return json(result)
+      } catch (e) {
+        return error(`Activity computation failed: ${e instanceof Error ? e.message : String(e)}`)
       }
     }
 

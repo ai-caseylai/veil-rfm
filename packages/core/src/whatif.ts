@@ -50,16 +50,18 @@ export function whatIfAnalyze(
   if (!customer) return null
 
   // Build modified RFMData array — replace the target customer
+  const newFrequency = scenario.frequency ?? customer.NoOfTxn
+  const newMonetary = scenario.monetary ?? customer.MeanMoneyValue
+  const newTotalSpending = (scenario.monetary != null || scenario.frequency != null)
+    ? newMonetary * newFrequency
+    : customer.TotalSpending
+
   const modifiedCustomer: RFMData = {
     ...customer,
     DaySinceLastTxn: scenario.recency ?? customer.DaySinceLastTxn,
-    NoOfTxn: scenario.frequency ?? customer.NoOfTxn,
-    MeanMoneyValue: scenario.monetary ?? customer.MeanMoneyValue,
-    // Keep total spending proportional if monetary changes
-    TotalSpending:
-      scenario.monetary != null
-        ? scenario.monetary * customer.NoOfTxn
-        : customer.TotalSpending,
+    NoOfTxn: newFrequency,
+    MeanMoneyValue: newMonetary,
+    TotalSpending: newTotalSpending,
   }
 
   const modifiedData = allRFMData.map((d) =>
