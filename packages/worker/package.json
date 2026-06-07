@@ -1,0 +1,17 @@
+{
+  "name": "@veil-rfm/worker",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@veil-rfm/core": "*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240529.0",
+    "wrangler": "^3.60.0",
+    "typescript": "^5.5.0"
+  }
+}

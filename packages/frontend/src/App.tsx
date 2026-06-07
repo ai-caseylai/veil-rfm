@@ -1,0 +1,108 @@
+import { useState, useEffect } from "react"
+import { Routes, Route, NavLink } from "react-router-dom"
+import ChatBot from "./components/ChatBot"
+import { SAMPLE_TRANSACTIONS } from "./lib/sampleData"
+import { useT } from "./lib/i18n"
+import type { Lang } from "./lib/i18n"
+import { computeRFM, computeTransition } from "./lib/api"
+import type { Transaction } from "@veil-rfm/core"
+
+import RFMOverview from "./pages/RFMOverview"
+import RFMCharacteristics from "./pages/RFMCharacteristics"
+import RFMTransition from "./pages/RFMTransition"
+import RFMCustomerSummary from "./pages/RFMCustomerSummary"
+import LTVOverview from "./pages/LTVOverview"
+import WhatIf from "./pages/WhatIf"
+
+export interface AppData {
+  transactions: Transaction[]
+  rfmData: Record<string, unknown> | null
+  transition: Record<string, unknown> | null
+}
+
+export default function App() {
+  const { t, lang, setLang } = useT()
+  const [data, setData] = useState<AppData>({
+    transactions: SAMPLE_TRANSACTIONS,
+    rfmData: null,
+    transition: null,
+  })
+
+  useEffect(() => {
+    Promise.all([
+      computeRFM({ transactions: data.transactions }),
+      computeTransition({ transactions: data.transactions, rfmPeriod: [1, "year"], transitionPeriod: [1, "month"] }).catch(() => null),
+    ]).then(([rfm, trans]) => setData((d) => ({ ...d, rfmData: rfm, transition: trans }))).catch(console.error)
+  }, [])
+
+  const results = data.rfmData?.results as Array<Record<string, unknown>> | undefined
+  const totalCustomers = results?.length ?? 0
+  const totalRevenue = results?.reduce((s, r) => s + ((r.TotalSpending as number) ?? 0), 0) ?? 0
+  const totalOrders = results?.reduce((s, r) => s + ((r.NoOfTxn as number) ?? 0), 0) ?? 0
+  const avgOrder = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0
+  const avgRecency = results?.length ? Math.round(results.reduce((s, r) => s + ((r.DaySinceLastTxn as number) ?? 0), 0) / results.length) : 0
+  const segments = data.rfmData?.segments as Array<{ "Number of Customers": number }> | undefined
+  const activeSegs = segments?.filter((s) => s["Number of Customers"] > 0).length ?? 0
+
+  const langLabels: Record<Lang, string> = { en: "EN", "zh-TW": "繁中", "zh-CN": "简中" }
+
+  return (
+    <div className="flex flex-col h-screen">
+      <header className="app-header">
+        <h1>{t.appTitle}</h1>
+        <div className="flex items-center gap-3">
+          <span className="text-xs opacity-70">{totalCustomers} customers | {totalOrders} orders | ${totalRevenue.toLocaleString()}</span>
+          <select value={lang} onChange={(e) => setLang(e.target.value as Lang)}
+            className="bg-white/10 text-white border border-white/20 rounded px-2 py-1 text-xs">
+            <option value="en">{langLabels.en}</option>
+            <option value="zh-TW">{langLabels["zh-TW"]}</option>
+            <option value="zh-CN">{langLabels["zh-CN"]}</option>
+          </select>
+        </div>
+      </header>
+
+      <div className="flex flex-1 overflow-hidden">
+        <nav className="sidebar overflow-y-auto">
+          <div className="sidebar-header">{t.customerSegmentation}</div>
+          <NavLink to="/rfm-overview" className={({ isActive }) => isActive ? "active" : ""}>{t.overview}</NavLink>
+          <NavLink to="/rfm-characteristics" className={({ isActive }) => isActive ? "active" : ""}>{t.characteristics}</NavLink>
+          <NavLink to="/rfm-transition" className={({ isActive }) => isActive ? "active" : ""}>{t.segmentTransition}</NavLink>
+          <NavLink to="/rfm-customer-summary" className={({ isActive }) => isActive ? "active" : ""}>{t.customerSummary}</NavLink>
+          <div className="sidebar-header">{t.whatIfAnalysis}</div>
+          <NavLink to="/whatif" className={({ isActive }) => isActive ? "active" : ""}>{t.simulateScenarios}</NavLink>
+          <div className="sidebar-header">{t.customerLifetimeValue}</div>
+          <NavLink to="/ltv-overview" className={({ isActive }) => isActive ? "active" : ""}>{t.ltvOverview}</NavLink>
+        </nav>
+
+        <main className="flex-1 overflow-y-auto p-4">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
+            {[
+              [t.totalCustomers, totalCustomers],
+              [t.totalRevenue, `$${totalRevenue.toLocaleString()}`],
+              ["Total Orders", totalOrders],
+              [t.avgOrderValue, `$${avgOrder.toLocaleString()}`],
+              ["Avg Recency", `${avgRecency}d`],
+            ].map(([label, value]) => (
+              <div key={label} className="bg-white rounded-lg p-3 border shadow-sm">
+                <div className="text-[10px] text-gray-400 uppercase tracking-wider">{label}</div>
+                <div className="text-lg font-bold text-[var(--primary)]">{value}</div>
+              </div>
+            ))}
+          </div>
+
+          <Routes>
+            <Route path="/rfm-overview" element={<RFMOverview data={data} />} />
+            <Route path="/rfm-characteristics" element={<RFMCharacteristics data={data} />} />
+            <Route path="/rfm-transition" element={<RFMTransition data={data} />} />
+            <Route path="/rfm-customer-summary" element={<RFMCustomerSummary data={data} />} />
+            <Route path="/whatif" element={<WhatIf data={data} />} />
+            <Route path="/ltv-overview" element={<LTVOverview data={data} />} />
+            <Route path="*" element={<RFMOverview data={data} />} />
+          </Routes>
+        </main>
+
+        <ChatBot data={data} lang={lang} />
+      </div>
+    </div>
+  )
+}

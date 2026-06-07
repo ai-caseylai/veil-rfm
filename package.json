@@ -1,0 +1,11 @@
+{
+  "name": "veil-rfm",
+  "private": true,
+  "workspaces": ["packages/*"],
+  "scripts": {
+    "test": "npm run test --workspaces",
+    "build": "npm run build --workspaces",
+    "dev:worker": "npm run dev -w packages/worker",
+    "dev:frontend": "npm run dev -w packages/frontend"
+  }
+}
