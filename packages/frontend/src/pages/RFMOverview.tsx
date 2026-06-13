@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import { computeRFM } from "../lib/api"
 import type { AppData } from "../App"
+import { useNavigate } from "react-router-dom"
 import { useT } from "../lib/i18n"
 import { segLabel } from "../lib/segmentNames"
 
@@ -26,9 +27,11 @@ function Skeleton() {
 
 export default function RFMOverview({ data }: Props) {
   const { t, lang } = useT()
+  const navigate = useNavigate()
   const [rfmResult, setRfmResult] = useState<Record<string, unknown> | null>(data.rfmData as Record<string, unknown> | null)
-  const [loading, setLoading] = useState(!rfmResult)
+  const [loading, setLoading] = useState(!data.rfmData)
 
+  useEffect(() => { if (data.rfmData) { setRfmResult(data.rfmData as Record<string, unknown>); setLoading(false) } }, [data.rfmData])
   useEffect(() => {
     if (rfmResult) return
     setLoading(true)
@@ -73,6 +76,8 @@ export default function RFMOverview({ data }: Props) {
                     cx="50%" cy="50%"
                     outerRadius={140}
                     label={({ Percentage }) => `${(Percentage * 100).toFixed(1)}%`}
+                    onClick={(entry) => navigate(`/rfm-customer-summary?segment=${encodeURIComponent(entry.Segment)}`)}
+                    style={{ cursor: "pointer" }}
                   >
                     {activeSegs.map((_, i) => (
                       <Cell key={i} fill={COLORS[i % COLORS.length]} stroke="white" strokeWidth={2} />

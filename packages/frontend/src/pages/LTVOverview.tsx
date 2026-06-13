@@ -31,7 +31,9 @@ export default function LTVOverview({ data }: Props) {
   const { t, lang } = useT()
   const [rfmResult, setRfmResult] = useState<Record<string, unknown> | null>(data.rfmData as Record<string, unknown> | null)
   const [clvReport, setClvReport] = useState<CLVReport | null>(null)
-  const [loading, setLoading] = useState(!rfmResult)
+  const [loading, setLoading] = useState(!data.rfmData)
+
+  useEffect(() => { if (data.rfmData) { setRfmResult(data.rfmData as Record<string, unknown>); setLoading(false) } }, [data.rfmData])
 
   useEffect(() => {
     async function load() {
@@ -41,7 +43,7 @@ export default function LTVOverview({ data }: Props) {
           fetch(`${API_BASE}/api/rfm/clv`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ transactions: data.transactions }),
+            body: JSON.stringify({ transactions: [], seed: 20260603 }),
           }).then((r) => r.json()),
         ])
         setRfmResult(rfm)

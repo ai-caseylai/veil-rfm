@@ -25,7 +25,7 @@ async function get<T>(path: string): Promise<T> {
 
 /** Load pre-computed RFM + Transition for N synthetic customers (no raw txns transferred) */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function loadPrecomputedRFM(opts: { n?: number; seed?: number } = {}): Promise<{
+export async function loadPrecomputedRFM(opts: { n?: number; seed?: number; startDate?: string; endDate?: string; offset?: number; limit?: number } = {}): Promise<{
   stats: { customers: number; orders: number; rows: number; elapsedMs: number }
   rfm: Record<string, any>
   transition: Record<string, any>
@@ -33,6 +33,10 @@ export async function loadPrecomputedRFM(opts: { n?: number; seed?: number } = {
   const params = new URLSearchParams()
   if (opts.n) params.set("n", String(opts.n))
   if (opts.seed) params.set("seed", String(opts.seed))
+  if (opts.startDate) params.set("startDate", opts.startDate)
+  if (opts.endDate) params.set("endDate", opts.endDate)
+  if (opts.offset) params.set("offset", String(opts.offset))
+  if (opts.limit) params.set("limit", String(opts.limit))
   return get(`/api/generate/rfm?${params.toString()}`)
 }
 

@@ -162,12 +162,43 @@ export default function WhatIf({ data }: Props) {
           <div className="card-body">
             <div className="flex flex-wrap gap-2">
               {RFM_SEGMENT.filter((seg) => seg !== selected.segment).map((seg) => (
-                <button key={seg} onClick={() => suggestTarget(seg)} disabled={simulating} className="btn btn-secondary text-xs">{seg}</button>
+                <button key={seg} onClick={() => suggestTarget(seg)} disabled={simulating} className="btn btn-secondary text-xs">{segLabel(seg, lang)}</button>
               ))}
             </div>
           </div>
         </div>
       )}
+
+      {/* ── Batch Simulation ── */}
+      <div className="card mt-4">
+        <div className="card-header">{lang === "zh-TW" ? "批次模擬" : lang === "zh-CN" ? "批次模拟" : "Batch Simulation"}</div>
+        <div className="card-body">
+          <p className="text-xs text-gray-500 mb-3">
+            {lang === "zh-TW"
+              ? "模擬整個分群的變化：選擇一個分群，調整 RFM 參數，查看分群遷移影響。"
+              : lang === "zh-CN"
+              ? "模拟整个分群的变化：选择一个分群，调整 RFM 参数，查看分群迁移影响。"
+              : "Simulate changes across an entire segment: pick a segment, adjust parameters, see migration impact."}
+          </p>
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 text-sm">
+            <select onChange={(e) => {
+              const seg = e.target.value
+              if (seg) {
+                const recencyDelta = prompt(lang === "zh-TW" ? "Recency 變化（天數，負值 = 更近期）：" : lang === "zh-CN" ? "Recency 变化（天数，负值 = 更近期）：" : "Recency delta (days, negative = more recent):", "-30")
+                const freqDelta = prompt(lang === "zh-TW" ? "訂單數變化：" : lang === "zh-CN" ? "订单数变化：" : "Frequency delta:", "2")
+                const msg = `${lang === "zh-TW" ? `模擬「${segLabel(seg, lang)}」：Recency ${recencyDelta}天，訂單 +${freqDelta}` : lang === "zh-CN" ? `模拟「${segLabel(seg, lang)}」：Recency ${recencyDelta}天，订单 +${freqDelta}` : `Simulating "${seg}": Recency ${recencyDelta}d, Orders +${freqDelta}`}`
+                alert(msg + "\n\n" + (lang === "zh-TW" ? "（完整批次模擬需要後端支援，此為概念演示。點擊具體客戶使用上方 What-If 工具進行精確模擬。）" : lang === "zh-CN" ? "（完整批次模拟需要后端支援，此为概念演示。点击具体客户使用上方 What-If 工具进行精确模拟。）" : "(Full batch simulation requires backend support. Use the What-If tool above for precise per-customer simulation.)"))
+              }
+            }} className="border rounded px-2 py-1">
+              <option value="">{lang === "zh-TW" ? "選擇分群..." : lang === "zh-CN" ? "选择分群..." : "Select segment..."}</option>
+              {RFM_SEGMENT.map((seg) => <option key={seg} value={seg}>{segLabel(seg, lang)}</option>)}
+            </select>
+            <div className="text-xs text-gray-400 self-center">
+              {lang === "zh-TW" ? "點擊選擇分群後輸入參數變化" : lang === "zh-CN" ? "点击选择分群后输入参数变化" : "Click segment then enter parameter changes"}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

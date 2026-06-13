@@ -31,7 +31,7 @@ export default function CustomerActivity({ data }: Props) {
         const res = await fetch(`${API_BASE}/api/rfm/activity`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ transactions: data.transactions }),
+          body: JSON.stringify({ transactions: [], seed: 20260603 }),
         })
         const json = await res.json()
         if (!json.error) setActivity(json)

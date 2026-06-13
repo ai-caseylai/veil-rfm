@@ -31,6 +31,20 @@ function findCust(segment: string) {
 }
 
 // ── Chinese text templates ──
+const SEG_ZH: Record<string, { "zh-TW": string; "zh-CN": string }> = {
+  "Best Customers": { "zh-TW": "最佳客戶", "zh-CN": "最佳客户" },
+  "Loyal Customers": { "zh-TW": "忠誠客戶", "zh-CN": "忠诚客户" },
+  "Potential Loyalist": { "zh-TW": "潛在忠誠客戶", "zh-CN": "潜在忠诚客户" },
+  "Low-spending Active Loyal Customers": { "zh-TW": "低消費活躍忠誠客戶", "zh-CN": "低消费活跃忠诚客户" },
+  "High-spending New Customers": { "zh-TW": "高消費新客戶", "zh-CN": "高消费新客户" },
+  "Almost Lost Customers": { "zh-TW": "即將流失客戶", "zh-CN": "即将流失客户" },
+  "Churned Best Customers": { "zh-TW": "已流失最佳客戶", "zh-CN": "已流失最佳客户" },
+  "Customers Needing Attention": { "zh-TW": "需關注客戶", "zh-CN": "需关注客户" },
+  "About to Sleep Customers": { "zh-TW": "即將沉睡客戶", "zh-CN": "即将沉睡客户" },
+  "Hibernating Customers": { "zh-TW": "休眠客戶", "zh-CN": "休眠客户" },
+  "Lost Cheap Customers": { "zh-TW": "已流失低消費客戶", "zh-CN": "已流失低消费客户" },
+}
+
 const T = {
   "zh-TW": {
     header: "RFM 聊天機器人 — 500 題綜合測試",
@@ -122,6 +136,7 @@ function getFAQs(t: typeof T["zh-TW"], totalCustomers: number, totalOrders: numb
 // ── Generator ──
 function generate(lang: Lang) {
   const t = T[lang]
+  const sz = (seg: string) => SEG_ZH[seg]?.[lang] ?? seg
   const out: string[] = []
   const w = (s: string) => out.push(s)
   let qNum = 0
@@ -150,35 +165,35 @@ function generate(lang: Lang) {
 
   const c = bestCust
   qa(`介紹客戶 ${c.CustomerID}`,
-    t.tellMeAbout(c.CustomerID as string, c.Segment as string, c.RecencyScore as number, c.FrequencyScore as number, c.MonetaryScore as number, c.DaySinceLastTxn as number, c.NoOfTxn as number, fmt(c.TotalSpending as number)))
+    t.tellMeAbout(c.CustomerID as string, sz(c.Segment as string), c.RecencyScore as number, c.FrequencyScore as number, c.MonetaryScore as number, c.DaySinceLastTxn as number, c.NoOfTxn as number, fmt(c.TotalSpending as number)))
 
   const h = hibernatingCust
   qa(`${h.CustomerID} 屬於哪個分群？`,
-    t.hibernatingSeg(h.CustomerID as string, h.Segment as string, h.RecencyScore as number, h.FrequencyScore as number, h.MonetaryScore as number, h.DaySinceLastTxn as number, h.NoOfTxn as number, fmt(h.TotalSpending as number)))
+    t.hibernatingSeg(h.CustomerID as string, sz(h.Segment as string), h.RecencyScore as number, h.FrequencyScore as number, h.MonetaryScore as number, h.DaySinceLastTxn as number, h.NoOfTxn as number, fmt(h.TotalSpending as number)))
 
   const lost = lostCust
   qa(`顯示 ${lost.CustomerID} 的 RFM 分數`,
-    t.lostRfm(lost.CustomerID as string, lost.Segment as string, lost.RecencyScore as number, lost.FrequencyScore as number, lost.MonetaryScore as number, lost.DaySinceLastTxn as number, lost.NoOfTxn as number, fmt(lost.TotalSpending as number)))
+    t.lostRfm(lost.CustomerID as string, sz(lost.Segment as string), lost.RecencyScore as number, lost.FrequencyScore as number, lost.MonetaryScore as number, lost.DaySinceLastTxn as number, lost.NoOfTxn as number, fmt(lost.TotalSpending as number)))
 
   const p = potentialCust
   qa(`${p.CustomerID} 總共消費了多少？`,
-    t.totalSpent(p.CustomerID as string, fmt(p.TotalSpending as number), p.NoOfTxn as number, fmt(Math.round((p.TotalSpending as number) / (p.NoOfTxn as number))), p.Segment as string))
+    t.totalSpent(p.CustomerID as string, fmt(p.TotalSpending as number), p.NoOfTxn as number, fmt(Math.round((p.TotalSpending as number) / (p.NoOfTxn as number))), sz(p.Segment as string)))
 
   const l = loyalCust
   qa(`${l.CustomerID} 有多少筆訂單？`,
-    t.orderCount(l.CustomerID as string, l.NoOfTxn as number, l.Segment as string, fmt(Math.round((l.TotalSpending as number) / (l.NoOfTxn as number)))))
+    t.orderCount(l.CustomerID as string, l.NoOfTxn as number, sz(l.Segment as string), fmt(Math.round((l.TotalSpending as number) / (l.NoOfTxn as number)))))
 
   qa(`${bestCust.CustomerID} 上次購買是何時？`,
-    t.lastPurchase(bestCust.CustomerID as string, bestCust.DaySinceLastTxn as number, bestCust.Segment as string))
+    t.lastPurchase(bestCust.CustomerID as string, bestCust.DaySinceLastTxn as number, sz(bestCust.Segment as string)))
 
   qa(`${bestCust.CustomerID} 每單平均消費是多少？`,
     t.avgSpending(bestCust.CustomerID as string, fmt(Math.round((bestCust.TotalSpending as number) / (bestCust.NoOfTxn as number))), bestCust.NoOfTxn as number, fmt(bestCust.TotalSpending as number)))
 
   qa(`${needsAttnCust.CustomerID} 屬於哪個分群？`,
-    t.whatSegment(needsAttnCust.CustomerID as string, needsAttnCust.Segment as string, needsAttnCust.RecencyScore as number, needsAttnCust.FrequencyScore as number, needsAttnCust.MonetaryScore as number))
+    t.whatSegment(needsAttnCust.CustomerID as string, sz(needsAttnCust.Segment as string), needsAttnCust.RecencyScore as number, needsAttnCust.FrequencyScore as number, needsAttnCust.MonetaryScore as number))
 
   qa(`完整介紹 ${loyalCust.CustomerID}`,
-    t.fullProfile(loyalCust.CustomerID as string, loyalCust.Segment as string, loyalCust.RecencyScore as number, loyalCust.FrequencyScore as number, loyalCust.MonetaryScore as number, loyalCust.DaySinceLastTxn as number, loyalCust.NoOfTxn as number, fmt(loyalCust.TotalSpending as number), fmt(Math.round((loyalCust.TotalSpending as number) / (loyalCust.NoOfTxn as number)))))
+    t.fullProfile(loyalCust.CustomerID as string, sz(loyalCust.Segment as string), loyalCust.RecencyScore as number, loyalCust.FrequencyScore as number, loyalCust.MonetaryScore as number, loyalCust.DaySinceLastTxn as number, loyalCust.NoOfTxn as number, fmt(loyalCust.TotalSpending as number), fmt(Math.round((loyalCust.TotalSpending as number) / (loyalCust.NoOfTxn as number)))))
 
   const avgDays = Math.round(allResults.reduce((s, r) => s + ((r.DaySinceLastTxn as number) ?? 0), 0) / totalCustomers)
   qa("整體平均 Recency 是多少？",
@@ -193,7 +208,7 @@ function generate(lang: Lang) {
   for (let i = faqs.length + 10 + 1; i <= 100; i++) {
     const cust = pool[(i * 7) % pool.length]
     const id = cust.CustomerID as string
-    const seg = cust.Segment as string
+    const seg = sz(cust.Segment as string)
     const r = cust.RecencyScore as number
     const f = cust.FrequencyScore as number
     const m = cust.MonetaryScore as number

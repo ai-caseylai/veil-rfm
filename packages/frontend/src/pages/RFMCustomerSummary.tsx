@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from "react"
 import { computeRFM } from "../lib/api"
 import type { AppData } from "../App"
+import { Link, useSearchParams } from "react-router-dom"
 import { useT } from "../lib/i18n"
 import { segLabel } from "../lib/segmentNames"
 
@@ -17,11 +18,14 @@ function Skeleton() {
 
 export default function RFMCustomerSummary({ data }: Props) {
   const { t, lang } = useT()
+  const [searchParams] = useSearchParams()
+  const segmentFilter = searchParams.get("segment") ?? ""
   const [rfmResult, setRfmResult] = useState<Record<string, unknown> | null>(data.rfmData as Record<string, unknown> | null)
-  const [loading, setLoading] = useState(!rfmResult)
-  const [search, setSearch] = useState("")
+  const [loading, setLoading] = useState(!data.rfmData)
+  const [search, setSearch] = useState(segmentFilter)
   const [page, setPage] = useState(0)
 
+  useEffect(() => { if (data.rfmData) { setRfmResult(data.rfmData as Record<string, unknown>); setLoading(false) } }, [data.rfmData])
   useEffect(() => {
     if (rfmResult) return
     setLoading(true)
@@ -82,7 +86,7 @@ export default function RFMCustomerSummary({ data }: Props) {
             <tbody>
               {paged.map((r) => (
                 <tr key={r["Customer ID"]}>
-                  <td className="mono">{r["Customer ID"]}</td>
+                  <td className="mono"><Link to={`/customer/${r["Customer ID"]}`} className="text-[var(--accent)] hover:underline">{r["Customer ID"]}</Link></td>
                   <td>{r.Segment}</td>
                   <td className="text-center mono">{r.RFM}</td>
                   <td className="text-right">{r["Recency (days)"]}</td>

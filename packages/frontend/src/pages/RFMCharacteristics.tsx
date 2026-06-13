@@ -21,8 +21,9 @@ export default function RFMCharacteristics({ data }: Props) {
   const { t, lang } = useT()
   const [rfmResult, setRfmResult] = useState<Record<string, unknown> | null>(data.rfmData as Record<string, unknown> | null)
   const [avgType, setAvgType] = useState<StatType>("R")
-  const [loading, setLoading] = useState(!rfmResult)
+  const [loading, setLoading] = useState(!data.rfmData)
 
+  useEffect(() => { if (data.rfmData) { setRfmResult(data.rfmData as Record<string, unknown>); setLoading(false) } }, [data.rfmData])
   useEffect(() => {
     if (rfmResult) return
     setLoading(true)
