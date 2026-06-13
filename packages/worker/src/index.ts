@@ -19,6 +19,10 @@ import {
   whatIfAnalyze,
   whatIfTarget,
 } from "@veil-rfm/core"
+import {
+  generateSynthetic,
+  toCSV,
+} from "@veil-rfm/core"
 import type {
   RFMRequest,
   TransitionRequest,
@@ -258,6 +262,7 @@ export default {
         const body: {
           messages: Array<{ role: string; content: string; tool_calls?: unknown; tool_call_id?: string }>
           transactions: RFMRequest["transactions"]
+          seed?: number
           apiKey?: string
         } = await request.json()
 
@@ -267,15 +272,88 @@ export default {
           return error("Server not configured. QWEN_API_KEY secret is missing.", 500)
         }
 
+        // If seed provided, generate data server-side (avoids sending large transaction payloads)
+        let txns = body.transactions ?? []
+        if (body.seed && txns.length === 0) {
+          const generated = generateSynthetic({ customers: 5000, seed: body.seed })
+          txns = generated.transactions
+        }
+
         return handleChat(
           body.messages as Parameters<typeof handleChat>[0],
-          body.transactions ?? [],
+          txns,
           apiKey,
         )
       } catch (e) {
         return error(
           `Chat failed: ${e instanceof Error ? e.message : String(e)}`,
         )
+      }
+    }
+
+    // ── GET /api/generate ──
+    if (path === "/api/generate" && request.method === "GET") {
+      try {
+        const n = parseInt(url.searchParams.get("n") ?? "5000")
+        const seed = parseInt(url.searchParams.get("seed") ?? "0") || 20260603
+        const format = url.searchParams.get("format") ?? "csv"
+
+        if (n < 1 || n > 50000) {
+          return error("n must be between 1 and 50000")
+        }
+
+        const result = generateSynthetic({ customers: n, seed })
+
+        if (format === "json") {
+          return json(result)
+        }
+
+        return new Response(toCSV(result.transactions), {
+          headers: {
+            "Content-Type": "text/csv; charset=utf-8",
+            "Content-Disposition": `attachment; filename="synthetic_${n}_txn.csv"`,
+            ...CORS_HEADERS,
+          },
+        })
+      } catch (e) {
+        return error(`Generate failed: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    }
+
+    // ── GET /api/generate/rfm ──
+    if (path === "/api/generate/rfm" && request.method === "GET") {
+      try {
+        const n = parseInt(url.searchParams.get("n") ?? "5000")
+        const seed = parseInt(url.searchParams.get("seed") ?? "0") || 20260603
+
+        if (n < 1 || n > 50000) {
+          return error("n must be between 1 and 50000")
+        }
+
+        const generated = generateSynthetic({ customers: n, seed })
+        const body: RFMRequest = { transactions: generated.transactions }
+
+        const rfmResult = computeRFM(body)
+        const transResult = computeTransition({ transactions: generated.transactions })
+
+        const segments = getNoOfCustomersPerSegment(rfmResult.rfmData, rfmResult.rfmSegment)
+        const avgRecency = getAvgStatPerSegment(rfmResult.rfmData, rfmResult.rfmScore, rfmResult.rfmSegment, "R")
+        const avgFrequency = getAvgStatPerSegment(rfmResult.rfmData, rfmResult.rfmScore, rfmResult.rfmSegment, "F")
+        const avgMonetary = getAvgStatPerSegment(rfmResult.rfmData, rfmResult.rfmScore, rfmResult.rfmSegment, "M")
+
+        const initProp = mcSeq2Prop(transResult.mcSeq)
+        const totalCustomers = transResult.mcSeq.filter(
+          (s) => s.Time === Math.max(...transResult.mcSeq.map((x) => x.Time))
+        ).length
+        const predicted = predictSegmentMovement(initProp, transResult.transProb, totalCustomers, 6)
+
+        return json({
+          stats: generated.stats,
+          rfm: { ...rfmResult, segments, avgRecency, avgFrequency, avgMonetary },
+          transition: { ...transResult, initProp, predicted },
+        })
+      } catch (e) {
+        return error(`Generate+RFM failed: ${e instanceof Error ? e.message : String(e)}`)
       }
     }
 

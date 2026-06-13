@@ -14,12 +14,14 @@ export interface Translations {
   simulateScenarios: string
   customerLifetimeValue: string
   ltvOverview: string
+  qa500: string
 
   // Upload
   uploadTitle: string
   uploadPrompt: string
   orText: string
   loadSample: string
+  loadSynthetic: string
   expectedColumns: string
   dropCSV: string
 
@@ -115,11 +117,13 @@ const zhTW: Translations = {
   simulateScenarios: "模擬場景",
   customerLifetimeValue: "客戶終身價值",
   ltvOverview: "價值總覽",
+  qa500: "問答 500",
 
   uploadTitle: "Veil RFM 客戶分析平台",
   uploadPrompt: "上傳 CSV 交易數據以開始分析",
   orText: "或",
   loadSample: "載入範例資料（8 位客戶，54 筆交易）",
+  loadSynthetic: "載入 5,000 位客戶",
   expectedColumns: "必要欄位：MemberID, OrderID, Timestamp, NetPrice, Quantity, ProductID, ProductName, Category",
   dropCSV: "拖放 CSV 檔案至此，或點擊選取",
 
@@ -207,10 +211,12 @@ const zhCN: Translations = {
   simulateScenarios: "模拟场景",
   customerLifetimeValue: "客户终身价值",
   ltvOverview: "价值总览",
+  qa500: "问答 500",
 
   uploadTitle: "Veil RFM 客户分析平台",
   uploadPrompt: "上传 CSV 交易数据以开始分析",
   loadSample: "加载示例数据（8 位客户，54 笔交易）",
+  loadSynthetic: "加载 5,000 位客户",
   expectedColumns: "必要字段：MemberID, OrderID, Timestamp, NetPrice, Quantity, ProductID, ProductName, Category",
   dropCSV: "拖放 CSV 文件至此，或点击选取",
 
@@ -296,11 +302,13 @@ const en: Translations = {
   simulateScenarios: "Simulate Scenarios",
   customerLifetimeValue: "Customer Lifetime Value",
   ltvOverview: "LTV Overview",
+  qa500: "Q&A 500",
 
   uploadTitle: "Veil RFM Analytics Platform",
   uploadPrompt: "Upload a CSV file with transaction data to get started.",
   orText: "or",
   loadSample: "Load Sample Data (8 customers, 54 transactions)",
+  loadSynthetic: "Load 5,000 Customers",
   expectedColumns: "Expected columns: MemberID, OrderID, Timestamp, NetPrice, Quantity, ProductID, ProductName, Category",
   dropCSV: "Drag and drop a CSV file, or click to select",
 

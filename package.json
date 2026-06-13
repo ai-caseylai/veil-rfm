@@ -5,6 +5,7 @@
   "scripts": {
     "test": "npm run test --workspaces",
     "build": "npm run build --workspaces",
+    "generate": "npx tsx scripts/generate-synthetic.ts",
     "dev:worker": "npm run dev -w packages/worker",
     "dev:frontend": "npm run dev -w packages/frontend"
   }

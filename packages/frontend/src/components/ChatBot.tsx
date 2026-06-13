@@ -2,7 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react"
 import type { AppData } from "../App"
 import type { Lang } from "../lib/i18n"
 
-interface Props { data: AppData; lang: Lang }
+interface Props { data: AppData; lang: Lang; prefillQuestion?: string; onPrefillConsumed?: () => void }
 
 interface Message { role: "user" | "assistant"; content: string }
 
@@ -14,7 +14,7 @@ const GREETINGS: Record<Lang, string> = {
   "zh-CN": "您好！我是由千问驱动的 RFM 分析助手。可以问我有关客户、分群的问题，或进行情景模拟。",
 }
 
-export default function ChatBot({ data, lang }: Props) {
+export default function ChatBot({ data, lang, prefillQuestion, onPrefillConsumed }: Props) {
   const [messages, setMessages] = useState<Message[]>([{ role: "assistant", content: GREETINGS[lang] }])
   const [input, setInput] = useState("")
   const [sending, setSending] = useState(false)
@@ -47,7 +47,8 @@ export default function ChatBot({ data, lang }: Props) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           messages: history.map((m) => ({ role: m.role, content: m.content })),
-          transactions: data.transactions,
+          seed: 20260603,
+          transactions: [],
         }),
       })
       const json = await res.json()
@@ -58,6 +59,14 @@ export default function ChatBot({ data, lang }: Props) {
       setSending(false)
     }
   }
+
+  useEffect(() => {
+    if (prefillQuestion && !sending) {
+      setCollapsed(false)
+      send(prefillQuestion)
+      onPrefillConsumed?.()
+    }
+  }, [prefillQuestion])
 
   if (collapsed) {
     return (
