@@ -2,5 +2,10 @@ name = "veil-rfm-api"
 main = "src/index.ts"
 compatibility_date = "2024-06-01"
 
+[[d1_databases]]
+binding = "DB"
+database_name = "veil-rfm-db"
+database_id = "50bfc84c-1961-46b8-a4de-dcb32070a1cc"
+
 [env.production]
 workers_dev = true

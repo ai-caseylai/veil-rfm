@@ -4,6 +4,7 @@ import { computeRFM } from "../lib/api"
 import type { AppData } from "../App"
 import { RFM_SEGMENT } from "@veil-rfm/core"
 import { useT } from "../lib/i18n"
+import { segLabel } from "../lib/segmentNames"
 
 interface Props { data: AppData }
 
@@ -27,7 +28,7 @@ interface CLVReport {
 }
 
 export default function LTVOverview({ data }: Props) {
-  const { t } = useT()
+  const { t, lang } = useT()
   const [rfmResult, setRfmResult] = useState<Record<string, unknown> | null>(data.rfmData as Record<string, unknown> | null)
   const [clvReport, setClvReport] = useState<CLVReport | null>(null)
   const [loading, setLoading] = useState(!rfmResult)
@@ -59,7 +60,7 @@ export default function LTVOverview({ data }: Props) {
   for (const r of results) { const arr = segSpending.get(r.Segment) ?? []; arr.push(r.TotalSpending); segSpending.set(r.Segment, arr) }
   const ltvData = RFM_SEGMENT.map((seg) => {
     const vals = segSpending.get(seg) ?? []
-    return { Segment: seg, "Avg LTV ($)": vals.length > 0 ? vals.reduce((s, v) => s + v, 0) / vals.length : 0 }
+    return { Segment: segLabel(seg, lang), "Avg LTV ($)": vals.length > 0 ? vals.reduce((s, v) => s + v, 0) / vals.length : 0 }
   }).filter((d) => d["Avg LTV ($)"] > 0)
 
   const overallAvg = results.length > 0 ? results.reduce((s, r) => s + r.TotalSpending, 0) / results.length : 0
@@ -88,13 +89,13 @@ export default function LTVOverview({ data }: Props) {
       {clvReport && (
         <div className="card">
           <div className="card-header">
-            {loading ? "..." : "BTYD Customer Lifetime Value (Pareto/NBD + Gamma-Gamma)"}
+            {loading ? "..." : lang === "zh-TW" ? "BTYD 客戶終身價值（Pareto/NBD + Gamma-Gamma）" : lang === "zh-CN" ? "BTYD 客户终身价值（Pareto/NBD + Gamma-Gamma）" : "BTYD Customer Lifetime Value (Pareto/NBD + Gamma-Gamma)"}
           </div>
           <div className="card-body">
             {/* Model params */}
             <div className="grid grid-cols-2 gap-4 mb-4 text-xs">
               <div className="bg-gray-50 rounded p-3">
-                <div className="font-semibold text-gray-500 mb-1">Pareto/NBD Parameters</div>
+                <div className="font-semibold text-gray-500 mb-1">{lang === "zh-TW" ? "Pareto/NBD 參數" : lang === "zh-CN" ? "Pareto/NBD 参数" : "Pareto/NBD Parameters"}</div>
                 <div className="grid grid-cols-2 gap-1">
                   <span>r: {clvReport.params.pnbd[0]?.toFixed(3)}</span>
                   <span>α: {clvReport.params.pnbd[1]?.toFixed(3)}</span>
@@ -103,7 +104,7 @@ export default function LTVOverview({ data }: Props) {
                 </div>
               </div>
               <div className="bg-gray-50 rounded p-3">
-                <div className="font-semibold text-gray-500 mb-1">Gamma-Gamma Parameters</div>
+                <div className="font-semibold text-gray-500 mb-1">{lang === "zh-TW" ? "Gamma-Gamma 參數" : lang === "zh-CN" ? "Gamma-Gamma 参数" : "Gamma-Gamma Parameters"}</div>
                 <div className="grid grid-cols-3 gap-1">
                   <span>p: {clvReport.params.ggg[0]?.toFixed(3)}</span>
                   <span>q: {clvReport.params.ggg[1]?.toFixed(3)}</span>
@@ -115,10 +116,10 @@ export default function LTVOverview({ data }: Props) {
             {/* Summary */}
             <div className="grid grid-cols-4 gap-3 mb-4">
               {[
-                ["Total CLV", `$${clvReport.summary.totalCLV.toLocaleString(undefined, { maximumFractionDigits: 0 })}`],
-                ["Avg CLV", `$${clvReport.summary.avgCLV.toLocaleString(undefined, { maximumFractionDigits: 0 })}`],
-                ["Total P(Alive)", clvReport.summary.totalPAlive.toFixed(1)],
-                ["Active (>50%)", String(clvReport.summary.activeCustomerCount)],
+                [lang === "zh-TW" ? "總 CLV" : lang === "zh-CN" ? "总 CLV" : "Total CLV", `$${clvReport.summary.totalCLV.toLocaleString(undefined, { maximumFractionDigits: 0 })}`],
+                [lang === "zh-TW" ? "平均 CLV" : lang === "zh-CN" ? "平均 CLV" : "Avg CLV", `$${clvReport.summary.avgCLV.toLocaleString(undefined, { maximumFractionDigits: 0 })}`],
+                [lang === "zh-TW" ? "總存活率" : lang === "zh-CN" ? "总存活率" : "Total P(Alive)", clvReport.summary.totalPAlive.toFixed(1)],
+                [lang === "zh-TW" ? "活躍 (>50%)" : lang === "zh-CN" ? "活跃 (>50%)" : "Active (>50%)", String(clvReport.summary.activeCustomerCount)],
               ].map(([label, value]) => (
                 <div key={label} className="bg-white border rounded p-2 text-center">
                   <div className="text-[10px] text-gray-400">{label}</div>
@@ -132,11 +133,11 @@ export default function LTVOverview({ data }: Props) {
               <table className="data-table">
                 <thead>
                   <tr>
-                    <th>Customer</th>
-                    <th className="text-right">P(Alive)</th>
-                    <th className="text-right">Expected Txns (52w)</th>
-                    <th className="text-right">Avg Spend/Txn</th>
-                    <th className="text-right">Lifetime Value</th>
+                    <th>{lang === "zh-TW" ? "客戶" : lang === "zh-CN" ? "客户" : "Customer"}</th>
+                    <th className="text-right">{lang === "zh-TW" ? "存活率" : lang === "zh-CN" ? "存活率" : "P(Alive)"}</th>
+                    <th className="text-right">{lang === "zh-TW" ? "預期交易 (52週)" : lang === "zh-CN" ? "预期交易 (52周)" : "Expected Txns (52w)"}</th>
+                    <th className="text-right">{lang === "zh-TW" ? "平均消費/單" : lang === "zh-CN" ? "平均消费/单" : "Avg Spend/Txn"}</th>
+                    <th className="text-right">{lang === "zh-TW" ? "終身價值" : lang === "zh-CN" ? "终身价值" : "Lifetime Value"}</th>
                   </tr>
                 </thead>
                 <tbody>

@@ -6,7 +6,6 @@ import { useT } from "./lib/i18n"
 import type { Lang } from "./lib/i18n"
 import { loadPrecomputedRFM } from "./lib/api"
 import type { Transaction } from "@veil-rfm/core"
-import Papa from "papaparse"
 
 import RFMOverview from "./pages/RFMOverview"
 import RFMCharacteristics from "./pages/RFMCharacteristics"
@@ -34,111 +33,20 @@ export default function App() {
     transition: null,
   })
 
-  // Load 5,000-customer RFM data: split into 5 batches of 1,000 to stay under Worker CPU limit
+  // Load 5,000-customer RFM data from D1 (single API call)
   useEffect(() => {
     setLoading(true)
-    const BATCH_SIZE = 1000
-    const BATCHES = 5
-    const seeds = [20260603, 20260701, 20260801, 20260901, 20261001]
-
-    Promise.all(
-      seeds.map((seed) => loadPrecomputedRFM({ n: BATCH_SIZE, seed }))
-    )
-      .then((results) => {
-        // Merge RFM stats across batches
-        const mergedSegments: Record<string, number> = {}
-        const mergedAvgRecency: Record<string, { sum: number; count: number }> = {}
-        const mergedAvgFrequency: Record<string, { sum: number; count: number }> = {}
-        const mergedAvgMonetary: Record<string, { sum: number; count: number }> = {}
-        let totalResults: Record<string, unknown>[] = []
-
-        for (const r of results) {
-          const segments = r.rfm.segments as Array<{ Segment: string; "Number of Customers": number; Percentage: number }>
-          const avgR = r.rfm.avgRecency as Array<{ Segment: string; value: number }>
-          const avgF = r.rfm.avgFrequency as Array<{ Segment: string; value: number }>
-          const avgM = r.rfm.avgMonetary as Array<{ Segment: string; value: number }>
-          const rr = r.rfm.results as Array<Record<string, unknown>>
-
-          for (const s of segments) {
-            mergedSegments[s.Segment] = (mergedSegments[s.Segment] ?? 0) + s["Number of Customers"]
-          }
-          for (const a of avgR) {
-            const e = mergedAvgRecency[a.Segment] ?? { sum: 0, count: 0 }
-            mergedAvgRecency[a.Segment] = { sum: e.sum + a.value * (segments.find((s) => s.Segment === a.Segment)?.["Number of Customers"] ?? 0), count: e.count + (segments.find((s) => s.Segment === a.Segment)?.["Number of Customers"] ?? 0) }
-          }
-          for (const a of avgF) {
-            const e = mergedAvgFrequency[a.Segment] ?? { sum: 0, count: 0 }
-            mergedAvgFrequency[a.Segment] = { sum: e.sum + a.value * (segments.find((s) => s.Segment === a.Segment)?.["Number of Customers"] ?? 0), count: e.count + (segments.find((s) => s.Segment === a.Segment)?.["Number of Customers"] ?? 0) }
-          }
-          for (const a of avgM) {
-            const e = mergedAvgMonetary[a.Segment] ?? { sum: 0, count: 0 }
-            mergedAvgMonetary[a.Segment] = { sum: e.sum + a.value * (segments.find((s) => s.Segment === a.Segment)?.["Number of Customers"] ?? 0), count: e.count + (segments.find((s) => s.Segment === a.Segment)?.["Number of Customers"] ?? 0) }
-          }
-          totalResults = totalResults.concat(rr)
-        }
-
-        const totalCustomers = Object.values(mergedSegments).reduce((s, v) => s + v, 0)
-        const merged = {
-          rfm: {
-            ...results[0].rfm,
-            results: totalResults,
-            segments: Object.entries(mergedSegments).map(([Segment, count]) => ({
-              Segment,
-              "Number of Customers": count,
-              Percentage: count / totalCustomers,
-            })),
-            avgRecency: Object.entries(mergedAvgRecency).map(([Segment, e]) => ({
-              Segment,
-              value: e.count > 0 ? Math.round(e.sum / e.count) : 0,
-            })),
-            avgFrequency: Object.entries(mergedAvgFrequency).map(([Segment, e]) => ({
-              Segment,
-              value: e.count > 0 ? Math.round(e.sum / e.count) : 0,
-            })),
-            avgMonetary: Object.entries(mergedAvgMonetary).map(([Segment, e]) => ({
-              Segment,
-              value: e.count > 0 ? Math.round(e.sum / e.count) : 0,
-            })),
-          },
-          transition: results[0].transition,
-        }
-        setData((d) => ({ ...d, rfmData: merged.rfm, transition: merged.transition }))
+    loadPrecomputedRFM({ n: 5000, seed: 20260603 })
+      .then((result) => {
+        setData((d) => ({
+          ...d,
+          rfmData: result.rfm,
+          transition: result.transition,
+        }))
       })
       .catch(console.error)
       .finally(() => setLoading(false))
   }, [])
-
-  const loadSynthetic5000 = async () => {
-    setLoading(true)
-    try {
-      const resp = await fetch("/data/synthetic_5000_txn.csv")
-      const text = await resp.text()
-      const parsed = Papa.parse<Record<string, unknown>>(text, { header: true, dynamicTyping: true, skipEmptyLines: true })
-      const txns: Transaction[] = (parsed.data as Record<string, unknown>[]).map((row) => ({
-        MemberID: row.MemberID as string,
-        OrderID: row.OrderID as string,
-        Timestamp: (row.Timestamp as string).replace(" ", "T").replace(":00", ":00Z"),
-        NetPrice: row.NetPrice as number,
-        Quantity: row.Quantity as number,
-        ProductID: row.ProductID as string,
-        ProductName: row.ProductName as string,
-        Category: row.Category as string,
-        Gender: (row.Gender as string) ?? undefined,
-      }))
-      // Compute locally via API for interactive features
-      const { computeRFM, computeTransition } = await import("./lib/api")
-      setData({ transactions: txns, rfmData: null, transition: null })
-      const [rfm, trans] = await Promise.all([
-        computeRFM({ transactions: txns }),
-        computeTransition({ transactions: txns, rfmPeriod: [1, "year"], transitionPeriod: [1, "month"] }).catch(() => null),
-      ])
-      setData((d) => ({ ...d, rfmData: rfm, transition: trans }))
-    } catch (e) {
-      console.error("Failed to load synthetic data:", e)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const results = data.rfmData?.results as Array<Record<string, unknown>> | undefined
   const totalCustomers = results?.length ?? 0
@@ -160,13 +68,6 @@ export default function App() {
       <header className="app-header">
         <h1>{t.appTitle}</h1>
         <div className="flex items-center gap-3">
-          <button
-            onClick={loadSynthetic5000}
-            disabled={loading}
-            className="bg-white/15 hover:bg-white/25 text-white text-xs px-2 py-1 rounded disabled:opacity-50"
-          >
-            {loading ? t.loading : t.loadSynthetic}
-          </button>
           {loading ? (
             <span className="text-xs opacity-70 animate-pulse">{t.loading}</span>
           ) : (

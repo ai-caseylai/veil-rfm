@@ -1,4 +1,6 @@
 import { useEffect, useState, useMemo } from "react"
+import { useT } from "../lib/i18n"
+import type { Lang } from "../lib/i18n"
 
 interface QAItem {
   id: number
@@ -9,6 +11,12 @@ interface QAItem {
 interface QACategory {
   category: string
   questions: QAItem[]
+}
+
+const QA_SOURCES: Record<Lang, string> = {
+  en: "/data/qa-500.json",
+  "zh-TW": "/data/qa-500-zh-TW.json",
+  "zh-CN": "/data/qa-500-zh-CN.json",
 }
 
 function renderMarkdown(text: string): string {
@@ -23,6 +31,7 @@ function renderMarkdown(text: string): string {
 }
 
 export default function QA500({ onAskChatbot }: { onAskChatbot?: (q: string) => void }) {
+  const { t, lang } = useT()
   const [categories, setCategories] = useState<QACategory[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
@@ -31,12 +40,14 @@ export default function QA500({ onAskChatbot }: { onAskChatbot?: (q: string) => 
   const [search, setSearch] = useState("")
 
   useEffect(() => {
-    fetch("/data/qa-500.json")
+    setLoading(true)
+    const src = QA_SOURCES[lang] ?? QA_SOURCES.en
+    fetch(src)
       .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json() })
       .then((data) => { setCategories(data); setExpandedCat(data[0]?.category ?? null) })
       .catch((e) => setError(e.message))
       .finally(() => setLoading(false))
-  }, [])
+  }, [lang])
 
   const filtered = useMemo(() => {
     if (!search.trim()) return categories
@@ -67,10 +78,10 @@ export default function QA500({ onAskChatbot }: { onAskChatbot?: (q: string) => 
   return (
     <div className="max-w-4xl">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-bold text-[var(--primary)]">Q&amp;A 500</h2>
+        <h2 className="text-lg font-bold text-[var(--primary)]">{t.qa500}</h2>
         <input
           type="text"
-          placeholder="Search questions & answers..."
+          placeholder={lang === "zh-TW" ? "搜尋問題與答案..." : lang === "zh-CN" ? "搜索问题与答案..." : "Search questions & answers..."}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="border border-[var(--border)] rounded px-3 py-1.5 text-sm w-64 focus:outline-none focus:border-[var(--accent)]"
@@ -78,7 +89,7 @@ export default function QA500({ onAskChatbot }: { onAskChatbot?: (q: string) => 
       </div>
 
       {filtered.length === 0 && (
-        <div className="text-center text-[var(--muted)] py-12">No matching questions found.</div>
+        <div className="text-center text-[var(--muted)] py-12">{lang === "zh-TW" ? "找不到相符的問題。" : lang === "zh-CN" ? "找不到相符的问题。" : "No matching questions found."}</div>
       )}
 
       <div className="space-y-3">
@@ -127,7 +138,7 @@ export default function QA500({ onAskChatbot }: { onAskChatbot?: (q: string) => 
                               className="mt-1 text-[10px] px-2 py-0.5 rounded border border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-white transition-colors whitespace-nowrap"
                               title="Ask ChatBot"
                             >
-                              Ask →
+                              {lang === "zh-TW" ? "提問 →" : lang === "zh-CN" ? "提问 →" : "Ask →"}
                             </button>
                           )}
                         </div>

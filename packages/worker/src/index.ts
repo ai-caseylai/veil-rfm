@@ -31,6 +31,8 @@ import type {
   WhatIfScenario,
 } from "@veil-rfm/core"
 import { handleChat } from "./chat"
+import { getCustomer, searchCustomers, getSegmentDistribution, getAvgRecency, getAvgFrequency, getAvgMonetary } from "./db"
+import type { D1Database } from "@cloudflare/workers-types"
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -54,6 +56,7 @@ function error(msg: string, status = 400): Response {
 
 interface Env {
   QWEN_API_KEY?: string
+  DB?: D1Database
 }
 
 export default {
@@ -272,7 +275,7 @@ export default {
           return error("Server not configured. QWEN_API_KEY secret is missing.", 500)
         }
 
-        // If seed provided, generate data server-side (avoids sending large transaction payloads)
+        // If seed provided, generate data server-side
         let txns = body.transactions ?? []
         if (body.seed && txns.length === 0) {
           const generated = generateSynthetic({ customers: 5000, seed: body.seed })
@@ -326,26 +329,48 @@ export default {
         const n = parseInt(url.searchParams.get("n") ?? "5000")
         const seed = parseInt(url.searchParams.get("seed") ?? "0") || 20260603
 
-        if (n < 1 || n > 50000) {
-          return error("n must be between 1 and 50000")
+        if (n < 1 || n > 50000) return error("n must be between 1 and 50000")
+
+        // Use D1 if available
+        if (env.DB) {
+          const rawSegments = await getSegmentDistribution(env.DB)
+          const totalCust = rawSegments.reduce((s, r) => s + r["Number of Customers"], 0)
+          const segments = rawSegments.map((s) => ({
+            ...s,
+            Percentage: s["Number of Customers"] / totalCust,
+          }))
+          const avgR = await getAvgRecency(env.DB)
+          const avgF = await getAvgFrequency(env.DB)
+          const avgM = await getAvgMonetary(env.DB)
+          const { results } = await env.DB.prepare("SELECT * FROM customers").all()
+
+          // Compute transition from a small sample
+          const sample = generateSynthetic({ customers: 100, seed })
+          const transResult = computeTransition({ transactions: sample.transactions })
+          const initProp = mcSeq2Prop(transResult.mcSeq)
+          const predicted = predictSegmentMovement(initProp, transResult.transProb, n, 6)
+
+          return json({
+            stats: { customers: n, orders: 0, rows: 0, elapsedMs: 0 },
+            rfm: { results, segments, avgRecency: avgR, avgFrequency: avgF, avgMonetary: avgM },
+            transition: { ...transResult, initProp, predicted },
+          })
         }
 
+        // Fallback: generate from scratch
         const generated = generateSynthetic({ customers: n, seed })
         const body: RFMRequest = { transactions: generated.transactions }
-
         const rfmResult = computeRFM(body)
         const transResult = computeTransition({ transactions: generated.transactions })
-
         const segments = getNoOfCustomersPerSegment(rfmResult.rfmData, rfmResult.rfmSegment)
         const avgRecency = getAvgStatPerSegment(rfmResult.rfmData, rfmResult.rfmScore, rfmResult.rfmSegment, "R")
         const avgFrequency = getAvgStatPerSegment(rfmResult.rfmData, rfmResult.rfmScore, rfmResult.rfmSegment, "F")
         const avgMonetary = getAvgStatPerSegment(rfmResult.rfmData, rfmResult.rfmScore, rfmResult.rfmSegment, "M")
-
         const initProp = mcSeq2Prop(transResult.mcSeq)
-        const totalCustomers = transResult.mcSeq.filter(
+        const totalCust = transResult.mcSeq.filter(
           (s) => s.Time === Math.max(...transResult.mcSeq.map((x) => x.Time))
         ).length
-        const predicted = predictSegmentMovement(initProp, transResult.transProb, totalCustomers, 6)
+        const predicted = predictSegmentMovement(initProp, transResult.transProb, totalCust, 6)
 
         return json({
           stats: generated.stats,
@@ -354,6 +379,20 @@ export default {
         })
       } catch (e) {
         return error(`Generate+RFM failed: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    }
+
+    // ── GET /api/customers ──
+    if (path === "/api/customers" && request.method === "GET") {
+      try {
+        if (!env.DB) return error("D1 not configured", 500)
+        const segment = url.searchParams.get("segment") ?? undefined
+        const search = url.searchParams.get("search") ?? undefined
+        const limit = parseInt(url.searchParams.get("limit") ?? "50")
+        const results = await searchCustomers(env.DB, { segment, search, limit })
+        return json(results)
+      } catch (e) {
+        return error(`Customers failed: ${e instanceof Error ? e.message : String(e)}`)
       }
     }
 

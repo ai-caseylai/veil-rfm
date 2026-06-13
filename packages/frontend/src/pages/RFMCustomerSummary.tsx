@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from "react"
 import { computeRFM } from "../lib/api"
 import type { AppData } from "../App"
 import { useT } from "../lib/i18n"
+import { segLabel } from "../lib/segmentNames"
 
 interface Props { data: AppData }
 interface CustomerRow {
@@ -15,7 +16,7 @@ function Skeleton() {
 }
 
 export default function RFMCustomerSummary({ data }: Props) {
-  const { t } = useT()
+  const { t, lang } = useT()
   const [rfmResult, setRfmResult] = useState<Record<string, unknown> | null>(data.rfmData as Record<string, unknown> | null)
   const [loading, setLoading] = useState(!rfmResult)
   const [search, setSearch] = useState("")
@@ -35,13 +36,13 @@ export default function RFMCustomerSummary({ data }: Props) {
     const results = rfmResult.results as { CustomerID: string; Segment: string; DaySinceLastTxn: number; NoOfTxn: number; TotalSpending: number; RecencyScore: number; FrequencyScore: number; MonetaryScore: number }[]
     return results.map((r) => ({
       "Customer ID": r.CustomerID,
-      Segment: r.Segment,
+      Segment: segLabel(r.Segment, lang),
       RFM: `${r.RecencyScore}${r.FrequencyScore}${r.MonetaryScore}`,
       "Recency (days)": r.DaySinceLastTxn,
       Orders: r.NoOfTxn,
       "Total Spending ($)": r.TotalSpending,
     }))
-  }, [rfmResult])
+  }, [rfmResult, lang])
 
   const filtered = useMemo(() => {
     if (!search) return rows

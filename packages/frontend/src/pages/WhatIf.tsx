@@ -3,6 +3,7 @@ import { computeRFM } from "../lib/api"
 import type { AppData } from "../App"
 import { RFM_SEGMENT } from "@veil-rfm/core"
 import { useT } from "../lib/i18n"
+import { segLabel } from "../lib/segmentNames"
 
 interface Props { data: AppData }
 interface CustomerOption { id: string; segment: string; recency: number; frequency: number; monetary: number; totalSpending: number }
@@ -20,7 +21,7 @@ function Skeleton() {
 }
 
 export default function WhatIf({ data }: Props) {
-  const { t } = useT()
+  const { t, lang } = useT()
   const [customers, setCustomers] = useState<CustomerOption[]>([])
   const [selectedID, setSelectedID] = useState("")
   const [recency, setRecency] = useState(0)
@@ -73,7 +74,7 @@ export default function WhatIf({ data }: Props) {
 
   if (loading) return <Skeleton />
 
-  const segmentChanged = result && result.original.Segment !== result.modified.Segment
+  const segmentChanged = result && segLabel(result.original.Segment, lang) !== segLabel(result.modified.Segment, lang)
 
   return (
     <div>
@@ -121,8 +122,8 @@ export default function WhatIf({ data }: Props) {
         <div className={`card ${segmentChanged ? "border-yellow-400 border-2" : ""}`}>
           <div className="card-header">
             {segmentChanged
-              ? <span className="text-yellow-700">{t.segmentChanged} {result.original.Segment} → {result.modified.Segment}</span>
-              : <span>{t.segmentUnchanged}: {result.modified.Segment}</span>}
+              ? <span className="text-yellow-700">{t.segmentChanged} {segLabel(result.original.Segment, lang)} → {segLabel(result.modified.Segment, lang)}</span>
+              : <span>{t.segmentUnchanged}: {segLabel(result.modified.Segment, lang)}</span>}
           </div>
           <div className="card-body">
             <div className="grid grid-cols-2 gap-6">
@@ -130,7 +131,7 @@ export default function WhatIf({ data }: Props) {
                 <h4 className="text-xs font-semibold text-gray-400 uppercase mb-2">{t.original}</h4>
                 <table className="w-full text-sm">
                   <tbody>
-                    <tr><td className="py-1 text-gray-500">{t.segment}</td><td className="font-bold">{result.original.Segment}</td></tr>
+                    <tr><td className="py-1 text-gray-500">{t.segment}</td><td className="font-bold">{segLabel(result.original.Segment, lang)}</td></tr>
                     <tr><td className="py-1 text-gray-500">{t.rfmScoreLabel}</td><td className="mono">{result.original.RecencyScore}{result.original.FrequencyScore}{result.original.MonetaryScore}</td></tr>
                     <tr><td className="py-1 text-gray-500">{t.recencyDays}</td><td>{result.original.DaySinceLastTxn}d</td></tr>
                     <tr><td className="py-1 text-gray-500">{t.orders}</td><td>{result.original.NoOfTxn}</td></tr>
@@ -142,7 +143,7 @@ export default function WhatIf({ data }: Props) {
                 <h4 className="text-xs font-semibold text-blue-400 uppercase mb-2">{t.modified}</h4>
                 <table className="w-full text-sm">
                   <tbody>
-                    <tr><td className="py-1 text-gray-500">{t.segment}</td><td className="font-bold text-blue-600">{result.modified.Segment}</td></tr>
+                    <tr><td className="py-1 text-gray-500">{t.segment}</td><td className="font-bold text-blue-600">{segLabel(result.modified.Segment, lang)}</td></tr>
                     <tr><td className="py-1 text-gray-500">{t.rfmScoreLabel}</td><td className="mono">{result.modified.RecencyScore}{result.modified.FrequencyScore}{result.modified.MonetaryScore}</td></tr>
                     <tr><td className="py-1 text-gray-500">{t.recencyDays}</td><td>{result.modified.DaySinceLastTxn}d <span className={`text-xs ml-1 ${result.changes.recencyDelta <= 0 ? "text-green-600" : "text-red-600"}`}>({result.changes.recencyDelta >= 0 ? "+" : ""}{result.changes.recencyDelta})</span></td></tr>
                     <tr><td className="py-1 text-gray-500">{t.orders}</td><td>{result.modified.NoOfTxn} <span className={`text-xs ml-1 ${result.changes.frequencyDelta >= 0 ? "text-green-600" : "text-red-600"}`}>({result.changes.frequencyDelta >= 0 ? "+" : ""}{result.changes.frequencyDelta})</span></td></tr>

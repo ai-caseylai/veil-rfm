@@ -3,6 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { computeRFM } from "../lib/api"
 import type { AppData } from "../App"
 import { useT } from "../lib/i18n"
+import { segLabel } from "../lib/segmentNames"
 
 interface Props { data: AppData }
 type StatType = "R" | "F" | "M"
@@ -17,7 +18,7 @@ function Skeleton() {
 }
 
 export default function RFMCharacteristics({ data }: Props) {
-  const { t } = useT()
+  const { t, lang } = useT()
   const [rfmResult, setRfmResult] = useState<Record<string, unknown> | null>(data.rfmData as Record<string, unknown> | null)
   const [avgType, setAvgType] = useState<StatType>("R")
   const [loading, setLoading] = useState(!rfmResult)
@@ -35,11 +36,12 @@ export default function RFMCharacteristics({ data }: Props) {
   if (!rfmResult) return <p className="text-red-500">{t.errorLoading}</p>
 
   const avgKey = avgType === "R" ? "avgRecency" : avgType === "F" ? "avgFrequency" : "avgMonetary"
-  const avgData = rfmResult[avgKey] as { Segment: string; value: number }[]
+  const avgData = ((rfmResult[avgKey] as { Segment: string; value: number }[]) ?? [])
+    .map((d) => ({ ...d, Segment: segLabel(d.Segment, lang) }))
   const avgLabel = avgType === "R" ? t.avgRecency : avgType === "F" ? t.avgOrders : t.avgSpending
 
   // Frequency distribution
-  const rfmData = rfmResult.rfmData as { NoOfTxn: number }[]
+  const rfmData = (rfmResult.results ?? rfmResult.rfmData ?? []) as { NoOfTxn: number }[]
   const freqDist = new Map<number, number>()
   for (const d of rfmData) freqDist.set(d.NoOfTxn, (freqDist.get(d.NoOfTxn) ?? 0) + 1)
   const freqChart = [...freqDist.entries()]

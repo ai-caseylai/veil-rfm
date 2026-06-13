@@ -133,3 +133,18 @@ export const RFM_SEGMENT = [
 ] as const
 
 export type SegmentName = (typeof RFM_SEGMENT)[number]
+
+/** Bilingual segment name map for UI display */
+export const SEGMENT_LABELS: Record<SegmentName, { en: string; "zh-TW": string; "zh-CN": string }> = {
+  "Best Customers": { en: "Best Customers", "zh-TW": "最佳客戶", "zh-CN": "最佳客户" },
+  "Loyal Customers": { en: "Loyal Customers", "zh-TW": "忠誠客戶", "zh-CN": "忠诚客户" },
+  "Potential Loyalist": { en: "Potential Loyalist", "zh-TW": "潛在忠誠客戶", "zh-CN": "潜在忠诚客户" },
+  "Low-spending Active Loyal Customers": { en: "Low-spending Active Loyal Customers", "zh-TW": "低消費活躍忠誠客戶", "zh-CN": "低消费活跃忠诚客户" },
+  "High-spending New Customers": { en: "High-spending New Customers", "zh-TW": "高消費新客戶", "zh-CN": "高消费新客户" },
+  "Almost Lost Customers": { en: "Almost Lost Customers", "zh-TW": "即將流失客戶", "zh-CN": "即将流失客户" },
+  "Churned Best Customers": { en: "Churned Best Customers", "zh-TW": "已流失最佳客戶", "zh-CN": "已流失最佳客户" },
+  "Customers Needing Attention": { en: "Customers Needing Attention", "zh-TW": "需關注客戶", "zh-CN": "需关注客户" },
+  "About to Sleep Customers": { en: "About to Sleep Customers", "zh-TW": "即將沉睡客戶", "zh-CN": "即将沉睡客户" },
+  "Hibernating Customers": { en: "Hibernating Customers", "zh-TW": "休眠客戶", "zh-CN": "休眠客户" },
+  "Lost Cheap Customers": { en: "Lost Cheap Customers", "zh-TW": "已流失低消費客戶", "zh-CN": "已流失低消费客户" },
+}
