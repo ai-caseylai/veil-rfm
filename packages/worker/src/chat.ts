@@ -316,11 +316,15 @@ interface ChatMessage {
 
 // ── Helper: compute once ──
 function getData(transactions: Transaction[]) {
-  const rfm = computeRFM({ transactions })
-  return {
-    results: rfm.results as Array<Record<string, unknown>>,
-    rfmData: rfm.rfmData as RFMData[],
-    segments: rfm.segments as Array<Record<string, unknown>>,
+  try {
+    const rfm = computeRFM({ transactions })
+    // Ensure all fields exist with safe defaults
+    const results = (rfm?.results ?? []) as Array<Record<string, unknown>>
+    const rfmData = (rfm?.rfmData ?? []) as RFMData[]
+    const segments = (rfm?.segments ?? []) as Array<Record<string, unknown>>
+    return { results, rfmData, segments }
+  } catch {
+    return { results: [] as Array<Record<string, unknown>>, rfmData: [] as RFMData[], segments: [] as Array<Record<string, unknown>> }
   }
 }
 
@@ -564,10 +568,10 @@ function execGetSegmentMigration(args: Record<string, unknown>, txn: Transaction
   let transProb: number[][] = []
   try {
     const result = computeTransition({ transactions: txn, rfmPeriod: [1, "year"], transitionPeriod: [1, "month"] })
-    transProb = result.transProb as number[][]
+    transProb = (result?.transProb as number[][]) ?? []
   } catch { /* fallback */ }
 
-  if (transProb.length === 0) {
+  if (!transProb || transProb.length === 0) {
     return { segment: segName, message: "Not enough data for transition analysis (need at least 2 time periods of data)." }
   }
 
@@ -757,11 +761,27 @@ function execPredictCustomerSegment(args: Record<string, unknown>, txn: Transact
 
 let txnsCache: Transaction[] = []
 
+async function loadTransactionsFromD1(db: D1Database): Promise<Transaction[]> {
+  try {
+    const result = await db.prepare("SELECT * FROM transactions").all()
+    return (result.results as Transaction[]) ?? []
+  } catch (e) {
+    console.error("Failed to load transactions from D1:", e)
+    return []
+  }
+}
+
 export async function handleChat(
   messages: ChatMessage[],
   transactions: Transaction[],
   apiKey: string,
+  db?: D1Database,
 ): Promise<Response> {
+  if (!transactions || transactions.length === 0) {
+    if (db) {
+      transactions = await loadTransactionsFromD1(db)
+    }
+  }
   txnsCache = transactions
 
   try {
@@ -771,7 +791,7 @@ export async function handleChat(
   }
 
   let loopCount = 0
-  while (loopCount < 5) {
+  while (loopCount < 10) {
     loopCount++
     const qwenRes = await fetch(`${QWEN_BASE}/chat/completions`, {
       method: "POST",
@@ -793,6 +813,7 @@ export async function handleChat(
         let args: Record<string, unknown> = {}
         try { args = JSON.parse(tc.function.arguments) } catch { /* */ }
         let result: unknown
+        try {
         switch (tc.function.name) {
           case "getCustomerInfo": result = execGetCustomerInfo(args, txnsCache); break
           case "listAllCustomers": result = execListAllCustomers(args, txnsCache); break
@@ -817,7 +838,7 @@ export async function handleChat(
           case "getTransitionMatrix": result = execGetTransitionMatrix(txnsCache); break
           case "predictCustomerSegment": result = execPredictCustomerSegment(args, txnsCache); break
           default: result = { error: `Unknown function: ${tc.function.name}` }
-        }
+        }} catch(e) { result = { error: `Function ${tc.function.name} failed: ${e instanceof Error ? e.message : String(e)}` } }
         messages.push({ role: "tool", tool_call_id: tc.id, content: JSON.stringify(result) })
       }
       continue
