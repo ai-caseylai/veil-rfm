@@ -19,7 +19,11 @@ import {
   whatIfAnalyze,
   whatIfTarget,
 } from "@veil-rfm/core"
+import {
+  generateSynthetic,
+} from "@veil-rfm/core"
 import type {
+  Transaction,
   RFMRequest,
   TransitionRequest,
   PredictRequest,
@@ -27,6 +31,8 @@ import type {
   WhatIfScenario,
 } from "@veil-rfm/core"
 import { handleChat } from "./chat"
+import { getCustomer, searchCustomers, getSegmentDistribution, getAvgRecency, getAvgFrequency, getAvgMonetary } from "./db"
+import type { D1Database } from "@cloudflare/workers-types"
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -278,6 +284,127 @@ export default {
         return error(
           `Chat failed: ${e instanceof Error ? e.message : String(e)}`,
         )
+      }
+    }
+
+
+    // ── GET /api/generate/rfm ──
+    if (path === "/api/generate/rfm" && request.method === "GET") {
+      try {
+        const n = parseInt(url.searchParams.get("n") ?? "5000")
+        const seed = parseInt(url.searchParams.get("seed") ?? "0") || 20260603
+
+        if (n < 1 || n > 50000) return error("n must be between 1 and 50000")
+
+        const startDate = url.searchParams.get("startDate") ?? ""
+        const endDate = url.searchParams.get("endDate") ?? ""
+        const offset = parseInt(url.searchParams.get("offset") ?? "0")
+        const limit = parseInt(url.searchParams.get("limit") ?? "0")
+
+        // Use D1 if available
+        if (env.DB) {
+          if (startDate || endDate) {
+            // Date-filtered: fetch filtered transactions and recompute RFM
+            let sql = "SELECT MemberID, OrderID, Timestamp, NetPrice, Quantity, ProductID, ProductName, Category, Gender FROM transactions WHERE 1=1"
+            const params: string[] = []
+            if (startDate) { sql += " AND Timestamp >= ?"; params.push(startDate) }
+            if (endDate) { sql += " AND Timestamp <= ?"; params.push(endDate + " 23:59:59") }
+            const txnRes = await env.DB.prepare(sql).bind(...params).run()
+            const txns = txnRes.results as Transaction[]
+            if (txns.length < 3) return json({ stats: { customers: 0, orders: 0, rows: 0, elapsedMs: 0 }, rfm: { results: [], segments: [], avgRecency: [], avgFrequency: [], avgMonetary: [] }, transition: {} })
+
+            const body: RFMRequest = { transactions: txns }
+            const rfmResult = computeRFM(body)
+            const segs = getNoOfCustomersPerSegment(rfmResult.rfmData, rfmResult.rfmSegment)
+            const totalC = segs.reduce((s, r) => s + r["Number of Customers"], 0)
+            const segments2 = segs.map((s) => ({ ...s, Percentage: s["Number of Customers"] / totalC }))
+            const avgR2 = getAvgStatPerSegment(rfmResult.rfmData, rfmResult.rfmScore, rfmResult.rfmSegment, "R")
+            const avgF2 = getAvgStatPerSegment(rfmResult.rfmData, rfmResult.rfmScore, rfmResult.rfmSegment, "F")
+            const avgM2 = getAvgStatPerSegment(rfmResult.rfmData, rfmResult.rfmScore, rfmResult.rfmSegment, "M")
+            const results2 = rfmResult.results.slice(offset, limit > 0 ? offset + limit : undefined)
+
+            return json({
+              stats: { customers: totalC, orders: txns.length, rows: txns.length, elapsedMs: 0 },
+              rfm: { results: results2, segments: segments2, avgRecency: avgR2, avgFrequency: avgF2, avgMonetary: avgM2 },
+              transition: {},
+            })
+          }
+
+          // Full dataset from D1 (paginated)
+          const rawSegments = await getSegmentDistribution(env.DB)
+          const totalCust = rawSegments.reduce((s, r) => s + r["Number of Customers"], 0)
+          const segments = rawSegments.map((s) => ({ ...s, Percentage: s["Number of Customers"] / totalCust }))
+          const avgR = await getAvgRecency(env.DB)
+          const avgF = await getAvgFrequency(env.DB)
+          const avgM = await getAvgMonetary(env.DB)
+
+          let custSql = "SELECT * FROM customers"
+          if (limit > 0) custSql += ` LIMIT ${limit} OFFSET ${offset}`
+          const { results } = await env.DB.prepare(custSql).all()
+
+          // Compute transition from a small sample
+          const sample = generateSynthetic({ customers: 100, seed })
+          const transResult = computeTransition({ transactions: sample.transactions })
+          const initProp = mcSeq2Prop(transResult.mcSeq)
+          const predicted = predictSegmentMovement(initProp, transResult.transProb, n, 6)
+
+          return json({
+            stats: { customers: n, orders: 0, rows: 0, elapsedMs: 0 },
+            rfm: { results, segments, avgRecency: avgR, avgFrequency: avgF, avgMonetary: avgM },
+            transition: { ...transResult, initProp, predicted },
+          })
+        }
+
+        // Fallback: generate from scratch
+        const generated = generateSynthetic({ customers: n, seed })
+        const body: RFMRequest = { transactions: generated.transactions }
+        const rfmResult = computeRFM(body)
+        const transResult = computeTransition({ transactions: generated.transactions })
+        const segments = getNoOfCustomersPerSegment(rfmResult.rfmData, rfmResult.rfmSegment)
+        const avgRecency = getAvgStatPerSegment(rfmResult.rfmData, rfmResult.rfmScore, rfmResult.rfmSegment, "R")
+        const avgFrequency = getAvgStatPerSegment(rfmResult.rfmData, rfmResult.rfmScore, rfmResult.rfmSegment, "F")
+        const avgMonetary = getAvgStatPerSegment(rfmResult.rfmData, rfmResult.rfmScore, rfmResult.rfmSegment, "M")
+        const initProp = mcSeq2Prop(transResult.mcSeq)
+        const totalCust = transResult.mcSeq.filter(
+          (s) => s.Time === Math.max(...transResult.mcSeq.map((x) => x.Time))
+        ).length
+        const predicted = predictSegmentMovement(initProp, transResult.transProb, totalCust, 6)
+
+        return json({
+          stats: generated.stats,
+          rfm: { ...rfmResult, segments, avgRecency, avgFrequency, avgMonetary },
+          transition: { ...transResult, initProp, predicted },
+        })
+      } catch (e) {
+        return error(`Generate+RFM failed: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    }
+
+    // ── GET /api/customers/:id/transactions ──
+    const txnMatch = path.match(/^\/api\/customers\/(.+)\/transactions$/)
+    if (txnMatch && request.method === "GET") {
+      try {
+        if (!env.DB) return error("D1 not configured", 500)
+        const { results } = await env.DB.prepare(
+          "SELECT OrderID, Timestamp, NetPrice, Quantity, ProductName, Category FROM transactions WHERE MemberID = ? ORDER BY Timestamp DESC LIMIT 200"
+        ).bind(txnMatch[1]).run()
+        return json(results)
+      } catch (e) {
+        return error(`Transactions failed: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    }
+
+    // ── GET /api/customers ──
+    if (path === "/api/customers" && request.method === "GET") {
+      try {
+        if (!env.DB) return error("D1 not configured", 500)
+        const segment = url.searchParams.get("segment") ?? undefined
+        const search = url.searchParams.get("search") ?? undefined
+        const limit = parseInt(url.searchParams.get("limit") ?? "50")
+        const results = await searchCustomers(env.DB, { segment, search, limit })
+        return json(results)
+      } catch (e) {
+        return error(`Customers failed: ${e instanceof Error ? e.message : String(e)}`)
       }
     }
 
