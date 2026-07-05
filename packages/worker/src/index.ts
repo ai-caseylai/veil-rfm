@@ -166,11 +166,20 @@ export default {
     // ── POST /api/rfm/activity ──
     if (path === "/api/rfm/activity" && request.method === "POST") {
       try {
-        const body: { transactions: RFMRequest["transactions"] } = await request.json()
-        if (!body.transactions?.length) {
+        const body: { transactions: RFMRequest["transactions"]; seed?: number } = await request.json()
+        let txns = body.transactions ?? []
+        if (txns.length === 0 && env.DB) {
+          // Load from D1
+          const txnRes = await env.DB.prepare("SELECT MemberID, OrderID, Timestamp, NetPrice, Quantity, ProductID, ProductName, Category, Gender FROM transactions").all()
+          txns = txnRes.results as Transaction[]
+        }
+        if (txns.length === 0 && body.seed) {
+          txns = generateSynthetic({ customers: 5000, seed: body.seed }).transactions
+        }
+        if (!txns.length) {
           return error("transactions array is required and must not be empty")
         }
-        const result = computeActivity(body.transactions)
+        const result = computeActivity(txns)
         return json(result)
       } catch (e) {
         return error(`Activity computation failed: ${e instanceof Error ? e.message : String(e)}`)
