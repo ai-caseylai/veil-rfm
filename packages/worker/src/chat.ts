@@ -1,5 +1,6 @@
 import {
   computeRFM, computeTransition, whatIfAnalyze, whatIfTarget, RFM_SEGMENT,
+  getNoOfCustomersPerSegment,
   computeCLV, buildCBS, buildSpendData,
   recommendForCustomer, mineAssociationRules, recommendAll,
 } from "@veil-rfm/core"
@@ -321,7 +322,10 @@ function getData(transactions: Transaction[]) {
     // Ensure all fields exist with safe defaults
     const results = (rfm?.results ?? []) as Array<Record<string, unknown>>
     const rfmData = (rfm?.rfmData ?? []) as RFMData[]
-    const segments = (rfm?.segments ?? []) as Array<Record<string, unknown>>
+    // Compute segments from rfmData + rfmSegment (was missing — rfm.segments doesn't exist)
+    const rawSegments = getNoOfCustomersPerSegment(rfmData, rfm?.rfmSegment ?? [])
+    const totalCustomer = rawSegments.reduce((s, r) => s + r["Number of Customers"], 0)
+    const segments = rawSegments.map((s) => ({ ...s, Percentage: totalCustomer > 0 ? s["Number of Customers"] / totalCustomer : 0 }))
     return { results, rfmData, segments }
   } catch {
     return { results: [] as Array<Record<string, unknown>>, rfmData: [] as RFMData[], segments: [] as Array<Record<string, unknown>> }
