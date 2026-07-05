@@ -45,7 +45,7 @@ export default function App() {
   // Load 5,000-customer RFM data from D1 (single API call)
   useEffect(() => {
     setLoading(true)
-    loadPrecomputedRFM({ n: 5000, seed: parseInt(season), startDate: dateFrom, endDate: dateTo, limit: 100 })
+    loadPrecomputedRFM({ n: 5000, seed: parseInt(season), startDate: dateFrom, endDate: dateTo })
       .then((result) => {
         setData((d) => ({
           ...d,
