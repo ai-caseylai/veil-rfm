@@ -210,6 +210,95 @@ export default {
       }
     }
 
+
+    // ── POST /api/rfm/cohort ──
+    if (path === "/api/rfm/cohort" && request.method === "POST") {
+      try {
+        const body: { transactions: RFMRequest["transactions"]; seed?: number } = await request.json()
+        let txns = body.transactions ?? []
+        const seed = body.seed || 20260603
+        if (txns.length === 0) {
+          // Use synthetic sample — real D1 data (97K rows) is too slow for O(n²) cohort computation
+          txns = generateSynthetic({ customers: 5000, seed }).transactions
+        }
+        // Group by first purchase month + pre-group txns by customer (O(n) single pass)
+        const firstPurchase = new Map<string, string>()
+        const custTxnsMap = new Map<string, Array<typeof txns[0]>>()
+        for (const t of txns) {
+          const existing = firstPurchase.get(t.MemberID)
+          const ts = t.Timestamp.slice(0, 7)
+          if (!existing || ts < existing) firstPurchase.set(t.MemberID, ts)
+          if (!custTxnsMap.has(t.MemberID)) custTxnsMap.set(t.MemberID, [])
+          custTxnsMap.get(t.MemberID)!.push(t)
+        }
+        // Build cohort matrix
+        const cohorts = new Map<string, { size: number; months: Record<number, number> }>()
+        for (const [cust, cohortMonth] of firstPurchase) {
+          if (!cohorts.has(cohortMonth)) cohorts.set(cohortMonth, { size: 0, months: {} })
+          cohorts.get(cohortMonth)!.size++
+          const custTxns = custTxnsMap.get(cust) ?? []
+          for (const t of custTxns) {
+            const tMonth = t.Timestamp.slice(0, 7)
+            const cohortDate = new Date(cohortMonth + "-01")
+            const txnDate = new Date(tMonth + "-01")
+            const monthDiff = (txnDate.getFullYear() - cohortDate.getFullYear()) * 12 + (txnDate.getMonth() - cohortDate.getMonth())
+            if (monthDiff > 0) {
+              const cohort = cohorts.get(cohortMonth)!
+              cohort.months[monthDiff] = (cohort.months[monthDiff] ?? 0) + 1
+            }
+          }
+        }
+        // Convert to table rows
+        const result = [...cohorts.entries()]
+          .sort(([a], [b]) => a.localeCompare(b))
+          .map(([month, data]) => {
+            const row: Record<string, unknown> = { month, size: data.size }
+            for (let m = 1; m <= 6; m++) {
+              row[`m${m}`] = (data.months[m] ?? 0) / data.size
+            }
+            return row
+          })
+        return json(result)
+      } catch (e) {
+        return error(`Cohort failed: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    }
+
+    // ── POST /api/rfm/categories ──
+    if (path === "/api/rfm/categories" && request.method === "POST") {
+      try {
+        const body: { transactions: RFMRequest["transactions"]; seed?: number } = await request.json()
+        let txns = body.transactions ?? []
+        if (txns.length === 0 && env.DB) {
+          const txnRes = await env.DB.prepare("SELECT MemberID, OrderID, Timestamp, NetPrice, Quantity, ProductID, ProductName, Category, Gender FROM transactions").all()
+          txns = txnRes.results as Transaction[]
+        }
+        if (txns.length === 0 && body.seed) {
+          txns = generateSynthetic({ customers: 5000, seed: body.seed }).transactions
+        }
+        const rfmBody: RFMRequest = { transactions: txns }
+        const rfmResult = computeRFM(rfmBody)
+        const segMap = new Map<string, string>()
+        for (const r of rfmResult.results) segMap.set(r.CustomerID, r.Segment)
+        const agg = new Map<string, Map<string, number>>()
+        for (const t of txns) {
+          const seg = segMap.get(t.MemberID) ?? "Unknown"
+          if (!agg.has(seg)) agg.set(seg, new Map())
+          const catMap = agg.get(seg)!
+          catMap.set(t.Category, (catMap.get(t.Category) ?? 0) + t.NetPrice * t.Quantity)
+        }
+        const result: Record<string, unknown>[] = []
+        for (const [seg, cats] of agg) {
+          for (const [cat, spending] of cats) {
+            result.push({ Segment: seg, Category: cat, Spending: spending })
+          }
+        }
+        return json(result)
+      } catch (e) {
+        return error(`Categories failed: ${e instanceof Error ? e.message : String(e)}`)
+      }
+    }
+
     // ── POST /api/rfm/transition ──
     if (path === "/api/rfm/transition" && request.method === "POST") {
       try {
