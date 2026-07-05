@@ -115,15 +115,23 @@ export default {
     // ── POST /api/rfm/recommend ──
     if (path === "/api/rfm/recommend" && request.method === "POST") {
       try {
-        const body: { customerID?: string; transactions: RFMRequest["transactions"]; topN?: number } = await request.json()
-        if (!body.transactions?.length) {
+        const body: { customerID?: string; transactions: RFMRequest["transactions"]; topN?: number; seed?: number } = await request.json()
+        let txns = body.transactions ?? []
+        if (txns.length === 0 && env.DB) {
+          const txnRes = await env.DB.prepare("SELECT MemberID, OrderID, Timestamp, NetPrice, Quantity, ProductID, ProductName, Category, Gender FROM transactions").all()
+          txns = txnRes.results as Transaction[]
+        }
+        if (txns.length === 0 && body.seed) {
+          txns = generateSynthetic({ customers: 5000, seed: body.seed }).transactions
+        }
+        if (!txns.length) {
           return error("transactions array is required")
         }
         if (body.customerID) {
-          const result = recommendForCustomer(body.customerID, body.transactions, body.topN ?? 5)
+          const result = recommendForCustomer(body.customerID, txns, body.topN ?? 5)
           return json(result ?? { error: "Customer not found" })
         }
-        const results = recommendAll(body.transactions, body.topN ?? 5)
+        const results = recommendAll(txns, body.topN ?? 5)
         return json(results)
       } catch (e) {
         return error(`Recommend failed: ${e instanceof Error ? e.message : String(e)}`)
@@ -133,11 +141,19 @@ export default {
     // ── POST /api/rfm/associate ──
     if (path === "/api/rfm/associate" && request.method === "POST") {
       try {
-        const body: { transactions: RFMRequest["transactions"]; minSupport?: number; minConfidence?: number } = await request.json()
-        if (!body.transactions?.length) {
+        const body: { transactions: RFMRequest["transactions"]; minSupport?: number; minConfidence?: number; seed?: number } = await request.json()
+        let txns = body.transactions ?? []
+        if (txns.length === 0 && env.DB) {
+          const txnRes = await env.DB.prepare("SELECT MemberID, OrderID, Timestamp, NetPrice, Quantity, ProductID, ProductName, Category, Gender FROM transactions").all()
+          txns = txnRes.results as Transaction[]
+        }
+        if (txns.length === 0 && body.seed) {
+          txns = generateSynthetic({ customers: 5000, seed: body.seed }).transactions
+        }
+        if (!txns.length) {
           return error("transactions array is required")
         }
-        const rules = mineAssociationRules(body.transactions, body.minSupport ?? 0.05, body.minConfidence ?? 0.1)
+        const rules = mineAssociationRules(txns, body.minSupport ?? 0.05, body.minConfidence ?? 0.1)
         return json(rules)
       } catch (e) {
         return error(`Association mining failed: ${e instanceof Error ? e.message : String(e)}`)
@@ -147,12 +163,20 @@ export default {
     // ── POST /api/rfm/clv ──
     if (path === "/api/rfm/clv" && request.method === "POST") {
       try {
-        const body: { transactions: RFMRequest["transactions"] } = await request.json()
-        if (!body.transactions?.length) {
+        const body: { transactions: RFMRequest["transactions"]; seed?: number } = await request.json()
+        let txns = body.transactions ?? []
+        if (txns.length === 0 && env.DB) {
+          const txnRes = await env.DB.prepare("SELECT MemberID, OrderID, Timestamp, NetPrice, Quantity, ProductID, ProductName, Category, Gender FROM transactions").all()
+          txns = txnRes.results as Transaction[]
+        }
+        if (txns.length === 0 && body.seed) {
+          txns = generateSynthetic({ customers: 5000, seed: body.seed }).transactions
+        }
+        if (!txns.length) {
           return error("transactions array is required and must not be empty")
         }
-        const cbs = buildCBS(body.transactions)
-        const spendData = buildSpendData(body.transactions)
+        const cbs = buildCBS(txns)
+        const spendData = buildSpendData(txns)
         if (cbs.length < 3) {
           return error("Need at least 3 customers for BTYD model estimation")
         }
@@ -189,11 +213,20 @@ export default {
     // ── POST /api/rfm/transition ──
     if (path === "/api/rfm/transition" && request.method === "POST") {
       try {
-        const body: TransitionRequest = await request.json()
-        if (!body.transactions?.length) {
+        const body: TransitionRequest & { seed?: number } = await request.json()
+        let txns = body.transactions ?? []
+        if (txns.length === 0 && env.DB) {
+          // Use synthetic sample to avoid stack overflow with 97K real transactions
+          const seed = body.seed || 20260603
+          txns = generateSynthetic({ customers: 500, seed }).transactions
+        }
+        if (txns.length === 0 && body.seed) {
+          txns = generateSynthetic({ customers: 5000, seed: body.seed }).transactions
+        }
+        if (!txns.length) {
           return error("transactions array is required and must not be empty")
         }
-        const result = computeTransition(body)
+        const result = computeTransition({ ...body, transactions: txns })
 
         // Also compute prediction data
         const initProp = mcSeq2Prop(result.mcSeq)
