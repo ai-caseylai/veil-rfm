@@ -92,8 +92,8 @@ export default function DashboardSections({ data }: Props) {
   for (const r of results) { const arr = segSpending.get(r.Segment as string) ?? []; arr.push(r.TotalSpending as number); segSpending.set(r.Segment as string, arr) }
   const ltvData = RFM_SEGMENT.map((seg) => {
     const vals = segSpending.get(seg) ?? []
-    return { Segment: segLabel(seg, lang), "Avg LTV ($)": vals.length > 0 ? vals.reduce((s, v) => s + v, 0) / vals.length : 0 }
-  }).filter((d) => d["Avg LTV ($)"] > 0)
+    return { Segment: segLabel(seg, lang), "Avg CLV ($)": vals.length > 0 ? vals.reduce((s, v) => s + v, 0) / vals.length : 0 }
+  }).filter((d) => d["Avg CLV ($)"] > 0)
 
   return (
     <div className="space-y-4">
@@ -232,7 +232,7 @@ export default function DashboardSections({ data }: Props) {
         <div className="card-header">{t.avgLTVPerSegment}</div>
         <div className="card-body">
           <ResponsiveContainer width="100%" height={400}>
-            <BarChart data={ltvData}><CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" /><XAxis dataKey="Segment" angle={-45} textAnchor="end" height={120} tick={{ fontSize: 10 }} /><YAxis /><Tooltip /><Bar dataKey="Avg LTV ($)" fill="#6b46c1" radius={[4, 4, 0, 0]} /></BarChart>
+            <BarChart data={ltvData}><CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" /><XAxis dataKey="Segment" angle={-45} textAnchor="end" height={120} tick={{ fontSize: 10 }} /><YAxis /><Tooltip /><Bar dataKey="Avg CLV ($)" fill="#6b46c1" radius={[4, 4, 0, 0]} /></BarChart>
           </ResponsiveContainer>
         </div>
       </section>

@@ -116,7 +116,7 @@ const zhTW: Translations = {
   whatIfAnalysis: "情境模擬",
   simulateScenarios: "模擬場景",
   customerLifetimeValue: "客戶終身價值",
-  ltvOverview: "價值總覽",
+  ltvOverview: "CLV 總覽",
   qa500: "問答 500",
 
   uploadTitle: "Veil RFM 客戶分析平台",
@@ -171,10 +171,10 @@ const zhTW: Translations = {
   prev: "上一頁",
   next: "下一頁",
 
-  avgLTVPerSegment: "各分群平均客戶終身價值",
+  avgLTVPerSegment: "各分群平均 CLV",
   simpleEstimate: "基於客戶總消費的簡易估算",
   overallAvg: "整體平均",
-  avgLTV: "平均 LTV ($)",
+  avgLTV: "平均 CLV ($)",
 
   selectCustomer: "選擇客戶",
   currentStats: "目前數據",
@@ -210,7 +210,7 @@ const zhCN: Translations = {
   whatIfAnalysis: "情景模拟",
   simulateScenarios: "模拟场景",
   customerLifetimeValue: "客户终身价值",
-  ltvOverview: "价值总览",
+  ltvOverview: "CLV 总览",
   qa500: "问答 500",
 
   uploadTitle: "Veil RFM 客户分析平台",
@@ -263,10 +263,10 @@ const zhCN: Translations = {
   prev: "上一页",
   next: "下一页",
 
-  avgLTVPerSegment: "各分群平均客户终身价值",
+  avgLTVPerSegment: "各分群平均 CLV",
   simpleEstimate: "基于客户总消费的简易估算",
   overallAvg: "整体平均",
-  avgLTV: "平均 LTV ($)",
+  avgLTV: "平均 CLV ($)",
 
   selectCustomer: "选择客户",
   currentStats: "目前数据",
@@ -301,7 +301,7 @@ const en: Translations = {
   whatIfAnalysis: "What-If Analysis",
   simulateScenarios: "Simulate Scenarios",
   customerLifetimeValue: "Customer Lifetime Value",
-  ltvOverview: "LTV Overview",
+  ltvOverview: "CLV Overview",
   qa500: "Q&A 500",
 
   uploadTitle: "Veil RFM Analytics Platform",
@@ -356,7 +356,7 @@ const en: Translations = {
   prev: "Prev",
   next: "Next",
 
-  avgLTVPerSegment: "Average Customer Lifetime Value by Segment",
+  avgLTVPerSegment: "Average CLV by Segment",
   simpleEstimate: "Simple estimate based on total spending per customer.",
   overallAvg: "Overall average",
   avgLTV: "Avg LTV ($)",

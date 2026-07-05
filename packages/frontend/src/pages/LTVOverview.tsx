@@ -62,7 +62,7 @@ export default function LTVOverview({ data }: Props) {
   for (const r of results) { const arr = segSpending.get(r.Segment) ?? []; arr.push(r.TotalSpending); segSpending.set(r.Segment, arr) }
   const ltvBySeg = RFM_SEGMENT.map((seg) => {
     const vals = segSpending.get(seg) ?? []
-    return { Segment: segLabel(seg, lang), "Avg LTV ($)": vals.length > 0 ? vals.reduce((s, v) => s + v, 0) / vals.length : 0, Customers: vals.length }
+    return { Segment: segLabel(seg, lang), "Avg CLV ($)": vals.length > 0 ? vals.reduce((s, v) => s + v, 0) / vals.length : 0, Customers: vals.length }
   }).filter((d) => d.Customers > 0)
   const overallAvg = results.length > 0 ? results.reduce((s, r) => s + r.TotalSpending, 0) / results.length : 0
 
@@ -145,7 +145,7 @@ export default function LTVOverview({ data }: Props) {
               <XAxis dataKey="Segment" angle={-45} textAnchor="end" height={120} tick={{ fontSize: 11 }} />
               <YAxis />
               <Tooltip formatter={(value: number) => `$${value.toLocaleString()}`} />
-              <Bar dataKey="Avg LTV ($)" fill="#6b46c1" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="Avg CLV ($)" fill="#6b46c1" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
