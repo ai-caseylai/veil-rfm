@@ -359,7 +359,7 @@ function execListAllCustomers(args: Record<string, unknown>, txn: Transaction[])
   const limit = Math.min((args.limit as number) ?? 10, 100)
   const segFilter = args.segment as string | undefined
   let filtered = segFilter
-    ? results.filter((r) => (r.Segment as string).toLowerCase() === segFilter.toLowerCase())
+    ? results.filter((r) => (r.Segment as string).toLowerCase().includes(segFilter.toLowerCase()))
     : [...results]
   if (sortBy === "spending") filtered.sort((a, b) => ((b.TotalSpending as number) ?? 0) - ((a.TotalSpending as number) ?? 0))
   else if (sortBy === "orders") filtered.sort((a, b) => ((b.NoOfTxn as number) ?? 0) - ((a.NoOfTxn as number) ?? 0))
@@ -446,7 +446,7 @@ function execGetSegmentStats(args: Record<string, unknown>, txn: Transaction[]) 
   }
   const out: Record<string, unknown>[] = []
   for (const [seg, members] of segMap) {
-    if (segFilter && seg.toLowerCase() !== segFilter.toLowerCase()) continue
+    if (segFilter && !seg.toLowerCase().includes(segFilter.toLowerCase())) continue
     const n = members.length
     const avgR = Math.round(members.reduce((s, m) => s + ((m.DaySinceLastTxn as number) ?? 0), 0) / n)
     const avgF = (members.reduce((s, m) => s + ((m.NoOfTxn as number) ?? 0), 0) / n).toFixed(1)
