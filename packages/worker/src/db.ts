@@ -42,7 +42,7 @@ export async function searchCustomers(
 
 export async function getSegmentDistribution(db: D1Database): Promise<SegmentRow[]> {
   const { results } = await db
-    .prepare("SELECT Segment, COUNT(*) AS \"Number of Customers\" FROM customers GROUP BY Segment ORDER BY \"Number of Customers\" DESC")
+    .prepare("SELECT Segment, COUNT(*) AS \"Number of Customers\" FROM customers GROUP BY Segment ORDER BY CASE Segment WHEN 'Best Customers' THEN 1 WHEN 'Loyal Customers' THEN 2 WHEN 'Potential Loyalist' THEN 3 WHEN 'Low-spending Active Loyal Customers' THEN 4 WHEN 'High-spending New Customers' THEN 5 WHEN 'Almost Lost Customers' THEN 6 WHEN 'Churned Best Customers' THEN 7 WHEN 'Customers Needing Attention' THEN 8 WHEN 'About to Sleep Customers' THEN 9 WHEN 'Hibernating Customers' THEN 10 WHEN 'Lost Cheap Customers' THEN 11 ELSE 99 END")
     .run()
   return results as SegmentRow[]
 }

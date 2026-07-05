@@ -2,6 +2,17 @@ import { SEGMENT_LABELS } from "@veil-rfm/core"
 import type { SegmentName } from "@veil-rfm/core"
 import type { Lang } from "./i18n"
 
+import { RFM_SEGMENT } from "@veil-rfm/core"
+
+/** Canonical segment order index for sorting */
+const SEGMENT_ORDER = new Map(RFM_SEGMENT.map((s, i) => [s, i]))
+
+/** Sort segment data by canonical RFM order */
+export function sortSegments<T extends { Segment: string }>(items: T[]): T[] {
+  return [...items].sort((a, b) => (SEGMENT_ORDER.get(a.Segment as SegmentName) ?? 99) - (SEGMENT_ORDER.get(b.Segment as SegmentName) ?? 99))
+}
+
+
 export function segLabel(segment: string, lang: Lang): string {
   return SEGMENT_LABELS[segment as SegmentName]?.[lang] ?? segment
 }

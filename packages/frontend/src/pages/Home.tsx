@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts"
 import type { AppData } from "../App"
 import { useT } from "../lib/i18n"
-import { segLabel } from "../lib/segmentNames"
+import { segLabel, sortSegments } from "../lib/segmentNames"
 
 interface Props { data: AppData }
 
@@ -13,8 +13,10 @@ export default function Home({ data }: Props) {
 
   if (!data.rfmData) return <div className="flex items-center justify-center h-64"><div className="skeleton h-8 w-64" /></div>
 
-  const segments = (data.rfmData.segments as Array<{ Segment: string; "Number of Customers": number; Percentage: number }> ?? [])
-    .map((s) => ({ ...s, Segment: segLabel(s.Segment, lang) }))
+  const segments = sortSegments(
+    (data.rfmData.segments as Array<{ Segment: string; "Number of Customers": number; Percentage: number }> ?? [])
+      .map((s) => ({ ...s, Segment: segLabel(s.Segment, lang) }))
+  )
   const results = (data.rfmData.results as Array<Record<string, unknown>> ?? [])
   const totalCust = segments.reduce((s, seg) => s + seg["Number of Customers"], 0)
   const totalOrders = results.reduce((s, r) => s + (Number(r.NoOfTxn) ?? 0), 0)

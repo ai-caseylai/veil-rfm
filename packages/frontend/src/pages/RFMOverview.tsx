@@ -4,7 +4,7 @@ import { computeRFM } from "../lib/api"
 import type { AppData } from "../App"
 import { useNavigate } from "react-router-dom"
 import { useT } from "../lib/i18n"
-import { segLabel } from "../lib/segmentNames"
+import { segLabel, sortSegments } from "../lib/segmentNames"
 
 interface Props { data: AppData }
 
@@ -44,8 +44,10 @@ export default function RFMOverview({ data }: Props) {
   if (loading) return <Skeleton />
   if (!rfmResult) return <p className="text-red-500">{t.errorLoading}</p>
 
-  const segments = (rfmResult.segments as { Segment: string; "Number of Customers": number; Percentage: number }[])
-    .map((s) => ({ ...s, Segment: segLabel(s.Segment, lang) }))
+  const segments = sortSegments(
+    (rfmResult.segments as { Segment: string; "Number of Customers": number; Percentage: number }[])
+      .map((s) => ({ ...s, Segment: segLabel(s.Segment, lang) }))
+  )
   const total = segments.reduce((s, seg) => s + seg["Number of Customers"], 0)
   const activeSegs = segments.filter((s) => s["Number of Customers"] > 0)
 

@@ -3,7 +3,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { computeRFM } from "../lib/api"
 import type { AppData } from "../App"
 import { useT } from "../lib/i18n"
-import { segLabel } from "../lib/segmentNames"
+import { segLabel, sortSegments } from "../lib/segmentNames"
 
 interface Props { data: AppData }
 type StatType = "R" | "F" | "M"
@@ -37,8 +37,10 @@ export default function RFMCharacteristics({ data }: Props) {
   if (!rfmResult) return <p className="text-red-500">{t.errorLoading}</p>
 
   const avgKey = avgType === "R" ? "avgRecency" : avgType === "F" ? "avgFrequency" : "avgMonetary"
-  const avgData = ((rfmResult[avgKey] as { Segment: string; value: number }[]) ?? [])
-    .map((d) => ({ ...d, Segment: segLabel(d.Segment, lang) }))
+  const avgData = sortSegments(
+    ((rfmResult[avgKey] as { Segment: string; value: number }[]) ?? [])
+      .map((d) => ({ ...d, Segment: segLabel(d.Segment, lang) }))
+  )
   const avgLabel = avgType === "R" ? t.avgRecency : avgType === "F" ? t.avgOrders : t.avgSpending
 
   // Frequency distribution
