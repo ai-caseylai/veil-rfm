@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts"
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList } from "recharts"
 import type { AppData } from "../App"
 import { useT } from "../lib/i18n"
 import { segLabel, sortSegments } from "../lib/segmentNames"
@@ -62,12 +62,13 @@ export default function Home({ data }: Props) {
         <div className="card lg:col-span-1">
           <div className="card-header">{t.customersBySegment}</div>
           <div className="card-body">
-            <ResponsiveContainer width="100%" height={220}>
+            <ResponsiveContainer width="100%" height={280}>
               <PieChart>
-                <Pie data={activeSegs} dataKey="Number of Customers" nameKey="Segment" cx="50%" cy="50%" outerRadius={80} innerRadius={40}>
-                  {activeSegs.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
+                <Pie data={activeSegs} dataKey="Number of Customers" nameKey="Segment" cx="50%" cy="50%" outerRadius={100} innerRadius={50} paddingAngle={2}>
+                  {activeSegs.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} stroke="#fff" strokeWidth={1} />)}
+                  <LabelList dataKey="Segment" position="outside" fill="#4a5568" fontSize={10} />
                 </Pie>
-                <Tooltip />
+                <Tooltip formatter={(value: number) => value.toLocaleString()} />
               </PieChart>
             </ResponsiveContainer>
             <Link to="/rfm-overview" className="text-xs text-[var(--accent)] hover:underline block text-center mt-2">{t.overview} →</Link>

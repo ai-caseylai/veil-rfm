@@ -660,9 +660,9 @@ function execRecommendProducts(args: Record<string, unknown>, txn: Transaction[]
 }
 
 function execGetAssociationRules(args: Record<string, unknown>, txn: Transaction[]) {
-  const minLift = (args.minLift as number) ?? 1.5
+  const minLift = (args.minLift as number) ?? 1.2
   const limit = Math.min((args.limit as number) ?? 20, 50)
-  const rules = mineAssociationRules(txn, 0.05, 0.1, 100)
+  const rules = mineAssociationRules(txn, 0.01, 0.05, 100)
   const filtered = rules.filter((r) => r.lift >= minLift).slice(0, limit)
   return {
     totalRules: rules.length,
@@ -678,11 +678,11 @@ function execGetAssociationRules(args: Record<string, unknown>, txn: Transaction
 }
 
 function execGetCrossSellOpportunities(txn: Transaction[]) {
-  const rules = mineAssociationRules(txn, 0.05, 0.1, 50) ?? []
+  const rules = mineAssociationRules(txn, 0.01, 0.05, 50) ?? []
   if (!Array.isArray(rules) || rules.length === 0) return { opportunities: [] }
   const byCategory = new Map<string, Array<{ item: string; lift: number }>>()
   for (const r of rules) {
-    if (r.lift < 2) continue
+    if (r.lift < 1.2) continue
     const cat = r.antecedent[0]
     const arr = byCategory.get(cat) ?? []
     arr.push({ item: r.consequent[0], lift: r.lift })
