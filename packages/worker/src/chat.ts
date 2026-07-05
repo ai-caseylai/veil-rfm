@@ -660,7 +660,7 @@ function execRecommendProducts(args: Record<string, unknown>, txn: Transaction[]
 }
 
 function execGetAssociationRules(args: Record<string, unknown>, txn: Transaction[]) {
-  const minLift = (args.minLift as number) ?? 1.2
+  const minLift = (args.minLift as number) ?? 0
   const limit = Math.min((args.limit as number) ?? 20, 50)
   const rules = mineAssociationRules(txn, 0.01, 0.05, 100)
   const filtered = rules.filter((r) => r.lift >= minLift).slice(0, limit)
@@ -682,15 +682,15 @@ function execGetCrossSellOpportunities(txn: Transaction[]) {
   if (!Array.isArray(rules) || rules.length === 0) return { opportunities: [] }
   const byCategory = new Map<string, Array<{ item: string; lift: number }>>()
   for (const r of rules) {
-    if (r.lift < 1.2) continue
+    // Show all rules, sort by confidence (synthetic data has uniform lift ~1.0)
     const cat = r.antecedent[0]
     const arr = byCategory.get(cat) ?? []
-    arr.push({ item: r.consequent[0], lift: r.lift })
+    arr.push({ item: r.consequent[0], lift: r.lift, conf: r.confidence })
     byCategory.set(cat, arr)
   }
   const opportunities = [...byCategory.entries()].map(([product, cross]) => ({
     product,
-    crossSell: cross.sort((a, b) => b.lift - a.lift).slice(0, 3).map((c) => `${c.item} (lift: ${c.lift.toFixed(1)})`),
+    crossSell: cross.sort((a, b) => b.conf - a.conf).slice(0, 3).map((c) => `${c.item} (lift: ${c.lift.toFixed(1)})`),
   }))
   return { opportunities: opportunities.slice(0, 20) }
 }
