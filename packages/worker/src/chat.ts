@@ -394,7 +394,7 @@ function execRunWhatIf(args: Record<string, unknown>, txn: Transaction[]) {
 
 function execExplainSegment(args: Record<string, unknown>) {
   const name = (args.segmentName as string).toLowerCase()
-  const idx = RFM_SEGMENT.findIndex((s) => s.toLowerCase() === name)
+  const idx = RFM_SEGMENT.findIndex((s) => s.toLowerCase().includes(name))
   if (idx < 0) return { error: `Unknown segment "${args.segmentName}". Available: ${RFM_SEGMENT.join(", ")}` }
   const descs = [
     "Best Customers (RFM 555): Highest value across all dimensions. Action: VIP retention program, exclusive previews, personal shopper service.",
@@ -510,7 +510,7 @@ function execGetCustomersByFilter(args: Record<string, unknown>, txn: Transactio
   if (minS != null) filtered = filtered.filter((r) => ((r.TotalSpending as number) ?? 0) >= minS)
   if (maxS != null) filtered = filtered.filter((r) => ((r.TotalSpending as number) ?? 0) <= maxS)
   if (maxR != null) filtered = filtered.filter((r) => ((r.DaySinceLastTxn as number) ?? 999) <= maxR)
-  if (seg) filtered = filtered.filter((r) => (r.Segment as string).toLowerCase() === seg.toLowerCase())
+  if (seg) filtered = filtered.filter((r) => (r.Segment as string).toLowerCase().includes(seg.toLowerCase()))
 
   return {
     totalResults: filtered.length,
@@ -569,7 +569,7 @@ function execGetSummaryStats(txn: Transaction[]) {
 
 function execGetSegmentMigration(args: Record<string, unknown>, txn: Transaction[]) {
   const segName = args.segment as string
-  const idx = RFM_SEGMENT.findIndex((s) => s.toLowerCase() === segName.toLowerCase())
+  const idx = RFM_SEGMENT.findIndex((s) => s.toLowerCase().includes(segName.toLowerCase()))
   if (idx < 0) return { error: `Unknown segment "${segName}"` }
   let transProb: number[][] = []
   try {
