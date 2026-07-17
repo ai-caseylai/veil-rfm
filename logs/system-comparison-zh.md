@@ -287,7 +287,7 @@ Lift=8.0 表示：買 Champagne 的人買 Lobster 的機率是隨機客戶的 8 
 
 ---
 
-> **VEII RFM Analytics** · https://veil.techforliving.net
+> **VEII RFM Analytics** · https://veii.techforliving.net
 > GitHub: https://github.com/ai-caseylai/veii-rfm
 > 完整 PPT 對照：`logs/ppt-to-system-mapping-zh.md`
 > 理論基礎：`logs/rfm-vs-markov-theory-zh.md`

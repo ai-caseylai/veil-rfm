@@ -15,7 +15,7 @@ VEII RFM 是一個零售客戶分析平台，提供 RFM 分群、Markov Chain �
 | 資源 | 位置 |
 |------|------|
 | API Base URL | `https://veil-rfm-api.ai-caseylai.workers.dev` |
-| 前端儀表板 | `https://veil.techforliving.net` |
+| 前端儀表板 | `https://veii.techforliving.net` |
 | 本地源碼 | `/Users/perry/Documents/VEII RFM Final` |
 | LLM 模型 | Qwen-plus（DashScope International） |
 | D1 資料庫 | `veil-rfm-db`（50bfc84c）— customers 5,000 筆 + transactions 97,282 筆 |
@@ -23,7 +23,7 @@ VEII RFM 是一個零售客戶分析平台，提供 RFM 分群、Markov Chain �
 ## 架構
 
 ```
-前端 React (veil.techforliving.net)
+前端 React (veii.techforliving.net)
        ↓
 Worker API (15 個端點 — 6 GET + 9 POST)
        ↓

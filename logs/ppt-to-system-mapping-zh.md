@@ -2,7 +2,7 @@
 
 > 原始 PPT：`PPT-PolyU 190211 (RFM) BL (2).pptx`（VEII, 2019，47 頁）
 > 對應系統：VEII RFM Analytics（TypeScript, Cloudflare, Qwen LLM）
-> 線上：https://veil.techforliving.net
+> 線上：https://veii.techforliving.net
 
 ---
 
@@ -179,7 +179,7 @@ curl -X POST .../api/rfm/transition \
 
 ### 場景 1：想知道本月各分群客戶數（PPT Slide 7）
 
-1. 開啟 https://veil.techforliving.net
+1. 開啟 https://veii.techforliving.net
 2. 點側邊欄「總覽」→ 看到圓餅圖 + 分群表
 3. 或用 chatbot 問：「各分群有多少客戶？」
 
@@ -204,6 +204,6 @@ curl -X POST .../api/rfm/transition \
 
 ---
 
-> **VEII RFM Analytics** · https://veil.techforliving.net
+> **VEII RFM Analytics** · https://veii.techforliving.net
 > GitHub: https://github.com/ai-caseylai/veii-rfm
 > 250 題 Q&A 驗證 · 100% 通過率
