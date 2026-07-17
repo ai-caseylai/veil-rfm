@@ -5,6 +5,7 @@ import {
   computeCLV,
   buildCBS,
   buildSpendData,
+  buildCBSSpend,
   recommendForCustomer,
   recommendAll,
   mineAssociationRules,
@@ -175,8 +176,7 @@ export default {
         if (!txns.length) {
           return error("transactions array is required and must not be empty")
         }
-        const cbs = buildCBS(txns)
-        const spendData = buildSpendData(txns)
+        const { cbs, spendData } = buildCBSSpend(txns)
         if (cbs.length < 3) {
           return error("Need at least 3 customers for BTYD model estimation")
         }

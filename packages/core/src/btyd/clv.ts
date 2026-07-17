@@ -256,3 +256,58 @@ export function buildSpendData(transactions: Transaction[], endDate?: Date): Spe
   }
   return spendData
 }
+
+// ── Combined helper: build CBS + SpendData in a single pass ──
+
+/**
+ * Build both CBS rows and SpendData from transactions in a single pass.
+ * Replaces separate buildCBS() + buildSpendData() calls — saves one full iteration
+ * over the transaction set (~0.5-1s for 97K+ rows).
+ */
+export function buildCBSSpend(
+  transactions: Transaction[],
+  endDate?: Date
+): { cbs: CBSRow[]; spendData: SpendRow[] } {
+  const end = endDate ?? new Date()
+  const custMap = new Map<string, {
+    dates: Date[]
+    amounts: number[]
+    total: number
+    count: number
+  }>()
+
+  for (const t of transactions) {
+    if (!t.Timestamp) continue
+    const d = new Date(t.Timestamp)
+    if (isNaN(d.getTime()) || d > end) continue
+    const amt = t.NetPrice ?? (t as any).TotalPrice ?? 0
+    const entry = custMap.get(t.MemberID) ?? { dates: [], amounts: [], total: 0, count: 0 }
+    entry.dates.push(d)
+    entry.amounts.push(amt)
+    entry.total += amt
+    entry.count++
+    custMap.set(t.MemberID, entry)
+  }
+
+  const cbs: CBSRow[] = []
+  const spendData: SpendRow[] = []
+
+  for (const [cust, data] of custMap) {
+    const sorted = data.dates.sort((a, b) => a.getTime() - b.getTime())
+    const firstDate = sorted[0]
+    const lastDate = sorted[sorted.length - 1]
+    const Tcal = Math.max(1, Math.ceil((end.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24 * 7)))
+
+    const x = Math.max(0, sorted.length - 1)
+    const tx = Math.max(0.001, (lastDate.getTime() - firstDate.getTime()) / (1000 * 60 * 60 * 24 * 7))
+    const adjTx = Math.min(tx, Tcal - 0.001)
+
+    cbs.push({ cust, x, tx: adjTx > 0 ? adjTx : 0.001, Tcal })
+
+    if (data.count > 0) {
+      spendData.push({ cust, x: data.count, m: data.total / data.count })
+    }
+  }
+
+  return { cbs, spendData }
+}

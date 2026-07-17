@@ -1,13 +1,13 @@
-# Veil RFM Analytics
+# VEII RFM Analytics
 
 零售客戶分析平台 — RFM 分群、Markov Chain 遷移模型、AI 智慧問答。100% TypeScript，運行於 Cloudflare Workers + Pages + 千問（Qwen）LLM。
 
-從原始 [veil-dotnet](https://github.com/ai-caseylai/veil-dotnet) R/Python 專案分叉並現代化重寫。
+從原始 [veii-dotnet](https://github.com/ai-caseylai/veii-dotnet) R/Python 專案分叉並現代化重寫。
 
 ## 架構
 
 ```
-veil-rfm/
+veii-rfm/
 ├── packages/
 │   ├── core/          # 純 TS：RFM 引擎 + Markov Chain + What-If 邏輯
 │   ├── worker/        # Cloudflare Worker（REST API + Qwen 聊天機器人代理）
@@ -80,7 +80,7 @@ React 18 + TypeScript 儀表板，支援三語 i18n（EN / 繁體中文 / 簡體
 
 ```bash
 # 安裝依賴
-cd veil-rfm
+cd veii-rfm
 npm install
 
 # 執行核心單元測試（13 個測試）
@@ -104,14 +104,14 @@ npm run deploy:worker
 
 # 建置並部署前端
 VITE_API_URL=https://your-worker.workers.dev npm run build -w packages/frontend
-npx -w packages/frontend wrangler pages deploy dist --project-name veil-rfm
+npx -w packages/frontend wrangler pages deploy dist --project-name veii-rfm
 ```
 
 ### 自訂域名
 
 ```bash
 # 將自訂域名加入 Pages 專案
-npx wrangler pages domain add veil-rfm your-domain.com
+npx wrangler pages domain add veii-rfm your-domain.com
 ```
 
 新增 CNAME DNS 記錄指向 `veil-rfm.pages.dev`（代理模式）。

@@ -1,4 +1,4 @@
-name = "veil-rfm-api"
+name = "veii-rfm-api"
 main = "src/index.ts"
 compatibility_date = "2024-06-01"
 

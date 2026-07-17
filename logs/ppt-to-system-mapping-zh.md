@@ -1,7 +1,7 @@
-# PPT 概念 → Veil TypeScript 系統實作對照
+# PPT 概念 → VEII TypeScript 系統實作對照
 
 > 原始 PPT：`PPT-PolyU 190211 (RFM) BL (2).pptx`（VEII, 2019，47 頁）
-> 對應系統：Veil RFM Analytics（TypeScript, Cloudflare, Qwen LLM）
+> 對應系統：VEII RFM Analytics（TypeScript, Cloudflare, Qwen LLM）
 > 線上：https://veil.techforliving.net
 
 ---
@@ -204,6 +204,6 @@ curl -X POST .../api/rfm/transition \
 
 ---
 
-> **Veil RFM Analytics** · https://veil.techforliving.net
-> GitHub: https://github.com/ai-caseylai/veil-rfm
+> **VEII RFM Analytics** · https://veil.techforliving.net
+> GitHub: https://github.com/ai-caseylai/veii-rfm
 > 250 題 Q&A 驗證 · 100% 通過率

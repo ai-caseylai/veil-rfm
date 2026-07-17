@@ -1,6 +1,6 @@
 # 《老教授與菜鳥的十四堂 RFM 課》
 
-> 漫畫劇本 · 改編自 Veil RFM 綜合問答手冊
+> 漫畫劇本 · 改編自 VEII RFM 綜合問答手冊
 > 風格致敬《最後 14 堂星期二的課》(Tuesdays with Morrie)
 > 角色：莫教授（老教授，68 歲，RFM 分析領域泰斗）/ 小林（菜鳥資料分析師，26 歲）
 
@@ -653,7 +653,7 @@ Best Customers 不一定是花最多錢的客戶。」
 [全劇終]
 ---
 
-> 改編自《Veil RFM 綜合問答手冊》（250 題，14 類別，100% 回答率）
-> 原作：Veil RFM Analytics Platform
+> 改編自《VEII RFM 綜合問答手冊》（250 題，14 類別，100% 回答率）
+> 原作：VEII RFM Analytics Platform
 > 漫畫劇本版：2026-06-07
 > 靈感致敬：《最後 14 堂星期二的課》(Tuesdays with Morrie) by Mitch Albom

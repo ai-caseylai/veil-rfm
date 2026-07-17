@@ -7,3 +7,6 @@ export * from "./activity.js"
 export * from "./btyd/index.js"
 export * from "./recommend.js"
 export * from "./generate.js"
+
+// Explicit re-export to ensure bundler picks up the combined helper
+export { buildCBSSpend } from "./btyd/clv.js"

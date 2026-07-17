@@ -1,6 +1,6 @@
 # RFM 與 Markov Chain：客戶分析的雙劍合璧
 
-> 理論基礎文檔 · Veil RFM Analytics Platform
+> 理論基礎文檔 · VEII RFM Analytics Platform
 > 說明 RFM 靜態分群與馬可夫鏈動態預測如何互補
 
 ---
@@ -25,7 +25,7 @@ RFM 模型是基於客戶歷史交易資料的經典分群工具。它透過三�
 2. 打分方式為百分位數排名：每位客戶的表現是與「所有其他客戶」比較的相對值
 3. 組合得分，透過規則引擎分類為 11 種客戶類型
 
-### Veil 的 11 個 RFM 分群
+### VEII 的 11 個 RFM 分群
 
 | # | 分群 | RFM 模式 | 說明 |
 |---|------|----------|------|
@@ -65,7 +65,7 @@ RFM 模型是基於客戶歷史交易資料的經典分群工具。它透過三�
 ### 工作原理
 
 **第一步：定義狀態（States）**
-將客戶狀態定義為明確的類別。Veil 使用 RFM 的 11 個分群作為 11 個狀態。
+將客戶狀態定義為明確的類別。VEII 使用 RFM 的 11 個分群作為 11 個狀態。
 
 **第二步：構建轉移矩陣（Transition Matrix）**
 根據歷史資料，計算客戶從一個狀態變到另一個狀態的機率。矩陣的每一列代表「從某狀態出發」，每一欄代表「到達某狀態」。
@@ -115,13 +115,13 @@ Lost         0.00   0.00    0.01     ...  0.68
 
 ---
 
-## 四、強強聯手：Veil 如何結合 RFM + Markov Chain
+## 四、強強聯手：VEII 如何結合 RFM + Markov Chain
 
-在 Veil 平台中，這兩個模型不是對立的，而是完美互補的：
+在 VEII 平台中，這兩個模型不是對立的，而是完美互補的：
 
 ### 1. 用 RFM 定義馬可夫鏈的狀態
 
-傳統的馬可夫狀態（如「活躍」、「沉默」、「流失」）定義太寬泛。Veil 直接把 RFM 劃分出的 **11 類客戶作為馬可夫鏈的 11 個狀態**。
+傳統的馬可夫狀態（如「活躍」、「沉默」、「流失」）定義太寬泛。VEII 直接把 RFM 劃分出的 **11 類客戶作為馬可夫鏈的 11 個狀態**。
 
 這樣做的好處：
 - 狀態定義有明確的業務含義
@@ -184,6 +184,6 @@ Markov Chain 告訴你：
 
 ---
 
-> **Veil RFM Analytics Platform** · 100% TypeScript · Cloudflare Workers + Pages + Qwen LLM
+> **VEII RFM Analytics Platform** · 100% TypeScript · Cloudflare Workers + Pages + Qwen LLM
 > 250 題 Q&A 驗證，100% 通過率
-> GitHub: https://github.com/ai-caseylai/veil-rfm
+> GitHub: https://github.com/ai-caseylai/veii-rfm

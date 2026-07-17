@@ -1,12 +1,12 @@
 ---
-name: veil-rfm
-description: "Veil RFM 零售客戶分析平台 — RFM 分群、Markov Chain 遷移、CLV 終身價值、推薦系統、What-If 模擬。透過 REST API 或 AI 聊天機器人查詢客戶數據。觸發時機：用戶提到 RFM、客戶分析、客戶分群、veil-rfm、零售分析、客戶終身價值、CLV、BTYD、Markov Chain、關聯規則、推薦系統、What-If、RFM 儀表板、segment migration、同期群、cohort、客戶活動分析等關鍵詞。"
+name: veii-rfm
+description: "VEII RFM 零售客戶分析平台 — RFM 分群、Markov Chain 遷移、CLV 終身價值、推薦系統、What-If 模擬。透過 REST API 或 AI 聊天機器人查詢客戶數據。觸發時機：用戶提到 RFM、客戶分析、客戶分群、veii-rfm、零售分析、客戶終身價值、CLV、BTYD、Markov Chain、關聯規則、推薦系統、What-If、RFM 儀表板、segment migration、同期群、cohort、客戶活動分析等關鍵詞。"
 ---
-# Veil RFM Analytics Skill
+# VEII RFM Analytics Skill
 
 ## 概述
 
-Veil RFM 是一個零售客戶分析平台，提供 RFM 分群、Markov Chain 客戶遷移預測、CLV 終身價值估算、產品推薦系統、What-If 行為模擬等功能。平台透過 Cloudflare Worker API + D1 資料庫（5,000 客戶 / 97K+ 交易）運行，前端為 React 儀表板。
+VEII RFM 是一個零售客戶分析平台，提供 RFM 分群、Markov Chain 客戶遷移預測、CLV 終身價值估算、產品推薦系統、What-If 行為模擬等功能。平台透過 Cloudflare Worker API + D1 資料庫（5,000 客戶 / 97K+ 交易）運行，前端為 React 儀表板。
 
 本 skill 讓 AI agent 可以透過 REST API 或 chatbot function call 完整操控所有分析功能。
 
@@ -16,7 +16,7 @@ Veil RFM 是一個零售客戶分析平台，提供 RFM 分群、Markov Chain �
 |------|------|
 | API Base URL | `https://veil-rfm-api.ai-caseylai.workers.dev` |
 | 前端儀表板 | `https://veil.techforliving.net` |
-| 本地源碼 | `/Users/perry/Documents/Veil RFM Final` |
+| 本地源碼 | `/Users/perry/Documents/VEII RFM Final` |
 | LLM 模型 | Qwen-plus（DashScope International） |
 | D1 資料庫 | `veil-rfm-db`（50bfc84c）— customers 5,000 筆 + transactions 97,282 筆 |
 
@@ -224,7 +224,7 @@ curl -X POST https://veil-rfm-api.ai-caseylai.workers.dev/api/chat \
 ## 本地開發
 
 ```bash
-cd "/Users/perry/Documents/Veil RFM Final"
+cd "/Users/perry/Documents/VEII RFM Final"
 npm install
 npm run dev:worker     # Worker API (wrangler dev)
 npm run dev:frontend   # React 儀表板 (vite, port 3000)
@@ -232,5 +232,5 @@ npm run build          # 構建所有套件
 
 # 部署
 cd packages/worker && npx wrangler deploy
-cd packages/frontend && npm run build && npx wrangler pages deploy dist --project-name veil-rfm --branch main
+cd packages/frontend && npm run build && npx wrangler pages deploy dist --project-name veii-rfm --branch main
 ```

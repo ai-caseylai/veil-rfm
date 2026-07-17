@@ -107,7 +107,7 @@ export interface Translations {
 }
 
 const zhTW: Translations = {
-  appTitle: "Veil RFM 客戶分析",
+  appTitle: "VEII RFM 客戶分析",
   customerSegmentation: "客戶分群",
   overview: "總覽",
   characteristics: "特徵分析",
@@ -119,7 +119,7 @@ const zhTW: Translations = {
   ltvOverview: "CLV 總覽",
   qa500: "問答 500",
 
-  uploadTitle: "Veil RFM 客戶分析平台",
+  uploadTitle: "VEII RFM 客戶分析平台",
   uploadPrompt: "上傳 CSV 交易數據以開始分析",
   orText: "或",
   loadSample: "載入範例資料（8 位客戶，54 筆交易）",
@@ -201,7 +201,7 @@ const zhTW: Translations = {
 
 const zhCN: Translations = {
   ...zhTW,
-  appTitle: "Veil RFM 客户分析",
+  appTitle: "VEII RFM 客户分析",
   customerSegmentation: "客户分群",
   overview: "总览",
   characteristics: "特征分析",
@@ -213,7 +213,7 @@ const zhCN: Translations = {
   ltvOverview: "CLV 总览",
   qa500: "问答 500",
 
-  uploadTitle: "Veil RFM 客户分析平台",
+  uploadTitle: "VEII RFM 客户分析平台",
   uploadPrompt: "上传 CSV 交易数据以开始分析",
   loadSample: "加载示例数据（8 位客户，54 笔交易）",
   loadSynthetic: "加载 5,000 位客户",
@@ -292,7 +292,7 @@ const zhCN: Translations = {
 }
 
 const en: Translations = {
-  appTitle: "Veil RFM Analytics",
+  appTitle: "VEII RFM Analytics",
   customerSegmentation: "Customer Segmentation",
   overview: "Overview",
   characteristics: "Characteristics",
@@ -304,7 +304,7 @@ const en: Translations = {
   ltvOverview: "CLV Overview",
   qa500: "Q&A 500",
 
-  uploadTitle: "Veil RFM Analytics Platform",
+  uploadTitle: "VEII RFM Analytics Platform",
   uploadPrompt: "Upload a CSV file with transaction data to get started.",
   orText: "or",
   loadSample: "Load Sample Data (8 customers, 54 transactions)",

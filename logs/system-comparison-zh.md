@@ -1,4 +1,4 @@
-# Veil 智慧零售分析系統 — 詳細解釋與比較
+# VEII 智慧零售分析系統 — 詳細解釋與比較
 
 > 涵蓋 RFM、Markov Chain、BTYD CLV、推薦系統四大模型
 > 對照原始 PPT（VEII 2019）與 TypeScript 實作
@@ -287,8 +287,8 @@ Lift=8.0 表示：買 Champagne 的人買 Lobster 的機率是隨機客戶的 8 
 
 ---
 
-> **Veil RFM Analytics** · https://veil.techforliving.net
-> GitHub: https://github.com/ai-caseylai/veil-rfm
+> **VEII RFM Analytics** · https://veil.techforliving.net
+> GitHub: https://github.com/ai-caseylai/veii-rfm
 > 完整 PPT 對照：`logs/ppt-to-system-mapping-zh.md`
 > 理論基礎：`logs/rfm-vs-markov-theory-zh.md`
 > 250 題 Q&A 驗證：100% 通過率

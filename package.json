@@ -1,5 +1,5 @@
 {
-  "name": "veil-rfm",
+  "name": "veii-rfm",
   "private": true,
   "workspaces": ["packages/*"],
   "scripts": {
