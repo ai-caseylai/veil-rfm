@@ -48,9 +48,9 @@ export default function Home({ data }: Props) {
           [t.totalRevenue, `$${totalRevenue.toLocaleString()}`, "#d69e2e"],
           [t.activeSegments, `${activeSegs.length}/11`, "#6b46c1"],
         ].map(([label, value, color]) => (
-          <div key={label} className="bg-white rounded-xl p-4 border shadow-sm hover:shadow-md transition-shadow flex-1 min-w-[150px]">
+          <div key={label} className="bg-white rounded-xl p-4 border shadow-sm hover:shadow-md transition-shadow flex-1 min-w-0">
             <div className="text-xs text-gray-400 mb-1">{label}</div>
-            <div className="text-base sm:text-lg lg:text-2xl font-bold" style={{ color }}>{value}</div>
+            <div className="text-sm sm:text-base lg:text-lg font-bold truncate" style={{ color }}>{value}</div>
           </div>
         ))}
       </div>
