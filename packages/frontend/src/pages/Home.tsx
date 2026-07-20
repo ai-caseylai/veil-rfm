@@ -41,14 +41,14 @@ export default function Home({ data }: Props) {
   return (
     <div className="max-w-6xl">
       {/* KPI Cards */}
-      <div className="flex flex-nowrap gap-3 mb-4 overflow-x-auto">
+      <div className="flex gap-3 mb-4">
         {[
           [t.totalCustomers, totalCust.toLocaleString(), "#3182ce"],
           [lang === "zh-TW" ? "總訂單" : lang === "zh-CN" ? "总订单" : "Total Orders", totalOrders.toLocaleString(), "#38a169"],
           [t.totalRevenue, `$${totalRevenue.toLocaleString()}`, "#d69e2e"],
           [t.activeSegments, `${activeSegs.length}/11`, "#6b46c1"],
         ].map(([label, value, color]) => (
-          <div key={label} className="bg-white rounded-xl p-4 border shadow-sm hover:shadow-md transition-shadow flex-shrink-0 min-w-[120px]">
+          <div key={label} className="bg-white rounded-xl p-4 border shadow-sm hover:shadow-md transition-shadow flex-1 min-w-[100px]">
             <div className="text-xs text-gray-400 mb-1">{label}</div>
             <div className="text-2xl font-bold" style={{ color }}>{value}</div>
           </div>
