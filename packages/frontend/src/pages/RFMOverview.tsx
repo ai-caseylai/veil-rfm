@@ -59,10 +59,11 @@ export default function RFMOverview({ data }: Props) {
 
   // Dynamic sizing: pie shrinks with container, labels stay proportional
   const outerRadius = Math.max(65, Math.min(chartW * 0.30, 130))
-  const labelRadius = outerRadius * 1.48
+  const labelRadius = outerRadius * 1.32
   const nameSize = Math.max(8.5, outerRadius * 0.085)
   const pctSize = Math.max(9.5, outerRadius * 0.095)
   const chartHeight = Math.max(320, outerRadius * 3.6)
+  const pieMargin = { top: outerRadius * 0.15, right: outerRadius * 0.65, bottom: outerRadius * 0.15, left: outerRadius * 0.65 }
 
   const renderLabel = useCallback((props: Record<string, unknown>) => {
     const pct = props.percent as number
@@ -112,7 +113,7 @@ export default function RFMOverview({ data }: Props) {
           <div className="flex flex-col lg:flex-row items-center gap-6">
             <div ref={chartRef} className="flex-1 pie-chart-wrapper" style={{ minHeight: chartHeight, minWidth: 280 }}>
               <ResponsiveContainer width="100%" height={chartHeight}>
-                <PieChart>
+                <PieChart margin={pieMargin}>
                   <Pie
                     data={activeSegs}
                     dataKey="Number of Customers"

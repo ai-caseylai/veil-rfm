@@ -44,10 +44,11 @@ export default function DashboardSections({ data }: Props) {
 
   // Dynamic pie sizing
   const dOuterRadius = Math.max(55, Math.min(chartW * 0.28, 110))
-  const dLabelRadius = dOuterRadius * 1.5
+  const dLabelRadius = dOuterRadius * 1.35
   const dNameSize = Math.max(7.5, dOuterRadius * 0.085)
   const dPctSize = Math.max(8.5, dOuterRadius * 0.095)
   const dChartH = Math.max(280, dOuterRadius * 3.8)
+  const dPieMargin = { top: dOuterRadius * 0.15, right: dOuterRadius * 0.6, bottom: dOuterRadius * 0.15, left: dOuterRadius * 0.6 }
 
   const dynLabel = useCallback((props: Record<string, unknown>) => {
     const pct = props.percent as number
@@ -146,7 +147,7 @@ export default function DashboardSections({ data }: Props) {
           <div className="flex flex-col lg:flex-row items-center gap-4">
             <div ref={chartRef} className="flex-1 pie-chart-wrapper" style={{ minHeight: dChartH, minWidth: 240 }}>
               <ResponsiveContainer width="100%" height={dChartH}>
-                <PieChart>
+                <PieChart margin={dPieMargin}>
                   <Pie data={activeSegs} dataKey="Number of Customers" nameKey="Segment" cx="50%" cy="50%" outerRadius={dOuterRadius} label={dynLabel}
                   labelLine={{ stroke: "#d1d5db", strokeWidth: 1 }}>
                     {activeSegs.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} stroke="white" strokeWidth={2} />)}
