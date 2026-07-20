@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, useCallback } from "react"
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, LineChart, Line } from "recharts"
 import { Network } from "vis-network"
 import { DataSet } from "vis-data"
@@ -23,33 +23,50 @@ function prob2width(p: number, a = 1, b = 4) { return Math.sin((p * Math.PI) / 2
 
 const RADIAN = Math.PI / 180
 
-const renderLabel = (props: Record<string, unknown>) => {
-  const pct = props.percent as number
-  if (pct < 0.015) return null as unknown as React.ReactElement
-  const r = (props.outerRadius as number) + 50
-  const cx = props.cx as number; const cy = props.cy as number
-  const angle = -(props.midAngle as number) * RADIAN
-  const x = cx + r * Math.cos(angle)
-  const y = cy + r * Math.sin(angle)
-  const label = (props.ShortName as string) || (props.name as string) || ""
-  const anchor = x > cx ? "start" : "end"
-  return (
-    <text x={x} y={y} fill="#374151" textAnchor={anchor} dominantBaseline="central">
-      <tspan fontSize={9} fontWeight={500}>{label}</tspan>
-      <tspan x={x} dy={11} fontSize={10} fontWeight={700} fill="#1f2937">
-        {`${(pct * 100).toFixed(0)}%`}
-      </tspan>
-    </text>
-  )
-}
-
 export default function DashboardSections({ data }: Props) {
   const { t, lang } = useT()
   const networkRef = useRef<HTMLDivElement>(null)
   const [whatIfKey, setWhatIfKey] = useState(0)
+  const chartRef = useRef<HTMLDivElement>(null)
+  const [chartW, setChartW] = useState(380)
+
+  useEffect(() => {
+    const el = chartRef.current
+    if (!el) return
+    const ro = new ResizeObserver(([entry]) => { setChartW(entry.contentRect.width) })
+    ro.observe(el)
+    setChartW(el.getBoundingClientRect().width)
+    return () => ro.disconnect()
+  }, [])
 
   // Re-mount WhatIf when data changes
   useEffect(() => setWhatIfKey((k) => k + 1), [data.transactions])
+
+  // Dynamic pie sizing
+  const dOuterRadius = Math.max(55, Math.min(chartW * 0.28, 110))
+  const dLabelRadius = dOuterRadius * 1.5
+  const dNameSize = Math.max(7.5, dOuterRadius * 0.085)
+  const dPctSize = Math.max(8.5, dOuterRadius * 0.095)
+  const dChartH = Math.max(280, dOuterRadius * 3.8)
+
+  const dynLabel = useCallback((props: Record<string, unknown>) => {
+    const pct = props.percent as number
+    if (pct < 0.015) return null as unknown as React.ReactElement
+    const cx = props.cx as number; const cy = props.cy as number
+    const angle = -(props.midAngle as number) * RADIAN
+    const x = cx + dLabelRadius * Math.cos(angle)
+    const y = cy + dLabelRadius * Math.sin(angle)
+    const lbl = (props.ShortName as string) || (props.name as string) || ""
+    const anchor = x > cx ? "start" : "end"
+    return (
+      <text x={x} y={y} fill="#374151" textAnchor={anchor} dominantBaseline="central">
+        <tspan fontSize={dNameSize} fontWeight={500}>{lbl}</tspan>
+        <tspan x={x} dy={dNameSize * 1.3} fontSize={dPctSize} fontWeight={700} fill="#1f2937">
+          {`${(pct * 100).toFixed(0)}%`}
+        </tspan>
+      </text>
+    )
+  }, [dLabelRadius, dNameSize, dPctSize])
 
   // ── Transition vis-network ──
   useEffect(() => {
@@ -127,10 +144,10 @@ export default function DashboardSections({ data }: Props) {
         </div>
         <div className="card-body">
           <div className="flex flex-col lg:flex-row items-center gap-4">
-            <div className="flex-1 pie-chart-wrapper" style={{ minHeight: 430, minWidth: 350 }}>
-              <ResponsiveContainer width="100%" height={430}>
+            <div ref={chartRef} className="flex-1 pie-chart-wrapper" style={{ minHeight: dChartH, minWidth: 240 }}>
+              <ResponsiveContainer width="100%" height={dChartH}>
                 <PieChart>
-                  <Pie data={activeSegs} dataKey="Number of Customers" nameKey="Segment" cx="50%" cy="50%" outerRadius={110} label={renderLabel}
+                  <Pie data={activeSegs} dataKey="Number of Customers" nameKey="Segment" cx="50%" cy="50%" outerRadius={dOuterRadius} label={dynLabel}
                   labelLine={{ stroke: "#d1d5db", strokeWidth: 1 }}>
                     {activeSegs.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} stroke="white" strokeWidth={2} />)}
                   </Pie>

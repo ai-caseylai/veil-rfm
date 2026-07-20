@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef, useCallback } from "react"
 import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import { computeRFM } from "../lib/api"
 import type { AppData } from "../App"
@@ -13,6 +13,8 @@ const COLORS = [
   "#d69e2e", "#b7791f", "#e53e3e", "#c53030", "#718096", "#4a5568",
 ]
 
+const RADIAN = Math.PI / 180
+
 function Skeleton() {
   return (
     <div className="card">
@@ -25,33 +27,25 @@ function Skeleton() {
   )
 }
 
-const RADIAN = Math.PI / 180
-
-const renderLabel = (props: Record<string, unknown>) => {
-  const pct = props.percent as number
-  if (pct < 0.015) return null as unknown as React.ReactElement
-  const r = (props.outerRadius as number) + 55
-  const cx = props.cx as number; const cy = props.cy as number
-  const angle = -(props.midAngle as number) * RADIAN
-  const x = cx + r * Math.cos(angle)
-  const y = cy + r * Math.sin(angle)
-  const label = (props.ShortName as string) || (props.name as string) || ""
-  const anchor = x > cx ? "start" : "end"
-  return (
-    <text x={x} y={y} fill="#374151" textAnchor={anchor} dominantBaseline="central">
-      <tspan fontSize={10} fontWeight={500}>{label}</tspan>
-      <tspan x={x} dy={13} fontSize={11} fontWeight={700} fill="#1f2937">
-        {`${(pct * 100).toFixed(1)}%`}
-      </tspan>
-    </text>
-  )
-}
-
 export default function RFMOverview({ data }: Props) {
   const { t, lang } = useT()
   const navigate = useNavigate()
   const [rfmResult, setRfmResult] = useState<Record<string, unknown> | null>(data.rfmData as Record<string, unknown> | null)
   const [loading, setLoading] = useState(!data.rfmData)
+  const chartRef = useRef<HTMLDivElement>(null)
+  const [chartW, setChartW] = useState(420)
+
+  // Track container width for dynamic sizing
+  useEffect(() => {
+    const el = chartRef.current
+    if (!el) return
+    const ro = new ResizeObserver(([entry]) => {
+      setChartW(entry.contentRect.width)
+    })
+    ro.observe(el)
+    setChartW(el.getBoundingClientRect().width)
+    return () => ro.disconnect()
+  }, [])
 
   useEffect(() => { if (data.rfmData) { setRfmResult(data.rfmData as Record<string, unknown>); setLoading(false) } }, [data.rfmData])
   useEffect(() => {
@@ -62,6 +56,32 @@ export default function RFMOverview({ data }: Props) {
       .catch(console.error)
       .finally(() => setLoading(false))
   }, [data.transactions])
+
+  // Dynamic sizing: pie shrinks with container, labels stay proportional
+  const outerRadius = Math.max(65, Math.min(chartW * 0.30, 130))
+  const labelRadius = outerRadius * 1.48
+  const nameSize = Math.max(8.5, outerRadius * 0.085)
+  const pctSize = Math.max(9.5, outerRadius * 0.095)
+  const chartHeight = Math.max(320, outerRadius * 3.6)
+
+  const renderLabel = useCallback((props: Record<string, unknown>) => {
+    const pct = props.percent as number
+    if (pct < 0.015) return null as unknown as React.ReactElement
+    const cx = props.cx as number; const cy = props.cy as number
+    const angle = -(props.midAngle as number) * RADIAN
+    const x = cx + labelRadius * Math.cos(angle)
+    const y = cy + labelRadius * Math.sin(angle)
+    const label = (props.ShortName as string) || (props.name as string) || ""
+    const anchor = x > cx ? "start" : "end"
+    return (
+      <text x={x} y={y} fill="#374151" textAnchor={anchor} dominantBaseline="central">
+        <tspan fontSize={nameSize} fontWeight={500}>{label}</tspan>
+        <tspan x={x} dy={nameSize * 1.3} fontSize={pctSize} fontWeight={700} fill="#1f2937">
+          {`${(pct * 100).toFixed(1)}%`}
+        </tspan>
+      </text>
+    )
+  }, [labelRadius, nameSize, pctSize])
 
   if (loading) return <Skeleton />
   if (!rfmResult) return <p className="text-red-500">{t.errorLoading}</p>
@@ -90,15 +110,15 @@ export default function RFMOverview({ data }: Props) {
         <div className="card-header">{t.customersBySegment}</div>
         <div className="card-body">
           <div className="flex flex-col lg:flex-row items-center gap-6">
-            <div className="flex-1 pie-chart-wrapper" style={{ minHeight: 480, minWidth: 380 }}>
-              <ResponsiveContainer width="100%" height={480}>
+            <div ref={chartRef} className="flex-1 pie-chart-wrapper" style={{ minHeight: chartHeight, minWidth: 280 }}>
+              <ResponsiveContainer width="100%" height={chartHeight}>
                 <PieChart>
                   <Pie
                     data={activeSegs}
                     dataKey="Number of Customers"
                     nameKey="Segment"
                     cx="50%" cy="50%"
-                    outerRadius={120}
+                    outerRadius={outerRadius}
                     label={renderLabel}
                     labelLine={{ stroke: "#d1d5db", strokeWidth: 1 }}
                     onClick={(entry) => navigate(`/rfm-customer-summary?segment=${encodeURIComponent(entry.Segment)}`)}
