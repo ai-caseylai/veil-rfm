@@ -77,10 +77,10 @@ export default function App() {
       <header className="app-header">
         <div className="flex items-center gap-3">
           <button onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="text-white text-lg leading-none w-6 h-6 flex items-center justify-center hover:bg-white/10 rounded"
-            title="Toggle sidebar"
-          >{sidebarOpen ? "◁" : "☰"}</button>
-          <h1>{t.appTitle} <span style={{fontSize:10,opacity:.4,marginLeft:8}}>v250720-wrap</span></h1>
+            className="text-white text-lg leading-none w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded cursor-pointer select-none"
+            title="Toggle sidebar" aria-label="Toggle sidebar"
+          >{sidebarOpen ? "✕" : "☰"}</button>
+          <h1>{t.appTitle} <span style={{fontSize:10,opacity:.4,marginLeft:8}}>v250720-toggle</span></h1>
         </div>
         <div className="flex items-center gap-3">
           {loading ? (
