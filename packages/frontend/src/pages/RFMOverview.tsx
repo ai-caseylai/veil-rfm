@@ -25,6 +25,21 @@ function Skeleton() {
   )
 }
 
+const RADIAN = Math.PI / 180
+
+const renderLabel = ({ cx, cy, midAngle, outerRadius, percent }: Record<string, number>) => {
+  if (percent < 0.015) return null as unknown as React.ReactElement
+  const radius = outerRadius + 30
+  const x = cx + radius * Math.cos(-midAngle * RADIAN)
+  const y = cy + radius * Math.sin(-midAngle * RADIAN)
+  return (
+    <text x={x} y={y} fill="#374151" textAnchor={x > cx ? "start" : "end"}
+      dominantBaseline="central" fontSize={12} fontWeight={500}>
+      {`${(percent * 100).toFixed(1)}%`}
+    </text>
+  )
+}
+
 export default function RFMOverview({ data }: Props) {
   const { t, lang } = useT()
   const navigate = useNavigate()
@@ -77,7 +92,8 @@ export default function RFMOverview({ data }: Props) {
                     nameKey="Segment"
                     cx="50%" cy="50%"
                     outerRadius={140}
-                    label={({ Percentage }) => `${(Percentage * 100).toFixed(1)}%`}
+                    label={renderLabel}
+                    labelLine={{ stroke: "#d1d5db", strokeWidth: 1 }}
                     onClick={(entry) => navigate(`/rfm-customer-summary?segment=${encodeURIComponent(entry.Segment)}`)}
                     style={{ cursor: "pointer" }}
                   >

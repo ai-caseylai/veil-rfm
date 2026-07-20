@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList } from "recharts"
+import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList } from "recharts"
 import type { AppData } from "../App"
 import { useT } from "../lib/i18n"
 import { segLabel, sortSegments } from "../lib/segmentNames"
@@ -66,9 +66,9 @@ export default function Home({ data }: Props) {
               <PieChart>
                 <Pie data={activeSegs} dataKey="Number of Customers" nameKey="Segment" cx="50%" cy="50%" outerRadius={100} innerRadius={50} paddingAngle={2}>
                   {activeSegs.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} stroke="#fff" strokeWidth={1} />)}
-                  <LabelList dataKey="Segment" position="outside" fill="#4a5568" fontSize={10} />
                 </Pie>
                 <Tooltip formatter={(value: number) => value.toLocaleString()} />
+                <Legend layout="vertical" align="right" verticalAlign="middle" wrapperStyle={{ fontSize: 10, lineHeight: "16px" }} />
               </PieChart>
             </ResponsiveContainer>
             <Link to="/rfm-overview" className="text-xs text-[var(--accent)] hover:underline block text-center mt-2">{t.overview} →</Link>

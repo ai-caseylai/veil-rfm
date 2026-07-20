@@ -21,6 +21,21 @@ for (let i = 8; i < 11; i++) NODE_GROUPS[RFM_SEGMENT[i]] = { shape: "triangle", 
 
 function prob2width(p: number, a = 1, b = 4) { return Math.sin((p * Math.PI) / 2) ** 2 * (b - a) + a }
 
+const RADIAN = Math.PI / 180
+
+const renderLabel = ({ cx, cy, midAngle, outerRadius, percent }: Record<string, number>) => {
+  if (percent < 0.015) return null as unknown as React.ReactElement
+  const radius = outerRadius + 25
+  const x = cx + radius * Math.cos(-midAngle * RADIAN)
+  const y = cy + radius * Math.sin(-midAngle * RADIAN)
+  return (
+    <text x={x} y={y} fill="#374151" textAnchor={x > cx ? "start" : "end"}
+      dominantBaseline="central" fontSize={11} fontWeight={500}>
+      {`${(percent * 100).toFixed(0)}%`}
+    </text>
+  )
+}
+
 export default function DashboardSections({ data }: Props) {
   const { t, lang } = useT()
   const networkRef = useRef<HTMLDivElement>(null)
@@ -108,7 +123,8 @@ export default function DashboardSections({ data }: Props) {
             <div className="flex-1" style={{ minHeight: 380 }}>
               <ResponsiveContainer width="100%" height={380}>
                 <PieChart>
-                  <Pie data={activeSegs} dataKey="Number of Customers" nameKey="Segment" cx="50%" cy="50%" outerRadius={130} label={({ Percentage }) => `${((Percentage as number) * 100).toFixed(0)}%`}>
+                  <Pie data={activeSegs} dataKey="Number of Customers" nameKey="Segment" cx="50%" cy="50%" outerRadius={130} label={renderLabel}
+                  labelLine={{ stroke: "#d1d5db", strokeWidth: 1 }}>
                     {activeSegs.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} stroke="white" strokeWidth={2} />)}
                   </Pie>
                   <Tooltip /><Legend />
