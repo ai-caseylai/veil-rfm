@@ -127,7 +127,7 @@ export default function DashboardSections({ data }: Props) {
         </div>
         <div className="card-body">
           <div className="flex flex-col lg:flex-row items-center gap-4">
-            <div className="flex-1" style={{ minHeight: 430 }}>
+            <div className="flex-1 pie-chart-wrapper" style={{ minHeight: 430, minWidth: 350 }}>
               <ResponsiveContainer width="100%" height={430}>
                 <PieChart>
                   <Pie data={activeSegs} dataKey="Number of Customers" nameKey="Segment" cx="50%" cy="50%" outerRadius={110} label={renderLabel}

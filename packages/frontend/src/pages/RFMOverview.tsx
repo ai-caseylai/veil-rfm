@@ -90,7 +90,7 @@ export default function RFMOverview({ data }: Props) {
         <div className="card-header">{t.customersBySegment}</div>
         <div className="card-body">
           <div className="flex flex-col lg:flex-row items-center gap-6">
-            <div className="flex-1" style={{ minHeight: 480 }}>
+            <div className="flex-1 pie-chart-wrapper" style={{ minHeight: 480, minWidth: 380 }}>
               <ResponsiveContainer width="100%" height={480}>
                 <PieChart>
                   <Pie

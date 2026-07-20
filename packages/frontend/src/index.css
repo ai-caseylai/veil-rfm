@@ -203,3 +203,8 @@ input[type="range"]::-webkit-slider-thumb {
   cursor: pointer;
   box-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
+
+/* Prevent pie chart labels from being clipped when container shrinks (chatbot open / window resize) */
+.pie-chart-wrapper .recharts-wrapper svg {
+  overflow: visible !important;
+}
