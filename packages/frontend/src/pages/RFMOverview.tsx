@@ -62,7 +62,7 @@ export default function RFMOverview({ data }: Props) {
   const labelRadius = outerRadius * 1.42
   const nameSize = Math.max(7, Math.min(11, outerRadius * 0.078))
   const pctSize = Math.max(7.5, Math.min(12, outerRadius * 0.088))
-  const chartHeight = Math.max(320, outerRadius * 3.6)
+  const chartHeight = Math.max(360, outerRadius * 4.2)
   const pieMargin = { top: 4, right: 4, bottom: 4, left: 4 }
 
   const renderLabel = useCallback((props: Record<string, unknown>) => {
@@ -111,7 +111,7 @@ export default function RFMOverview({ data }: Props) {
         <div className="card-header">{t.customersBySegment}</div>
         <div className="card-body">
           <div className="flex flex-col lg:flex-row items-center gap-6">
-            <div ref={chartRef} className="flex-1 pie-chart-wrapper" style={{ minHeight: chartHeight, minWidth: 280 }}>
+            <div ref={chartRef} className="flex-1 pie-chart-wrapper" style={{ minHeight: chartHeight, minWidth: 300 }}>
               <ResponsiveContainer width="100%" height={chartHeight}>
                 <PieChart margin={pieMargin}>
                   <Pie
