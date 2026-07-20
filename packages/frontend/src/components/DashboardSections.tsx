@@ -23,15 +23,21 @@ function prob2width(p: number, a = 1, b = 4) { return Math.sin((p * Math.PI) / 2
 
 const RADIAN = Math.PI / 180
 
-const renderLabel = ({ cx, cy, midAngle, outerRadius, percent }: Record<string, number>) => {
-  if (percent < 0.015) return null as unknown as React.ReactElement
-  const radius = outerRadius + 25
-  const x = cx + radius * Math.cos(-midAngle * RADIAN)
-  const y = cy + radius * Math.sin(-midAngle * RADIAN)
+const renderLabel = ({ cx, cy, midAngle, outerRadius, percent, name }: Record<string, unknown>) => {
+  const pct = percent as number
+  if (pct < 0.015) return null as unknown as React.ReactElement
+  const r = (outerRadius as number) + 35
+  const centerX = cx as number; const centerY = cy as number
+  const angle = -(midAngle as number) * RADIAN
+  const x = centerX + r * Math.cos(angle)
+  const y = centerY + r * Math.sin(angle)
+  const anchor = x > centerX ? "start" : "end"
   return (
-    <text x={x} y={y} fill="#374151" textAnchor={x > cx ? "start" : "end"}
-      dominantBaseline="central" fontSize={11} fontWeight={500}>
-      {`${(percent * 100).toFixed(0)}%`}
+    <text x={x} y={y} fill="#374151" textAnchor={anchor} dominantBaseline="central">
+      <tspan fontSize={10} fontWeight={500}>{String(name)}</tspan>
+      <tspan x={x} dy={12} fontSize={11} fontWeight={700} fill="#1f2937">
+        {`${(pct * 100).toFixed(0)}%`}
+      </tspan>
     </text>
   )
 }
