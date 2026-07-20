@@ -131,7 +131,7 @@ export default function App() {
         </nav>
 
         <main className="flex-1 overflow-y-auto p-4">
-          <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-4">
+          <div className="flex flex-nowrap gap-3 mb-4 overflow-x-auto">
             {[
               [t.totalCustomers, totalCustomers],
               [t.totalRevenue, `$${totalRevenue.toLocaleString()}`],
@@ -139,7 +139,7 @@ export default function App() {
               [t.avgOrderValue, `$${avgOrder.toLocaleString()}`],
               ["Avg Recency", `${avgRecency}d`],
             ].map(([label, value]) => (
-              <div key={label} className="bg-white rounded-lg p-3 border shadow-sm">
+              <div key={label} className="bg-white rounded-lg p-3 border shadow-sm flex-shrink-0 min-w-[110px]">
                 <div className="text-[10px] text-gray-400 uppercase tracking-wider">{label}</div>
                 <div className="text-lg font-bold text-[var(--primary)]">{value}</div>
               </div>
