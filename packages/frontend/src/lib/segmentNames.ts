@@ -17,6 +17,25 @@ export function segLabel(segment: string, lang: Lang): string {
   return SEGMENT_LABELS[segment as SegmentName]?.[lang] ?? segment
 }
 
+/** Short segment labels for pie charts (English names are too long) */
+const PIE_SEGMENT_LABELS: Record<string, { en: string; "zh-TW": string; "zh-CN": string }> = {
+  "Best Customers": { en: "Best", "zh-TW": "最佳客戶", "zh-CN": "最佳客户" },
+  "Loyal Customers": { en: "Loyal", "zh-TW": "忠誠客戶", "zh-CN": "忠诚客户" },
+  "Potential Loyalist": { en: "Pot. Loyalist", "zh-TW": "潛在忠誠客戶", "zh-CN": "潜在忠诚客户" },
+  "Low-spending Active Loyal Customers": { en: "Low-spend Loyal", "zh-TW": "低消費活躍忠誠", "zh-CN": "低消费活跃忠诚" },
+  "High-spending New Customers": { en: "High-spend New", "zh-TW": "高消費新客戶", "zh-CN": "高消费新客户" },
+  "Almost Lost Customers": { en: "Almost Lost", "zh-TW": "即將流失客戶", "zh-CN": "即将流失客户" },
+  "Churned Best Customers": { en: "Churned Best", "zh-TW": "已流失最佳客戶", "zh-CN": "已流失最佳客户" },
+  "Customers Needing Attention": { en: "Needs Attn.", "zh-TW": "需關注客戶", "zh-CN": "需关注客户" },
+  "About to Sleep Customers": { en: "About to Sleep", "zh-TW": "即將沉睡客戶", "zh-CN": "即将沉睡客户" },
+  "Hibernating Customers": { en: "Hibernating", "zh-TW": "休眠客戶", "zh-CN": "休眠客户" },
+  "Lost Cheap Customers": { en: "Lost Cheap", "zh-TW": "已流失低消費", "zh-CN": "已流失低消费" },
+}
+
+export function pieSegLabel(segment: string, lang: Lang): string {
+  return PIE_SEGMENT_LABELS[segment]?.[lang] ?? segment
+}
+
 const PRODUCT_NAMES: Record<string, { en: string; "zh-TW": string; "zh-CN": string }> = {
   Milk: { en: "Milk", "zh-TW": "牛奶", "zh-CN": "牛奶" },
   Bread: { en: "Bread", "zh-TW": "麵包", "zh-CN": "面包" },

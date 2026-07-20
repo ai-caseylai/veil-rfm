@@ -4,7 +4,7 @@ import { Network } from "vis-network"
 import { DataSet } from "vis-data"
 import { RFM_SEGMENT } from "@veil-rfm/core"
 import { useT } from "../lib/i18n"
-import { segLabel } from "../lib/segmentNames"
+import { segLabel, pieSegLabel } from "../lib/segmentNames"
 import { downloadCSV } from "../lib/export"
 import { Link } from "react-router-dom"
 import type { AppData } from "../App"
@@ -23,18 +23,19 @@ function prob2width(p: number, a = 1, b = 4) { return Math.sin((p * Math.PI) / 2
 
 const RADIAN = Math.PI / 180
 
-const renderLabel = ({ cx, cy, midAngle, outerRadius, percent, name }: Record<string, unknown>) => {
-  const pct = percent as number
+const renderLabel = (props: Record<string, unknown>) => {
+  const pct = props.percent as number
   if (pct < 0.015) return null as unknown as React.ReactElement
-  const r = (outerRadius as number) + 35
-  const centerX = cx as number; const centerY = cy as number
-  const angle = -(midAngle as number) * RADIAN
-  const x = centerX + r * Math.cos(angle)
-  const y = centerY + r * Math.sin(angle)
-  const anchor = x > centerX ? "start" : "end"
+  const r = (props.outerRadius as number) + 35
+  const cx = props.cx as number; const cy = props.cy as number
+  const angle = -(props.midAngle as number) * RADIAN
+  const x = cx + r * Math.cos(angle)
+  const y = cy + r * Math.sin(angle)
+  const label = (props.ShortName as string) || (props.name as string) || ""
+  const anchor = x > cx ? "start" : "end"
   return (
     <text x={x} y={y} fill="#374151" textAnchor={anchor} dominantBaseline="central">
-      <tspan fontSize={10} fontWeight={500}>{String(name)}</tspan>
+      <tspan fontSize={10} fontWeight={500}>{label}</tspan>
       <tspan x={x} dy={12} fontSize={11} fontWeight={700} fill="#1f2937">
         {`${(pct * 100).toFixed(0)}%`}
       </tspan>
@@ -84,7 +85,7 @@ export default function DashboardSections({ data }: Props) {
 
   const rfmData = data.rfmData
   const segments = (rfmData.segments as Array<{ Segment: string; "Number of Customers": number; Percentage: number }>)
-    .map((s) => ({ ...s, Segment: segLabel(s.Segment, lang) }))
+    .map((s) => ({ ...s, Segment: segLabel(s.Segment, lang), ShortName: pieSegLabel(s.Segment, lang) }))
   const results = rfmData.results as Array<Record<string, unknown>>
   const avgRecency = (rfmData.avgRecency as { Segment: string; value: number }[] ?? [])
     .map((d) => ({ ...d, Segment: segLabel(d.Segment, lang) }))
