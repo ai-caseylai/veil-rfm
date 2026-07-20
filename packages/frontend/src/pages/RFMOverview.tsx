@@ -59,11 +59,11 @@ export default function RFMOverview({ data }: Props) {
 
   // Dynamic sizing: pie shrinks with container, labels stay proportional
   const outerRadius = Math.max(65, Math.min(chartW * 0.30, 130))
-  const labelRadius = outerRadius * 1.32
+  const labelRadius = outerRadius * 1.42
   const nameSize = Math.max(8.5, outerRadius * 0.085)
   const pctSize = Math.max(9.5, outerRadius * 0.095)
   const chartHeight = Math.max(320, outerRadius * 3.6)
-  const pieMargin = { top: outerRadius * 0.15, right: outerRadius * 0.65, bottom: outerRadius * 0.15, left: outerRadius * 0.65 }
+  const pieMargin = { top: 4, right: 4, bottom: 4, left: 4 }
 
   const renderLabel = useCallback((props: Record<string, unknown>) => {
     const pct = props.percent as number

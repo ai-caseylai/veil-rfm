@@ -212,3 +212,8 @@ input[type="range"]::-webkit-slider-thumb {
 .pie-chart-wrapper svg {
   overflow: visible !important;
 }
+
+.pie-chart-wrapper .recharts-responsive-container,
+.pie-chart-wrapper .recharts-wrapper {
+  overflow: visible !important;
+}
