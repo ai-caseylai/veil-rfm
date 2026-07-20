@@ -45,8 +45,8 @@ export default function DashboardSections({ data }: Props) {
   // Dynamic pie sizing
   const dOuterRadius = Math.max(55, Math.min(chartW * 0.28, 110))
   const dLabelRadius = dOuterRadius * 1.45
-  const dNameSize = Math.max(7.5, dOuterRadius * 0.085)
-  const dPctSize = Math.max(8.5, dOuterRadius * 0.095)
+  const dNameSize = Math.max(6.5, Math.min(10, dOuterRadius * 0.075))
+  const dPctSize = Math.max(7, Math.min(11, dOuterRadius * 0.085))
   const dChartH = Math.max(280, dOuterRadius * 3.8)
   const dPieMargin = { top: 4, right: 4, bottom: 4, left: 4 }
 
