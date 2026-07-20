@@ -80,7 +80,7 @@ export default function App() {
             className="text-white text-lg leading-none w-6 h-6 flex items-center justify-center hover:bg-white/10 rounded"
             title="Toggle sidebar"
           >{sidebarOpen ? "◁" : "☰"}</button>
-          <h1>{t.appTitle} <span style={{fontSize:10,opacity:.4,marginLeft:8}}>v250720-flex1</span></h1>
+          <h1>{t.appTitle} <span style={{fontSize:10,opacity:.4,marginLeft:8}}>v250720-flex1-minw0</span></h1>
         </div>
         <div className="flex items-center gap-3">
           {loading ? (
@@ -139,7 +139,7 @@ export default function App() {
               [t.avgOrderValue, `$${avgOrder.toLocaleString()}`],
               ["Avg Recency", `${avgRecency}d`],
             ].map(([label, value]) => (
-              <div key={label} className="bg-white rounded-lg p-3 border shadow-sm flex-1 min-w-[80px]">
+              <div key={label} className="bg-white rounded-lg p-3 border shadow-sm flex-1 min-w-0">
                 <div className="text-[10px] text-gray-400 uppercase tracking-wider">{label}</div>
                 <div className="text-lg font-bold text-[var(--primary)]">{value}</div>
               </div>
