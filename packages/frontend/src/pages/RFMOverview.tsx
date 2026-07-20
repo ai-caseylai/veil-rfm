@@ -30,7 +30,7 @@ const RADIAN = Math.PI / 180
 const renderLabel = (props: Record<string, unknown>) => {
   const pct = props.percent as number
   if (pct < 0.015) return null as unknown as React.ReactElement
-  const r = (props.outerRadius as number) + 40
+  const r = (props.outerRadius as number) + 55
   const cx = props.cx as number; const cy = props.cy as number
   const angle = -(props.midAngle as number) * RADIAN
   const x = cx + r * Math.cos(angle)
@@ -39,8 +39,8 @@ const renderLabel = (props: Record<string, unknown>) => {
   const anchor = x > cx ? "start" : "end"
   return (
     <text x={x} y={y} fill="#374151" textAnchor={anchor} dominantBaseline="central">
-      <tspan fontSize={11} fontWeight={500}>{label}</tspan>
-      <tspan x={x} dy={14} fontSize={12} fontWeight={700} fill="#1f2937">
+      <tspan fontSize={10} fontWeight={500}>{label}</tspan>
+      <tspan x={x} dy={13} fontSize={11} fontWeight={700} fill="#1f2937">
         {`${(pct * 100).toFixed(1)}%`}
       </tspan>
     </text>
@@ -90,15 +90,15 @@ export default function RFMOverview({ data }: Props) {
         <div className="card-header">{t.customersBySegment}</div>
         <div className="card-body">
           <div className="flex flex-col lg:flex-row items-center gap-6">
-            <div className="flex-1" style={{ minHeight: 420 }}>
-              <ResponsiveContainer width="100%" height={420}>
+            <div className="flex-1" style={{ minHeight: 480 }}>
+              <ResponsiveContainer width="100%" height={480}>
                 <PieChart>
                   <Pie
                     data={activeSegs}
                     dataKey="Number of Customers"
                     nameKey="Segment"
                     cx="50%" cy="50%"
-                    outerRadius={140}
+                    outerRadius={120}
                     label={renderLabel}
                     labelLine={{ stroke: "#d1d5db", strokeWidth: 1 }}
                     onClick={(entry) => navigate(`/rfm-customer-summary?segment=${encodeURIComponent(entry.Segment)}`)}

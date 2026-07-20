@@ -26,7 +26,7 @@ const RADIAN = Math.PI / 180
 const renderLabel = (props: Record<string, unknown>) => {
   const pct = props.percent as number
   if (pct < 0.015) return null as unknown as React.ReactElement
-  const r = (props.outerRadius as number) + 35
+  const r = (props.outerRadius as number) + 50
   const cx = props.cx as number; const cy = props.cy as number
   const angle = -(props.midAngle as number) * RADIAN
   const x = cx + r * Math.cos(angle)
@@ -35,8 +35,8 @@ const renderLabel = (props: Record<string, unknown>) => {
   const anchor = x > cx ? "start" : "end"
   return (
     <text x={x} y={y} fill="#374151" textAnchor={anchor} dominantBaseline="central">
-      <tspan fontSize={10} fontWeight={500}>{label}</tspan>
-      <tspan x={x} dy={12} fontSize={11} fontWeight={700} fill="#1f2937">
+      <tspan fontSize={9} fontWeight={500}>{label}</tspan>
+      <tspan x={x} dy={11} fontSize={10} fontWeight={700} fill="#1f2937">
         {`${(pct * 100).toFixed(0)}%`}
       </tspan>
     </text>
@@ -127,10 +127,10 @@ export default function DashboardSections({ data }: Props) {
         </div>
         <div className="card-body">
           <div className="flex flex-col lg:flex-row items-center gap-4">
-            <div className="flex-1" style={{ minHeight: 380 }}>
-              <ResponsiveContainer width="100%" height={380}>
+            <div className="flex-1" style={{ minHeight: 430 }}>
+              <ResponsiveContainer width="100%" height={430}>
                 <PieChart>
-                  <Pie data={activeSegs} dataKey="Number of Customers" nameKey="Segment" cx="50%" cy="50%" outerRadius={130} label={renderLabel}
+                  <Pie data={activeSegs} dataKey="Number of Customers" nameKey="Segment" cx="50%" cy="50%" outerRadius={110} label={renderLabel}
                   labelLine={{ stroke: "#d1d5db", strokeWidth: 1 }}>
                     {activeSegs.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} stroke="white" strokeWidth={2} />)}
                   </Pie>
