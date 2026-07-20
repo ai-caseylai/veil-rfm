@@ -49,6 +49,7 @@ export default function DashboardSections({ data }: Props) {
   const dPctSize = Math.max(7, Math.min(11, dOuterRadius * 0.085))
   const dChartH = Math.max(300, dOuterRadius * 4.2)
   const dPieMargin = { top: 4, right: 4, bottom: 4, left: 4 }
+  const dLegendSize = Math.max(8, Math.min(11, dOuterRadius * 0.085))
 
   const dynLabel = useCallback((props: Record<string, unknown>) => {
     const pct = props.percent as number
@@ -152,7 +153,7 @@ export default function DashboardSections({ data }: Props) {
                   labelLine={{ stroke: "#d1d5db", strokeWidth: 1 }}>
                     {activeSegs.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} stroke="white" strokeWidth={2} />)}
                   </Pie>
-                  <Tooltip /><Legend />
+                  <Tooltip /><Legend wrapperStyle={{ fontSize: dLegendSize }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
@@ -236,7 +237,7 @@ export default function DashboardSections({ data }: Props) {
           <div className="card-header">{t.predictionChart}</div>
           <div className="card-body">
             <ResponsiveContainer width="100%" height={400}>
-              <LineChart data={predChart}><CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" /><XAxis dataKey="time" /><YAxis scale="log" domain={["auto", "auto"]} /><Tooltip /><Legend />{predSegs.map((seg, i) => <Line key={seg} type="monotone" dataKey={seg} stroke={`hsl(${(i * 33) % 360},60%,45%)`} strokeWidth={2} dot={false} />)}</LineChart>
+              <LineChart data={predChart}><CartesianGrid strokeDasharray="3 3" stroke="#e2e8f0" /><XAxis dataKey="time" /><YAxis scale="log" domain={["auto", "auto"]} /><Tooltip /><Legend wrapperStyle={{ fontSize: dLegendSize }} />{predSegs.map((seg, i) => <Line key={seg} type="monotone" dataKey={seg} stroke={`hsl(${(i * 33) % 360},60%,45%)`} strokeWidth={2} dot={false} />)}</LineChart>
             </ResponsiveContainer>
           </div>
         </div>

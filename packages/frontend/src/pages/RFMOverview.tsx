@@ -64,6 +64,7 @@ export default function RFMOverview({ data }: Props) {
   const pctSize = Math.max(7.5, Math.min(12, outerRadius * 0.088))
   const chartHeight = Math.max(360, outerRadius * 4.2)
   const pieMargin = { top: 4, right: 4, bottom: 4, left: 4 }
+  const legendSize = Math.max(9, Math.min(12, outerRadius * 0.085))
 
   const renderLabel = useCallback((props: Record<string, unknown>) => {
     const pct = props.percent as number
@@ -130,7 +131,7 @@ export default function RFMOverview({ data }: Props) {
                     ))}
                   </Pie>
                   <Tooltip />
-                  <Legend />
+                  <Legend wrapperStyle={{ fontSize: legendSize }} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
