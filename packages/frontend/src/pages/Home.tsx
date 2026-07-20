@@ -50,7 +50,7 @@ export default function Home({ data }: Props) {
         ].map(([label, value, color]) => (
           <div key={label} className="bg-white rounded-xl p-4 border shadow-sm hover:shadow-md transition-shadow flex-1 min-w-[150px]">
             <div className="text-xs text-gray-400 mb-1">{label}</div>
-            <div className="text-2xl font-bold" style={{ color }}>{value}</div>
+            <div className="text-base sm:text-lg lg:text-2xl font-bold" style={{ color }}>{value}</div>
           </div>
         ))}
       </div>

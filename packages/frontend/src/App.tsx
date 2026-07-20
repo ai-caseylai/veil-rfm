@@ -80,7 +80,7 @@ export default function App() {
             className="text-white text-lg leading-none w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded cursor-pointer select-none"
             title="Toggle sidebar" aria-label="Toggle sidebar"
           >{sidebarOpen ? "✕" : "☰"}</button>
-          <h1>{t.appTitle} <span style={{fontSize:10,opacity:.4,marginLeft:8}}>v250720-sidebar</span></h1>
+          <h1>{t.appTitle} <span style={{fontSize:10,opacity:.4,marginLeft:8}}>v250720-font</span></h1>
         </div>
         <div className="flex items-center gap-3">
           {loading ? (
@@ -140,8 +140,8 @@ export default function App() {
               ["Avg Recency", `${avgRecency}d`],
             ].map(([label, value]) => (
               <div key={label} className="bg-white rounded-lg p-3 border shadow-sm flex-1 min-w-[140px]">
-                <div className="text-[10px] text-gray-400 uppercase tracking-wider">{label}</div>
-                <div className="text-lg font-bold text-[var(--primary)]">{value}</div>
+                <div className="text-[9px] sm:text-[10px] text-gray-400 uppercase tracking-wider">{label}</div>
+                <div className="text-sm sm:text-base lg:text-lg font-bold text-[var(--primary)]">{value}</div>
               </div>
             ))}
           </div>
