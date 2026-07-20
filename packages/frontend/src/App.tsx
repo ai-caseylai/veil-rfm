@@ -80,7 +80,7 @@ export default function App() {
             className="text-white text-lg leading-none w-8 h-8 flex items-center justify-center hover:bg-white/10 rounded cursor-pointer select-none"
             title="Toggle sidebar" aria-label="Toggle sidebar"
           >{sidebarOpen ? "✕" : "☰"}</button>
-          <h1>{t.appTitle} <span style={{fontSize:10,opacity:.4,marginLeft:8}}>v250720-toggle</span></h1>
+          <h1>{t.appTitle} <span style={{fontSize:10,opacity:.4,marginLeft:8}}>v250720-sidebar</span></h1>
         </div>
         <div className="flex items-center gap-3">
           {loading ? (
@@ -104,7 +104,7 @@ export default function App() {
       </header>
 
       <div className="flex flex-1 overflow-hidden">
-        <nav className={`sidebar overflow-y-auto transition-all duration-200 ${sidebarOpen ? "w-[220px]" : "w-0 overflow-hidden"}`}>
+        <nav className={`sidebar overflow-y-auto transition-all duration-200 ${sidebarOpen ? "w-[220px]" : "hidden"}`}>
           <div className="sidebar-header">{t.customerSegmentation}</div>
           <NavLink to="/rfm-overview" className={({ isActive }) => isActive ? "active" : ""}>{t.overview}</NavLink>
           <NavLink to="/rfm-characteristics" className={({ isActive }) => isActive ? "active" : ""}>{t.characteristics}</NavLink>
