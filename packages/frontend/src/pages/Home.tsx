@@ -1,12 +1,10 @@
 import { Link } from "react-router-dom"
-import { PieChart, Pie, Cell, Tooltip, Legend, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList } from "recharts"
 import type { AppData } from "../App"
 import { useT } from "../lib/i18n"
 import { segLabel, sortSegments } from "../lib/segmentNames"
 
 interface Props { data: AppData }
 
-const COLORS = ["#3182ce", "#2b6cb0", "#2c5282", "#38a169", "#2f855a", "#d69e2e", "#b7791f", "#e53e3e", "#c53030", "#718096", "#4a5568"]
 
 export default function Home({ data }: Props) {
   const { t, lang } = useT()
@@ -57,26 +55,9 @@ export default function Home({ data }: Props) {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
-        {/* Segment Distribution */}
-        <div className="card lg:col-span-1">
-          <div className="card-header">{t.customersBySegment}</div>
-          <div className="card-body">
-            <ResponsiveContainer width="100%" height={280}>
-              <PieChart>
-                <Pie data={activeSegs} dataKey="Number of Customers" nameKey="Segment" cx="50%" cy="50%" outerRadius={100} innerRadius={50} paddingAngle={2}>
-                  {activeSegs.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} stroke="#fff" strokeWidth={1} />)}
-                </Pie>
-                <Tooltip formatter={(value: number) => value.toLocaleString()} />
-                <Legend layout="vertical" align="right" verticalAlign="middle" wrapperStyle={{ fontSize: 10, lineHeight: "16px" }} />
-              </PieChart>
-            </ResponsiveContainer>
-            <Link to="/rfm-overview" className="text-xs text-[var(--accent)] hover:underline block text-center mt-2">{t.overview} →</Link>
-          </div>
-        </div>
-
+      <div className="grid grid-cols-1 gap-4 mb-4">
         {/* Top Customers */}
-        <div className="card lg:col-span-2">
+        <div className="card">
           <div className="card-header flex justify-between items-center">
             <span>{lang === "zh-TW" ? "消費 Top 5" : lang === "zh-CN" ? "消费 Top 5" : "Top 5 by Spending"}</span>
             <Link to="/rfm-customer-summary" className="text-xs text-[var(--accent)] hover:underline">{t.customerSummary} →</Link>
